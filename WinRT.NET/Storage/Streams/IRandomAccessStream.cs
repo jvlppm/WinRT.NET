@@ -24,9 +24,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System;
+
 namespace Windows.Storage.Streams
 {
 	public interface IRandomAccessStream
+		: IDisposable, IInputStream, IOutputStream
 	{
 		ulong Size { get; set; }
 

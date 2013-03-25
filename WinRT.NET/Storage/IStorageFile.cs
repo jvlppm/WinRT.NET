@@ -33,5 +33,9 @@ namespace Windows.Storage
 	//[Version(NTDDI_WIN8)]
 	public interface IStorageFile : IStorageItem, IRandomAccessStreamReference, IInputStreamReference
 	{
+		/// <summary>
+		/// Gets the MIME type of the contents of the file.
+		/// </summary>
+		string ContentType { get; }
 	}
 }

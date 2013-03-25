@@ -32,5 +32,9 @@ namespace Windows.Storage
 	//[Version(NTDDI_WIN8)]
 	public interface IStorageItem
 	{
+		/// <summary>
+		/// Gets the name of the item including the file name extension if there is one.
+		/// </summary>
+		string Name { get; }
 	}
 }

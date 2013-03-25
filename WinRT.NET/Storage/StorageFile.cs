@@ -25,6 +25,8 @@
 // THE SOFTWARE.
 
 using Windows.Storage.Streams;
+using Windows.Foundation;
+using System;
 
 namespace Windows.Storage
 {
@@ -37,5 +39,27 @@ namespace Windows.Storage
 		  IRandomAccessStreamReference, IInputStreamReference,
 		  IStorageItemProperties
 	{
+		#region Properties
+		/// <summary>
+		/// Gets the MIME type of the contents of the file.
+		/// </summary>
+		public string ContentType { get; private set; }
+
+		/// <summary>
+		/// Gets the name of the file including the file name extension.
+		/// </summary>
+		public string Name { get; private set; }
+		#endregion
+
+		#region Methods
+		/// <summary>
+		/// Opens a random-access stream over the current file for reading file contents.
+		/// </summary>
+		/// <returns>When this method completes, it returns the random-access stream (type IRandomAccessStreamWithContentType).</returns>
+		public IAsyncOperation<IRandomAccessStreamWithContentType> OpenReadAsync()
+		{
+			throw new NotImplementedException();
+		}
+		#endregion
 	}
 }

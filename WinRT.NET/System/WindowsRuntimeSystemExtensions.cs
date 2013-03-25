@@ -123,5 +123,29 @@ namespace System
 
 			return tcs.Task;
 		}
+
+		/// <summary>
+		/// Returns a task that represents a Windows Runtime asynchronous operation returns a result.
+		/// </summary>
+		/// <param name="source">The asynchronous operation.</param>
+		/// <typeparam name="TResult">The type of object that returns the result of the asynchronous operation.</typeparam>
+		/// <returns>A task that represents the asynchronous operation.</returns>
+		public static Task<TResult> AsTask<TResult>(this IAsyncOperation<TResult> source)
+		{
+			throw new NotImplementedException();
+		}
+
+#if NET_4_5
+		/// <summary>
+		/// Returns an object that awaits an asynchronous operation that returns a result.
+		/// </summary>
+		/// <param name="source">The asynchronous operation to await.</param>
+		/// <typeparam name="TResult">The type of object that returns the result of the asynchronous operation.</typeparam>
+		/// <returns>An object that awaits the specified asynchronous operation.</returns>
+		public static TaskAwaiter<TResult> GetAwaiter<TResult>(this IAsyncOperation<TResult> source)
+		{
+			throw new NotImplementedException();
+		}
+#endif
 	}
 }

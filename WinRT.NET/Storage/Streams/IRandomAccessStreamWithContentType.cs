@@ -24,10 +24,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System;
+
 namespace Windows.Storage.Streams
 {
 	public interface IRandomAccessStreamWithContentType
-		: IRandomAccessStream, IContentTypeProvider
+		: IRandomAccessStream, IDisposable, IInputStream, IOutputStream, IContentTypeProvider
 	{
 	}
 }

@@ -29,7 +29,7 @@ using System;
 namespace Windows.Storage.Streams
 {
 	public sealed class DataReader
-		: IDataReader
+		: IDataReader, IDisposable
 	{
 		public DataReader (IInputStream inputStream)
 		{
@@ -156,5 +156,14 @@ namespace Windows.Storage.Streams
 		{
 			throw new NotImplementedException();
 		}
+
+		#region IDisposable implementation
+
+		public void Dispose()
+		{
+			throw new NotImplementedException();
+		}
+
+		#endregion
 	}
 }

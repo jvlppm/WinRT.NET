@@ -1,5 +1,5 @@
 //
-// IRandomAccessStreamReference.cs
+// WebAuthenticationOptions.cs
 //
 // Author:
 //   Joao Vitor P. Moraes <jvlppm@gmail.com>
@@ -24,19 +24,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System.Runtime.InteropServices;
-using Windows.Foundation;
+using System;
 
-namespace Windows.Storage.Streams
+namespace Windows.Security.Authentication.Web
 {
-	[Guid("33ee3134-1dd6-4e3a-8067-d1c162e8642b")]
+	[Flags]
 	//[Version(NTDDI_WIN8)]
-	public interface IRandomAccessStreamReference
+	public enum WebAuthenticationOptions
 	{
 		/// <summary>
-		/// Opens a stream for random access.
+		/// No options are requested.
 		/// </summary>
-		/// <returns>The asynchronous operation.</returns>
-		IAsyncOperation<IRandomAccessStreamWithContentType> OpenReadAsync();
+		None = 0,
+		/// <summary>
+		/// Tells the web authentication broker to not render any UI. For use with Single Sign On (SSO). If the server tries to display a webpage, the authentication operation fails. You should try again without this option.
+		/// </summary>
+		SilentMode = 1,
+		/// <summary>
+		/// Tells the web authentication broker to return the window title string of the webpage in the ResponseData property.
+		/// </summary>
+		UseTitle = 2,
+		/// <summary>
+		/// Tells the web authentication broker to return the body of the HTTP POST in the ResponseData property. For use with single sign-on (SSO) only.
+		/// </summary>
+		UseHttpPost = 4,
+		/// <summary>
+		/// Tells the web authentication broker to render the webpage in an app container that supports privateNetworkClientServer, enterpriseAuthentication, and sharedUserCertificate capabilities. Note the application that uses this flag must have these capabilities as well.
+		/// </summary>
+		UseCorporateNetwork = 8
 	}
 }

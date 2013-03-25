@@ -31,6 +31,12 @@ namespace System.IO
 {
 	public static class WindowsRuntimeStreamExtensions
 	{
+		[CLSCompliantAttribute(false)]
+		public static Stream AsStream(this IRandomAccessStream windowsRuntimeStream)
+		{
+			throw new NotImplementedException();
+		}
+
 		public static IInputStream AsInputStream (this Stream source)
 		{
 			if (source == null)
@@ -45,22 +51,6 @@ namespace System.IO
 				throw new ArgumentNullException ("source");
 
 			return new StreamToOutputStreamAdapter (source);
-		}
-
-		public static Stream AsStream (this IInputStream source)
-		{
-			if (source == null)
-				throw new ArgumentNullException ("source");
-
-			throw new NotImplementedException();
-		}
-
-		public static Stream AsStream (this IOutputStream source)
-		{
-			if (source == null)
-				throw new ArgumentNullException ("source");
-
-			throw new NotImplementedException();
 		}
 
 		public static Stream OpenRead (this IRandomAccessStream streamProvider)
