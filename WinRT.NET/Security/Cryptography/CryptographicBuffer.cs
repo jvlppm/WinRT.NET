@@ -1,5 +1,5 @@
 //
-// CryptographicEngine.cs
+// CryptographicBuffer.cs
 //
 // Author:
 //   Joao Vitor P. Moraes <jvlppm@gmail.com>
@@ -24,25 +24,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using Windows.Storage.Streams;
 using System;
+using Windows.Storage.Streams;
 
-namespace Windows.Security.Cryptography.Core
+namespace Windows.Security.Cryptography
 {
 	//[DualApiPartition]
 	//[MarshalingBehavior(Agile)]
-	//[Static(Windows.Security.Cryptography.Core.ICryptographicEngineStatics, NTDDI_WIN8)]
+	//[Static(Windows.Security.Cryptography.ICryptographicBufferStatics, NTDDI_WIN8)]
 	//[Threading(Both)]
 	//[Version(NTDDI_WIN8)]
-	public static class CryptographicEngine
+	public static class CryptographicBuffer
 	{
 		/// <summary>
-		/// Signs digital content. For more information, see MACs, Hashes, and Signatures.
+		/// Encodes a buffer to a base64 string.
 		/// </summary>
-		/// <param name="key">Key used for signing.</param>
-		/// <param name="data">Data to be signed.</param>
-		/// <returns>Signed data.</returns>
-		public static IBuffer Sign( CryptographicKey key, IBuffer data )
+		/// <param name="buffer">Input buffer.</param>
+		/// <returns>Base64-encoded output string.</returns>
+		public static string EncodeToBase64String( IBuffer buffer )
 		{
 			throw new NotImplementedException();
 		}

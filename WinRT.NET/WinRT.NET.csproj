@@ -127,6 +127,7 @@
     <Compile Include="Security\Authentication\Web\WebAuthenticationResult.cs" />
     <Compile Include="Security\Cryptography\Core\MacAlgorithmProvider.cs" />
     <Compile Include="Security\Cryptography\Core\CryptographicEngine.cs" />
+    <Compile Include="Security\Cryptography\CryptographicBuffer.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
