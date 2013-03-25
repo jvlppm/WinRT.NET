@@ -125,6 +125,7 @@
     <Compile Include="Storage\IStorageItemProperties.cs" />
     <Compile Include="Security\Authentication\Web\WebAuthenticationStatus.cs" />
     <Compile Include="Security\Authentication\Web\WebAuthenticationResult.cs" />
+    <Compile Include="Security\Cryptography\Core\MacAlgorithmProvider.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
