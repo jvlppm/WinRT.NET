@@ -123,6 +123,8 @@
     <Compile Include="Storage\Streams\IRandomAccessStreamReference.cs" />
     <Compile Include="Storage\Streams\IInputStreamReference.cs" />
     <Compile Include="Storage\IStorageItemProperties.cs" />
+    <Compile Include="Security\Authentication\Web\WebAuthenticationStatus.cs" />
+    <Compile Include="Security\Authentication\Web\WebAuthenticationResult.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -133,4 +135,8 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <Folder Include="Security\Authentication\" />
+    <Folder Include="Security\Authentication\Web\" />
+  </ItemGroup>
 </Project>
