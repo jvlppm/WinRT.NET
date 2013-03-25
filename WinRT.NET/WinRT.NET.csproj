@@ -130,6 +130,7 @@
     <Compile Include="Security\Cryptography\CryptographicBuffer.cs" />
     <Compile Include="Security\Authentication\Web\WebAuthenticationBroker.cs" />
     <Compile Include="Security\Authentication\Web\WebAuthenticationOptions.cs" />
+    <Compile Include="Devices\Geolocation\Geocoordinate.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -143,5 +144,7 @@
   <ItemGroup>
     <Folder Include="Security\Authentication\" />
     <Folder Include="Security\Authentication\Web\" />
+    <Folder Include="Devices\" />
+    <Folder Include="Devices\Geolocation\" />
   </ItemGroup>
 </Project>
