@@ -117,6 +117,12 @@
     <Compile Include="System\Threading\ThreadPoolTimer.cs" />
     <Compile Include="System\Threading\WorkItemPriority.cs" />
     <Compile Include="System\WindowsRuntimeSystemExtensions.cs" />
+    <Compile Include="Storage\StorageFile.cs" />
+    <Compile Include="Storage\IStorageFile.cs" />
+    <Compile Include="Storage\IStorageItem.cs" />
+    <Compile Include="Storage\Streams\IRandomAccessStreamReference.cs" />
+    <Compile Include="Storage\Streams\IInputStreamReference.cs" />
+    <Compile Include="Storage\IStorageItemProperties.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
