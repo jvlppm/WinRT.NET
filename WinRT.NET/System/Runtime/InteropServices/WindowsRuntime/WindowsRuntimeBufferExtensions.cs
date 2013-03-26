@@ -128,5 +128,23 @@ namespace System.Runtime.InteropServices.WindowsRuntime
 			underlyingDataArrayStartOffset = (int)b.Offset;
 			return true;
 		}
+
+		/// <summary>
+		/// Returns a new array that is created from the contents of the
+		/// specified buffer (Windows.Storage.Streams.IBuffer). The size of
+		/// the array is the value of the Length property of the IBuffer.
+		/// </summary>
+		/// <returns>
+		/// A byte array that contains the bytes in the specified IBuffer,
+		/// beginning at offset 0 (zero) and including a number of bytes equal
+		/// to the value of the Length property of the IBuffer.
+		/// </returns>
+		/// <param name="source">The buffer whose contents populate the new array.</param>
+		public static byte[] ToArray(this IBuffer source)
+		{
+			var buffer = new byte[source.Length];
+			source.CopyTo(buffer);
+			return buffer;
+		}
 	}
 }

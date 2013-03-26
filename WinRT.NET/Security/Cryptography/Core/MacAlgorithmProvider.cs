@@ -25,17 +25,26 @@
 // THE SOFTWARE.
 
 using System;
+using System.Linq;
 using Windows.Storage.Streams;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace Windows.Security.Cryptography.Core
 {
+	/// <summary>
+	/// Represents a message authentication code (MAC).
+	/// A MAC uses symmetric key cryptography to prevent message tampering.
+	/// For more information, see MACs, Hashes, and Signatures.
+	/// </summary>
 	//[DualApiPartition]
 	//[MarshalingBehavior(Agile)]
 	//[Static(Windows.Security.Cryptography.Core.IMacAlgorithmProviderStatics, NTDDI_WIN8)]
 	//[Threading(Both)]
 	//[Version(NTDDI_WIN8)]
 	public sealed class MacAlgorithmProvider
-    {
+	{
 		#region Properties
 
 		/// <summary>
@@ -46,7 +55,7 @@ namespace Windows.Security.Cryptography.Core
 		/// <summary>
 		/// Gets the length, in bytes, of the message authentication code.
 		/// </summary>
-		public uint MacLength { get; private set; }
+		public uint MacLength { get { return (uint)Hash.HashSize; } }
 
 		#endregion
 
@@ -60,9 +69,11 @@ namespace Windows.Security.Cryptography.Core
 		///   You can call the GenerateRandom method to create the random data.
 		/// </param>
 		/// <returns>Symmetric key.</returns>
-		public CryptographicKey CreateKey( IBuffer keyMaterial )
+		public CryptographicKey CreateKey(IBuffer keyMaterial)
 		{
-		    throw new NotImplementedException();
+			var hash = Hash.ComputeHash(keyMaterial.ToArray());
+			throw new NotImplementedException();
+			//return new CryptographicKey();
 		}
 
 		/// <summary>
@@ -70,11 +81,52 @@ namespace Windows.Security.Cryptography.Core
 		/// </summary>
 		/// <param name="algorithm">Algorithm name.</param>
 		/// <returns>Represents a provider that implements MAC algorithms.</returns>
-		public static MacAlgorithmProvider OpenAlgorithm( string algorithm )
+		public static MacAlgorithmProvider OpenAlgorithm(string algorithm)
 		{
-		    throw new NotImplementedException();
+			return new MacAlgorithmProvider(algorithm);
 		}
 
 		#endregion
-    }
+
+		#region Private
+		HMAC Hash { get; set; }
+
+		MacAlgorithmProvider(string algorithmName)
+		{
+			var validAlgorithms = new [] {
+				MacAlgorithmNames.AesCmac,
+				MacAlgorithmNames.HmacMd5,
+				MacAlgorithmNames.HmacSha1,
+				MacAlgorithmNames.HmacSha256,
+				MacAlgorithmNames.HmacSha384,
+				MacAlgorithmNames.HmacSha512
+			};
+
+			if (!validAlgorithms.Contains(algorithmName))
+			{
+				unchecked
+				{
+					// Element Not Found
+					const uint ERROR_NOT_FOUND = 0x80070490;
+					throw Marshal.GetExceptionForHR((int)ERROR_NOT_FOUND);
+				}
+			}
+
+			AlgorithmName = algorithmName;
+			if (algorithmName == MacAlgorithmNames.HmacMd5)
+				Hash = new HMACMD5();
+			else if (algorithmName == MacAlgorithmNames.HmacSha1)
+				Hash = new HMACSHA1();
+			else if (algorithmName == MacAlgorithmNames.HmacSha256)
+				Hash = new HMACSHA256();
+			else if (algorithmName == MacAlgorithmNames.HmacSha384)
+				Hash = new HMACSHA384();
+			else if (algorithmName == MacAlgorithmNames.HmacSha512)
+				Hash = new HMACSHA512();
+			else
+				throw new NotImplementedException();
+		}
+
+		#endregion
+	}
 }

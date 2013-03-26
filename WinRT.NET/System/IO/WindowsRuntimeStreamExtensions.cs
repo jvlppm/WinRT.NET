@@ -31,7 +31,6 @@ namespace System.IO
 {
 	public static class WindowsRuntimeStreamExtensions
 	{
-		[CLSCompliantAttribute(false)]
 		public static Stream AsStream(this IRandomAccessStream windowsRuntimeStream)
 		{
 			throw new NotImplementedException();
