@@ -24,35 +24,86 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
 using Windows.Storage.Streams;
+using System;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Security.Cryptography;
 
 namespace Windows.Security.Cryptography.Core
 {
+	//[DualApiPartition]
+	//[MarshalingBehavior(Agile)]
+	//[Version(NTDDI_WIN8)]
 	public sealed class CryptographicKey
 	{
-		internal CryptographicKey()
-		{
-		}
+		#region Properties
 
-		public CryptographicKeyCapabilities Capabilities
-		{
-			get { throw new NotImplementedException(); }
-		}
+		/// <summary>
+		/// Gets the size, in bits, of the key.
+		/// </summary>
+		public uint KeySize { get; private set; }
 
-		public uint KeySize
-		{
-			get { throw new NotImplementedException(); }
-		}
+		#endregion
 
+		#region Methods
+
+		/// <summary>
+		/// Exports the key pair to a buffer.
+		/// </summary>
+		/// <returns>Buffer that contains the key pair.</returns>
 		public IBuffer Export()
 		{
 			throw new NotImplementedException();
 		}
 
+		/// <summary>
+		/// Exports the key pair to a buffer given a specified format.
+		/// </summary>
+		/// <param name="BlobType">A CryptographicPrivateKeyBlobType enumeration value that specifies the format of the key in the buffer. The default value is Pkcs8RawPrivateKeyInfo.</param>
+		/// <returns>Buffer that contains the key pair.</returns>
+		public IBuffer Export( CryptographicPrivateKeyBlobType BlobType )
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// Exports a public key to a buffer.
+		/// </summary>
+		/// <returns>Buffer that contains the public key.</returns>
 		public IBuffer ExportPublicKey()
 		{
 			throw new NotImplementedException();
 		}
+
+		/// <summary>
+		/// Exports a public key to a buffer given a specified format.
+		/// </summary>
+		/// <param name="BlobType">A CryptographicPublicKeyBlobType enumeration value that specifies the format of the key in the buffer. The default value is X509SubjectPublicKeyInfo.</param>
+		/// <returns>Buffer that contains the public key.</returns>
+		public IBuffer ExportPublicKey( CryptographicPublicKeyBlobType BlobType )
+		{
+			throw new NotImplementedException();
+		}
+
+		#endregion
+
+		#region Private
+
+		#region Hash
+		internal CryptographicKey(HMAC hash)
+		{
+			if (hash == null)
+				throw new ArgumentNullException("hash");
+			if (hash.Key == null)
+				throw new ArgumentNullException("hash.Key");
+
+			Hash = hash;
+			KeySize = (uint)(hash.Key.Length * 8);
+		}
+
+		internal HMAC Hash { get; private set; }
+		#endregion
+
+		#endregion
 	}
 }

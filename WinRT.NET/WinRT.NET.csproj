@@ -132,6 +132,8 @@
     <Compile Include="Security\Authentication\Web\WebAuthenticationOptions.cs" />
     <Compile Include="Devices\Geolocation\Geocoordinate.cs" />
     <Compile Include="Security\Cryptography\Core\MacAlgorithmNames.cs" />
+    <Compile Include="Security\Cryptography\Core\CryptographicPrivateKeyBlobType.cs" />
+    <Compile Include="Security\Cryptography\Core\CryptographicPublicKeyBlobType.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -25,11 +25,11 @@
 // THE SOFTWARE.
 
 using System;
-using System.Linq;
 using Windows.Storage.Streams;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Collections.Generic;
 
 namespace Windows.Security.Cryptography.Core
 {
@@ -55,7 +55,7 @@ namespace Windows.Security.Cryptography.Core
 		/// <summary>
 		/// Gets the length, in bytes, of the message authentication code.
 		/// </summary>
-		public uint MacLength { get { return (uint)Hash.HashSize; } }
+		public uint MacLength { get; private set; }
 
 		#endregion
 
@@ -71,9 +71,10 @@ namespace Windows.Security.Cryptography.Core
 		/// <returns>Symmetric key.</returns>
 		public CryptographicKey CreateKey(IBuffer keyMaterial)
 		{
-			var hash = Hash.ComputeHash(keyMaterial.ToArray());
-			throw new NotImplementedException();
-			//return new CryptographicKey();
+			if (CreateKeyFunc == null)
+				throw new NotImplementedException();
+
+			return CreateKeyFunc(keyMaterial);
 		}
 
 		/// <summary>
@@ -89,20 +90,23 @@ namespace Windows.Security.Cryptography.Core
 		#endregion
 
 		#region Private
-		HMAC Hash { get; set; }
+		Func<IBuffer, CryptographicKey> CreateKeyFunc { get; set; }
 
 		MacAlgorithmProvider(string algorithmName)
 		{
-			var validAlgorithms = new [] {
-				MacAlgorithmNames.AesCmac,
-				MacAlgorithmNames.HmacMd5,
-				MacAlgorithmNames.HmacSha1,
-				MacAlgorithmNames.HmacSha256,
-				MacAlgorithmNames.HmacSha384,
-				MacAlgorithmNames.HmacSha512
+			var createKeyByAlgorithm =
+				new Dictionary<string, Func<IBuffer, CryptographicKey>>
+			{
+				{MacAlgorithmNames.AesCmac, CreateAesCmacKey},
+				{MacAlgorithmNames.HmacMd5, CreateHmacKey<HMACMD5>},
+				{MacAlgorithmNames.HmacSha1, CreateHmacKey<HMACSHA1>},
+				{MacAlgorithmNames.HmacSha256, CreateHmacKey<HMACSHA256>},
+				{MacAlgorithmNames.HmacSha384, CreateHmacKey<HMACSHA384>},
+				{MacAlgorithmNames.HmacSha512, CreateHmacKey<HMACSHA512>}
 			};
 
-			if (!validAlgorithms.Contains(algorithmName))
+			Func<IBuffer, CryptographicKey> createKeyFunc;
+			if (!createKeyByAlgorithm.TryGetValue(algorithmName, out createKeyFunc))
 			{
 				unchecked
 				{
@@ -112,19 +116,33 @@ namespace Windows.Security.Cryptography.Core
 				}
 			}
 
-			AlgorithmName = algorithmName;
-			if (algorithmName == MacAlgorithmNames.HmacMd5)
-				Hash = new HMACMD5();
-			else if (algorithmName == MacAlgorithmNames.HmacSha1)
-				Hash = new HMACSHA1();
-			else if (algorithmName == MacAlgorithmNames.HmacSha256)
-				Hash = new HMACSHA256();
-			else if (algorithmName == MacAlgorithmNames.HmacSha384)
-				Hash = new HMACSHA384();
-			else if (algorithmName == MacAlgorithmNames.HmacSha512)
-				Hash = new HMACSHA512();
-			else
+			var getKeySizeByAlgorithm = new Dictionary<string, uint>
+			{
+				//{MacAlgorithmNames.AesCmac, ? },
+				{MacAlgorithmNames.HmacMd5, 16},
+				{MacAlgorithmNames.HmacSha1, 20},
+				{MacAlgorithmNames.HmacSha256, 32},
+				{MacAlgorithmNames.HmacSha384, 48},
+				{MacAlgorithmNames.HmacSha512, 64}
+			};
+
+			uint keySize;
+			if (!getKeySizeByAlgorithm.TryGetValue(algorithmName, out keySize))
 				throw new NotImplementedException();
+
+			AlgorithmName = algorithmName;
+			CreateKeyFunc = createKeyFunc;
+			MacLength = keySize;
+		}
+
+		CryptographicKey CreateHmacKey<T>(IBuffer keyMaterial) where T : HMAC, new()
+		{
+			return new CryptographicKey(new T { Key = keyMaterial.ToArray() });
+		}
+
+		CryptographicKey CreateAesCmacKey(IBuffer keyMaterial)
+		{
+			throw new NotImplementedException();
 		}
 
 		#endregion

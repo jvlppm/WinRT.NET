@@ -26,6 +26,7 @@
 
 using Windows.Storage.Streams;
 using System;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace Windows.Security.Cryptography.Core
 {
@@ -44,6 +45,12 @@ namespace Windows.Security.Cryptography.Core
 		/// <returns>Signed data.</returns>
 		public static IBuffer Sign( CryptographicKey key, IBuffer data )
 		{
+			if (key.Hash != null)
+			{
+				var signature = key.Hash.ComputeHash(data.ToArray());
+				return new WindowsRuntimeBuffer(signature);
+			}
+
 			throw new NotImplementedException();
 		}
 	}

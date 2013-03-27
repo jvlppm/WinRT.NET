@@ -1,5 +1,5 @@
 //
-// CryptographicBuffer.cs
+// CryptographicPublicKeyBlobType.cs
 //
 // Author:
 //   Joao Vitor P. Moraes <jvlppm@gmail.com>
@@ -24,30 +24,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
-using Windows.Storage.Streams;
-using System.Runtime.InteropServices.WindowsRuntime;
-
-namespace Windows.Security.Cryptography
+namespace Windows.Security.Cryptography.Core
 {
-	//[DualApiPartition]
-	//[MarshalingBehavior(Agile)]
-	//[Static(Windows.Security.Cryptography.ICryptographicBufferStatics, NTDDI_WIN8)]
-	//[Threading(Both)]
 	//[Version(NTDDI_WIN8)]
-	public static class CryptographicBuffer
+	public enum CryptographicPublicKeyBlobType
 	{
 		/// <summary>
-		/// Encodes a buffer to a base64 string.
+		/// This is the default value. The public key is encoded as an ASN.1 SubjectPublicKeyInfo type defined in RFC 5280 and RFC 3280. Copy SubjectPublicKeyInfo ::= SEQUENCE { algorithm AlgorithmIdentifier, subjectPublicKey BIT STRING }
 		/// </summary>
-		/// <param name="buffer">Input buffer.</param>
-		/// <returns>Base64-encoded output string.</returns>
-		public static string EncodeToBase64String( IBuffer buffer )
-		{
-			if (buffer == null)
-				throw new ArgumentNullException("buffer");
-
-			return Convert.ToBase64String(buffer.ToArray());
-		}
+		X509SubjectPublicKeyInfo,
+		/// <summary>
+		/// The key is an RSA public key defined in the PKCS #1 standard. For more information, see the RSA Cryptography Specification in RFC 3347.
+		/// </summary>
+		Pkcs1RsaPublicKey,
+		/// <summary>
+		/// Microsoft public key format defined by Cryptography API: Next Generation (CNG). For examples, see the following CNG structures: BCRYPT_DH_KEY_BLOB BCRYPT_DSA_KEY_BLOB BCRYPT_ECCKEY_BLOB BCRYPT_KEY_BLOB BCRYPT_RSAKEY_BLOB
+		/// </summary>
+		BCryptPublicKey,
+		/// <summary>
+		/// Microsoft public key format defined by the legacy Cryptography API (CAPI). For more information, see Base Provider Key BLOBs.
+		/// </summary>
+		Capi1PublicKey
 	}
 }
