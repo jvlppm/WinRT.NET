@@ -71,6 +71,7 @@
     <Compile Include="Windows.System\Threading\ThreadPoolTests.cs" />
     <Compile Include="Windows.System\Threading\ThreadPoolTimerTests.cs" />
     <Compile Include="WindowsRuntimeSystemExtensionsTests.cs" />
+    <Compile Include="Cryptography\MacAlgorithmProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WinRT.NET.csproj">

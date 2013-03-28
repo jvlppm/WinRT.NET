@@ -49,8 +49,7 @@ namespace WinRTNET.Tests.Streams
 		[Test]
 		public void AsStream_Null()
 		{
-			Assert.Throws<ArgumentNullException> (() => WindowsRuntimeStreamExtensions.AsStream ((IInputStream)null));
-			Assert.Throws<ArgumentNullException> (() => WindowsRuntimeStreamExtensions.AsStream ((IOutputStream)null));
+			Assert.Throws<ArgumentNullException> (() => WindowsRuntimeStreamExtensions.AsStream ((IRandomAccessStream)null));
 		}
 
 		[Test]

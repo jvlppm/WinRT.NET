@@ -26,6 +26,7 @@
 
 using Windows.Storage.Streams;
 using Windows.System.IO;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace System.IO
 {
@@ -33,6 +34,9 @@ namespace System.IO
 	{
 		public static Stream AsStream(this IRandomAccessStream windowsRuntimeStream)
 		{
+			if (windowsRuntimeStream == null)
+				throw new ArgumentNullException("windowsRuntimeStream");
+
 			throw new NotImplementedException();
 		}
 
