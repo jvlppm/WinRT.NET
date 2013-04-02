@@ -26,6 +26,8 @@
 
 using Windows.Foundation;
 using System;
+using System.Windows.Forms;
+using System.Threading.Tasks;
 
 namespace Windows.Security.Authentication.Web
 {
@@ -42,7 +44,26 @@ namespace Windows.Security.Authentication.Web
 		/// <returns>The way to query the status and get the results of the authentication operation. If you are getting an invalid parameter error, the most common cause is that you are not using HTTPS for the requestUri parameter.</returns>
 		public static IAsyncOperation<WebAuthenticationResult> AuthenticateAsync( WebAuthenticationOptions options, Uri requestUri )
 		{
-			throw new NotImplementedException();
+			var tcs = new TaskCompletionSource<WebAuthenticationResult>();
+
+			if (options != WebAuthenticationOptions.None)
+				throw new NotImplementedException();
+
+			var win = new Form();
+			var browser = new WebBrowser
+			{
+				Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom
+			};
+			win.Controls.Add(browser);
+
+			browser.Navigated += (sender, e) => {
+			};
+
+			browser.Navigate(requestUri);
+
+			win.Show();
+
+			return tcs.Task.AsAsyncOperation();
 		}
 
 		/// <summary>

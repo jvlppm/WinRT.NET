@@ -23,7 +23,6 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +35,7 @@ namespace System
 {
 	public static class WindowsRuntimeSystemExtensions
 	{
-		internal static AsyncStatus ToAsyncStatus (this TaskStatus status)
+		internal static AsyncStatus ToAsyncStatus(this TaskStatus status)
 		{
 			switch (status)
 			{
@@ -60,10 +59,10 @@ namespace System
 			}
 		}
 
-		public static Task StartAsTask (this IAsyncAction source)
+		public static Task StartAsTask(this IAsyncAction source)
 		{
 			if (source == null)
-				throw new ArgumentNullException ("source");
+				throw new ArgumentNullException("source");
 			if (source.Status != AsyncStatus.Created)
 				throw new InvalidOperationException("The async operation has been previously started");
 
@@ -74,7 +73,7 @@ namespace System
 				switch (a.Status)
 				{
 					case AsyncStatus.Completed:
-						tcs.SetResult (true);
+						tcs.SetResult(true);
 						break;
 
 					case AsyncStatus.Canceled:
@@ -82,7 +81,7 @@ namespace System
 						break;
 
 					case AsyncStatus.Error:
-						tcs.SetException (a.ErrorCode);
+						tcs.SetException(a.ErrorCode);
 						break;
 				}
 			};
@@ -92,12 +91,12 @@ namespace System
 			return tcs.Task;
 		}
 
-		public static Task<TResult> StartAsTask<TResult> (this IAsyncOperation<TResult> source)
+		public static Task<TResult> StartAsTask<TResult>(this IAsyncOperation<TResult> source)
 		{
 			if (source == null)
-				throw new ArgumentNullException ("source");
+				throw new ArgumentNullException("source");
 			if (source.Status != AsyncStatus.Created)
-				throw new InvalidOperationException ("The async operation has been previous started");
+				throw new InvalidOperationException("The async operation has been previous started");
 
 			var tcs = new TaskCompletionSource<TResult>();
 
@@ -106,7 +105,7 @@ namespace System
 				switch (a.Status)
 				{
 					case AsyncStatus.Completed:
-						tcs.SetResult (a.GetResults());
+						tcs.SetResult(a.GetResults());
 						break;
 
 					case AsyncStatus.Canceled:
@@ -114,7 +113,7 @@ namespace System
 						break;
 
 					case AsyncStatus.Error:
-						tcs.SetException (a.ErrorCode);
+						tcs.SetException(a.ErrorCode);
 						break;
 				}
 			};
@@ -131,6 +130,17 @@ namespace System
 		/// <typeparam name="TResult">The type of object that returns the result of the asynchronous operation.</typeparam>
 		/// <returns>A task that represents the asynchronous operation.</returns>
 		public static Task<TResult> AsTask<TResult>(this IAsyncOperation<TResult> source)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// Returns a Windows Runtime asynchronous operation that represents a started task that returns a result.
+		/// </summary>
+		/// <returns>A Windows.Foundation.IAsyncOperation&lt;TResult&gt; instance that represents the started task.</returns>
+		/// <param name="source">The started task.</param>
+		/// <typeparam name="TResult">The type that returns the result.</typeparam>
+		public static IAsyncOperation<TResult> AsAsyncOperation<TResult>(this Task<TResult> source)
 		{
 			throw new NotImplementedException();
 		}
