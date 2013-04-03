@@ -55,72 +55,8 @@ namespace System
 					return AsyncStatus.Started;
 
 				default:
-					return AsyncStatus.Created;
+					throw new InvalidOperationException("TaskStatus." + status + " does not have a corresponding AsyncStatus");
 			}
-		}
-
-		public static Task StartAsTask(this IAsyncAction source)
-		{
-			if (source == null)
-				throw new ArgumentNullException("source");
-			if (source.Status != AsyncStatus.Created)
-				throw new InvalidOperationException("The async operation has been previously started");
-
-			var tcs = new TaskCompletionSource<bool>();
-
-			source.Completed = a =>
-			{
-				switch (a.Status)
-				{
-					case AsyncStatus.Completed:
-						tcs.SetResult(true);
-						break;
-
-					case AsyncStatus.Canceled:
-						tcs.SetCanceled();
-						break;
-
-					case AsyncStatus.Error:
-						tcs.SetException(a.ErrorCode);
-						break;
-				}
-			};
-
-			source.Start();
-
-			return tcs.Task;
-		}
-
-		public static Task<TResult> StartAsTask<TResult>(this IAsyncOperation<TResult> source)
-		{
-			if (source == null)
-				throw new ArgumentNullException("source");
-			if (source.Status != AsyncStatus.Created)
-				throw new InvalidOperationException("The async operation has been previous started");
-
-			var tcs = new TaskCompletionSource<TResult>();
-
-			source.Completed = a =>
-			{
-				switch (a.Status)
-				{
-					case AsyncStatus.Completed:
-						tcs.SetResult(a.GetResults());
-						break;
-
-					case AsyncStatus.Canceled:
-						tcs.SetCanceled();
-						break;
-
-					case AsyncStatus.Error:
-						tcs.SetException(a.ErrorCode);
-						break;
-				}
-			};
-
-			source.Start();
-
-			return tcs.Task;
 		}
 
 		/// <summary>
@@ -131,7 +67,19 @@ namespace System
 		/// <returns>A task that represents the asynchronous operation.</returns>
 		public static Task<TResult> AsTask<TResult>(this IAsyncOperation<TResult> source)
 		{
-			throw new NotImplementedException();
+			var tcs = new TaskCompletionSource<TResult>();
+			source.Completed += (s) => {
+				try
+				{
+					var res = s.GetResults();
+					tcs.SetResult(res);
+				}
+				catch (Exception ex)
+				{
+					tcs.SetException(ex);
+				}
+			};
+			return tcs.Task;
 		}
 
 		/// <summary>
@@ -142,7 +90,7 @@ namespace System
 		/// <typeparam name="TResult">The type that returns the result.</typeparam>
 		public static IAsyncOperation<TResult> AsAsyncOperation<TResult>(this Task<TResult> source)
 		{
-			throw new NotImplementedException();
+			return new TaskToAsyncOperationAdapter<TResult>(source);
 		}
 
 #if NET_4_5

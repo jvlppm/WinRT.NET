@@ -79,7 +79,8 @@ namespace Windows.Foundation
 			get
 			{
 				if (this.task == null)
-					return AsyncStatus.Created;
+					throw new InvalidOperationException("Action was not started");
+
 				if (this.cancelSource.IsCancellationRequested)
 					return AsyncStatus.Canceled;
 
@@ -90,11 +91,11 @@ namespace Windows.Foundation
 		public void Start()
 		{
 			if (Interlocked.CompareExchange (ref this.state, 1, 0) == 1)
-				throw new Exception ("Action already started");
+				throw new InvalidOperationException ("Action already started");
 
 			this.task = Task.Factory.StartNew (this.action, AsyncState, this.cancelSource.Token);
 			this.task.ContinueWith (t =>
-			{
+			                        {
 				AsyncActionCompletedHandler c = Completed;
 				if (c != null)
 					c (this);
@@ -104,7 +105,7 @@ namespace Windows.Foundation
 		public void Close()
 		{
 			if (this.state == 0)
-				throw new Exception ("Action has not already run");
+				throw new InvalidOperationException ("Action has not already run");
 
 			this.cancelSource.Dispose();
 		}

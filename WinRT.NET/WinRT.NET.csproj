@@ -135,6 +135,7 @@
     <Compile Include="Security\Cryptography\Core\MacAlgorithmNames.cs" />
     <Compile Include="Security\Cryptography\Core\CryptographicPrivateKeyBlobType.cs" />
     <Compile Include="Security\Cryptography\Core\CryptographicPublicKeyBlobType.cs" />
+    <Compile Include="System\Threading\Tasks\TaskToAsyncOperationAdapter.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -150,5 +151,6 @@
     <Folder Include="Security\Authentication\Web\" />
     <Folder Include="Devices\" />
     <Folder Include="Devices\Geolocation\" />
+    <Folder Include="System\Threading\Tasks\" />
   </ItemGroup>
 </Project>
