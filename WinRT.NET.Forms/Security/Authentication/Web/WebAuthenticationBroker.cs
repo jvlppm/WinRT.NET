@@ -23,11 +23,11 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 using Windows.Foundation;
 using System;
 using System.Windows.Forms;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Windows.Security.Authentication.Web
 {
@@ -42,28 +42,9 @@ namespace Windows.Security.Authentication.Web
 		/// <param name="options">The options for the authentication operation.</param>
 		/// <param name="requestUri">The starting URI of the web service. This URI must be a secure address of https://.</param>
 		/// <returns>The way to query the status and get the results of the authentication operation. If you are getting an invalid parameter error, the most common cause is that you are not using HTTPS for the requestUri parameter.</returns>
-		public static IAsyncOperation<WebAuthenticationResult> AuthenticateAsync( WebAuthenticationOptions options, Uri requestUri )
+		public static IAsyncOperation<WebAuthenticationResult> AuthenticateAsync(WebAuthenticationOptions options, Uri requestUri)
 		{
-			var tcs = new TaskCompletionSource<WebAuthenticationResult>();
-
-			if (options != WebAuthenticationOptions.None)
-				throw new NotImplementedException();
-
-			var win = new Form();
-			var browser = new WebBrowser
-			{
-				Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom
-			};
-			win.Controls.Add(browser);
-
-			browser.Navigated += (sender, e) => {
-			};
-
-			browser.Navigate(requestUri);
-
-			win.Show();
-
-			return tcs.Task.AsAsyncOperation();
+			return AuthenticateAsync(options, requestUri, new Uri("http://localhost/WebAuthenticationBroker/callback"));
 		}
 
 		/// <summary>
@@ -73,9 +54,42 @@ namespace Windows.Security.Authentication.Web
 		/// <param name="requestUri">The starting URI of the web service. This URI must be a secure address of https://.</param>
 		/// <param name="callbackUri">The callback URI that indicates the completion of the web authentication. The broker matches this URI against every URI that it is about to navigate to. The broker never navigates to this URI, instead the broker returns the control back to the application when the user clicks a link or a web server redirection is made.</param>
 		/// <returns>The way to query the status and get the results of the authentication operation. If you are getting an invalid parameter error, the most common cause is that you are not using HTTPS for the requestUri parameter.</returns>
-		public static IAsyncOperation<WebAuthenticationResult> AuthenticateAsync( WebAuthenticationOptions options, Uri requestUri, Uri callbackUri )
+		public static IAsyncOperation<WebAuthenticationResult> AuthenticateAsync(WebAuthenticationOptions options, Uri requestUri, Uri callbackUri)
 		{
-			throw new NotImplementedException();
+			var tcs = new TaskCompletionSource<WebAuthenticationResult>();
+
+			if (options != WebAuthenticationOptions.None)
+				throw new NotImplementedException();
+
+			var t = new Thread((ThreadStart)delegate
+			{
+				var win = new Form
+				{
+					WindowState = FormWindowState.Maximized,
+					//FormBorderStyle = FormBorderStyle.None,
+					//TopMost = true
+				};
+				var browser = new WebBrowser
+				{
+					Dock = DockStyle.Fill
+				};
+				win.Controls.Add(browser);
+
+				browser.Navigating += (sender, e) =>
+				{
+				};
+
+				browser.Navigate(requestUri);
+
+				win.ShowDialog();
+
+				tcs.TrySetResult(WebAuthenticationResult.UserCancel);
+			});
+
+			t.SetApartmentState(ApartmentState.STA);
+			t.Start();
+
+			return tcs.Task.AsAsyncOperation();
 		}
 
 		/// <summary>

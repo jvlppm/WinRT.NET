@@ -44,5 +44,36 @@ namespace Windows.Security.Authentication.Web
 		/// Contains the status of the asynchronous operation when it completes.
 		/// </summary>
 		public WebAuthenticationStatus ResponseStatus { get; private set; }
+
+		#region Custom API
+
+		public readonly static WebAuthenticationResult UserCancel;
+
+		static WebAuthenticationResult()
+		{
+			UserCancel = new WebAuthenticationResult
+			{
+				ResponseStatus = WebAuthenticationStatus.UserCancel
+			};
+		}
+
+		public static WebAuthenticationResult FromHttpError(uint code)
+		{
+			return new WebAuthenticationResult
+			{
+				ResponseErrorDetail = code,
+				ResponseStatus = WebAuthenticationStatus.ErrorHttp
+			};
+		}
+
+		public static WebAuthenticationResult FromResponseData(string responseData)
+		{
+			return new WebAuthenticationResult
+			{
+				ResponseData = responseData,
+				ResponseStatus = WebAuthenticationStatus.Success
+			};
+		}
+		#endregion
 	}
 }
