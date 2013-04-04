@@ -23,6 +23,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,6 +61,38 @@ namespace System
 		}
 
 		/// <summary>
+		/// Returns a task that represents a Windows Runtime asynchronous action.
+		/// </summary>
+		/// <param name="source">The asynchronous action.</param>
+		public static Task AsTask(this IAsyncAction source)
+		{
+			if (source == null)
+				throw new ArgumentNullException("source");
+
+			var tcs = new TaskCompletionSource<bool>();
+			source.Completed += (s) => {
+				try
+				{
+					if(s.Status == AsyncStatus.Canceled)
+						tcs.SetCanceled();
+					else if(s.Status == AsyncStatus.Error)
+						tcs.SetException(s.ErrorCode);
+					else
+					{
+						s.GetResults();
+						tcs.SetResult(true);
+					}
+				}
+				catch (Exception ex)
+				{
+					tcs.SetException(ex);
+				}
+			};
+
+			return tcs.Task;
+		}
+
+		/// <summary>
 		/// Returns a task that represents a Windows Runtime asynchronous operation returns a result.
 		/// </summary>
 		/// <param name="source">The asynchronous operation.</param>
@@ -67,12 +100,22 @@ namespace System
 		/// <returns>A task that represents the asynchronous operation.</returns>
 		public static Task<TResult> AsTask<TResult>(this IAsyncOperation<TResult> source)
 		{
+			if (source == null)
+				throw new ArgumentNullException("source");
+
 			var tcs = new TaskCompletionSource<TResult>();
 			source.Completed += (s) => {
 				try
 				{
-					var res = s.GetResults();
-					tcs.SetResult(res);
+					if(s.Status == AsyncStatus.Canceled)
+						tcs.SetCanceled();
+					else if(s.Status == AsyncStatus.Error)
+						tcs.SetException(s.ErrorCode);
+					else
+					{
+						var res = s.GetResults();
+						tcs.SetResult(res);
+					}
 				}
 				catch (Exception ex)
 				{

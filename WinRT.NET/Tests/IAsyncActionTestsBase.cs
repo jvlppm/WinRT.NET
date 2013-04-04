@@ -54,7 +54,7 @@ namespace WinRTNET.Tests
 		{
 			IAsyncAction action = GetAsync();
 
-			AsyncStatus status = AsyncStatus.Created;
+			AsyncStatus status = AsyncStatus.Started;
 			action.Completed = a => status = a.Status;
 			action.Start();
 
