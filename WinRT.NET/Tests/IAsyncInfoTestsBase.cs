@@ -41,7 +41,8 @@ namespace WinRTNET.Tests
 		public void AsyncStatus_AfterCreation()
 		{
 			IAsyncInfo info = GetAsync();
-			Assert.AreEqual (AsyncStatus.Created, info.Status);
+			AsyncStatus badStatus;
+			Assert.Throws<InvalidOperationException> (() => badStatus = info.Status);
 			Assert.IsNull (info.ErrorCode);
 			Assert.Greater (info.Id, 0);
 		}
@@ -50,7 +51,7 @@ namespace WinRTNET.Tests
 		public void Close_BeforeStart()
 		{
 			IAsyncInfo info = GetAsync();
-			Assert.Throws<Exception> (info.Close);
+			Assert.Throws<InvalidOperationException> (info.Close);
 		}
 
 		[Test]
@@ -59,7 +60,7 @@ namespace WinRTNET.Tests
 			IAsyncInfo info = GetAsync();
 			info.Start();
 
-			Assert.Throws<Exception> (info.Start);
+			Assert.Throws<InvalidOperationException> (info.Start);
 		}
 
 		[Test]

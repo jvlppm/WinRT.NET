@@ -16,27 +16,35 @@ namespace WinRTNET.Tests
 		{
 			Assert.Throws<ArgumentNullException>(() => MacAlgorithmProvider.OpenAlgorithm(null));
 
+			Exception emptyError = null;
+			Exception invalidError = null;
+
 			try
 			{
 				MacAlgorithmProvider.OpenAlgorithm(String.Empty);
 				Assert.Fail("Empty algorithm should not be allowed");
 			} catch (Exception ex)
 			{
-#if NET_4_5
-				Assert.AreEqual(-2147023728, ex.HResult);
-#endif
+				emptyError = ex;
 			}
 
 			try
 			{
 				MacAlgorithmProvider.OpenAlgorithm("Monkeys!");
-				Assert.Fail("Random algorithm should not be allowed");
+				Assert.Fail("Monkeys algorithm should not be allowed");
 			} catch (Exception ex)
 			{
-#if NET_4_5
-				Assert.AreEqual(-2147023728, ex.HResult);
-#endif
+				invalidError = ex;
 			}
+
+			#if NET_4_5
+			Assert.AreEqual(-2147023728, emptyError.HResult);
+			Assert.AreEqual(-2147023728, invalidError.HResult);
+			#endif
+
+			// MS Implementation trhows a pure "Exception".
+			Assert.AreEqual(typeof(Exception), emptyError.GetType());
+			Assert.AreEqual(typeof(Exception), invalidError.GetType());
 		}
 
 		[Test]
