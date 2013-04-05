@@ -137,6 +137,7 @@
     <Compile Include="Security\Cryptography\Core\CryptographicPublicKeyBlobType.cs" />
     <Compile Include="System\Threading\Tasks\TaskToAsyncOperationAdapter.cs" />
     <Compile Include="System\Threading\Tasks\TaskToAsyncActionAdapter.cs" />
+    <Compile Include="System\Threading\Tasks\TaskToAsyncInfoAdapter.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
