@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 
 namespace System.Threading.Tasks
 {
-	class TaskToAsyncOperationAdapter<T> : IAsyncOperation<T>
+	class TaskToAsyncActionAdapter : IAsyncAction
 	{
 		//TODO: TaskToAsyncInfoAdapter?
 
-		Task<T> Task { get; set; }
+		Task Task { get; set; }
 
-		public TaskToAsyncOperationAdapter(Task<T> task)
+		public TaskToAsyncActionAdapter(Task task)
 		{
 			if (task.Status == TaskStatus.Created)
 				throw new InvalidOperationException("The specified underlying Task is not started. Task instances must be run immediately upon creation.");
@@ -33,18 +33,16 @@ namespace System.Threading.Tasks
 
 		#region IAsyncOperation implementation
 
-		public T GetResults()
+		public void GetResults()
 		{
-			if (Status == AsyncStatus.Error)
+			if(Status == AsyncStatus.Error)
 				throw ErrorCode;
 
 			if (Status != AsyncStatus.Completed)
 				throw new InvalidOperationException("Cannot call GetResults on this asynchronous info because the underlying operation has not completed.");
-
-			return Task.Result;
 		}
 
-		public AsyncOperationCompletedHandler<T> Completed { get; set; }
+		public AsyncActionCompletedHandler Completed { get; set; }
 
 		#endregion
 
