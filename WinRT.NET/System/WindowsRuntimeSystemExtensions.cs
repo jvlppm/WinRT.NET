@@ -136,6 +136,16 @@ namespace System
 			return new TaskToAsyncOperationAdapter<TResult>(source);
 		}
 
+		/// <summary>
+		/// Returns a Windows Runtime asynchronous action that represents a started task.
+		/// </summary>
+		/// <returns>A Windows.Foundation.IAsyncAction instance that represents the started task.</returns>
+		/// <param name="source">The started task.</param>
+		public static IAsyncAction AsAsyncAction(this Task source)
+		{
+			return new TaskToAsyncActionAdapter(source);
+		}
+
 #if NET_4_5
 		/// <summary>
 		/// Returns an object that awaits an asynchronous operation that returns a result.

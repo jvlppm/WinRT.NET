@@ -75,7 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WinRT.NET.csproj">
-      <Project>{83afcdb6-23d2-4e50-9931-a0c1cb9ea23f}</Project>
+      <Project>{83AFCDB6-23D2-4E50-9931-A0C1CB9EA23F}</Project>
       <Name>WinRT.NET</Name>
     </ProjectReference>
   </ItemGroup>
