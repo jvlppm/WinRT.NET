@@ -35,6 +35,12 @@ namespace System.Threading.Tasks
 		public TaskToAsyncActionAdapter(Task task)
 			: base(task)
 		{
+			CheckCompletion();
+		}
+
+		protected override void Complete()
+		{
+			Completed(this);
 		}
 	}
 }

@@ -34,6 +34,10 @@ namespace System.Threading.Tasks
 	{
 		protected Task Task { get; set; }
 
+		protected virtual void Complete()
+		{
+		}
+
 		public TaskToAsyncInfoAdapter(Task task)
 		{
 			if (task.Status == TaskStatus.Created)
@@ -41,7 +45,10 @@ namespace System.Threading.Tasks
 
 			Task = task;
 			Status = Task.Status.ToAsyncStatus();
+		}
 
+		protected void CheckCompletion()
+		{
 			if (Status == AsyncStatus.Started)
 			{
 				var updateStatus = Task.ContinueWith(t =>
@@ -51,15 +58,19 @@ namespace System.Threading.Tasks
 						if (Status == AsyncStatus.Started)
 							Status = t.Status.ToAsyncStatus();
 					}
+
+					Complete();
 				});
 			}
+			else
+				Complete();
 		}
 
 		#region IAsyncOperation implementation
 
 		public void GetResults()
 		{
-			if(Status == AsyncStatus.Error)
+			if (Status == AsyncStatus.Error)
 				throw ErrorCode;
 
 			if (Status != AsyncStatus.Completed)

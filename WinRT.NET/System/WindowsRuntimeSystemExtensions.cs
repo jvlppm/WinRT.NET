@@ -73,9 +73,9 @@ namespace System
 			source.Completed += (s) => {
 				try
 				{
-					if(s.Status == AsyncStatus.Canceled)
+					if (s.Status == AsyncStatus.Canceled)
 						tcs.SetCanceled();
-					else if(s.Status == AsyncStatus.Error)
+					else if (s.Status == AsyncStatus.Error)
 						tcs.SetException(s.ErrorCode);
 					else
 					{
@@ -104,24 +104,32 @@ namespace System
 				throw new ArgumentNullException("source");
 
 			var tcs = new TaskCompletionSource<TResult>();
-			source.Completed += (s) => {
+			AsyncOperationCompletedHandler<TResult> completed = null;
+			completed = s => {
 				try
 				{
-					if(s.Status == AsyncStatus.Canceled)
-						tcs.SetCanceled();
-					else if(s.Status == AsyncStatus.Error)
-						tcs.SetException(s.ErrorCode);
+					if (s.Status == AsyncStatus.Canceled)
+						tcs.TrySetCanceled();
+					else if (s.Status == AsyncStatus.Error)
+						tcs.TrySetException(s.ErrorCode);
 					else
 					{
 						var res = s.GetResults();
-						tcs.SetResult(res);
+						tcs.TrySetResult(res);
 					}
 				}
 				catch (Exception ex)
 				{
-					tcs.SetException(ex);
+					tcs.TrySetException(ex);
 				}
+				source.Completed -= completed;
 			};
+
+			source.Completed += completed;
+
+			if (source.Status == AsyncStatus.Completed)
+				completed(source);
+
 			return tcs.Task;
 		}
 
