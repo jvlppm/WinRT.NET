@@ -23,11 +23,12 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using Windows.Foundation;
+
 using System;
-using System.Windows.Forms;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Windows.Foundation;
 
 namespace Windows.Security.Authentication.Web
 {
@@ -36,6 +37,8 @@ namespace Windows.Security.Authentication.Web
 	//[Version(NTDDI_WIN8)]
 	public static class WebAuthenticationBroker
 	{
+		static Uri _applicationCallback;
+
 		/// <summary>
 		/// Starts the asynchronous authentication operation with two inputs. You can call this method multiple times in a single application or across multiple applications at the same time.
 		/// </summary>
@@ -44,7 +47,7 @@ namespace Windows.Security.Authentication.Web
 		/// <returns>The way to query the status and get the results of the authentication operation. If you are getting an invalid parameter error, the most common cause is that you are not using HTTPS for the requestUri parameter.</returns>
 		public static IAsyncOperation<WebAuthenticationResult> AuthenticateAsync(WebAuthenticationOptions options, Uri requestUri)
 		{
-			return AuthenticateAsync(options, requestUri, new Uri("http://localhost/WebAuthenticationBroker/callback"));
+			return AuthenticateAsync(options, requestUri, GetCurrentApplicationCallbackUri());
 		}
 
 		/// <summary>
@@ -63,27 +66,65 @@ namespace Windows.Security.Authentication.Web
 
 			var t = new Thread((ThreadStart)delegate
 			{
+				var result = WebAuthenticationResult.UserCancel;
+
+				// TODO: Create a Dialog/Window class.
+				var backWin = new Form
+				{
+					BackColor = global::System.Drawing.Color.Black,
+					Opacity = 0.5,
+					TopMost = true,
+					WindowState = FormWindowState.Maximized,
+					FormBorderStyle = FormBorderStyle.None
+				};
+
 				var win = new Form
 				{
-					WindowState = FormWindowState.Maximized,
-					//FormBorderStyle = FormBorderStyle.None,
-					//TopMost = true
+					FormBorderStyle = FormBorderStyle.None,
+					TopMost = true
 				};
+				backWin.SizeChanged += delegate
+				{
+					win.Width = backWin.Width;
+					win.Height = backWin.Height - 230;
+					win.Top = (backWin.Height - win.Height) / 2;
+					win.Left = backWin.Left;
+				};
+
 				var browser = new WebBrowser
 				{
-					Dock = DockStyle.Fill
+					Width = 566,
+					//Top = 80
+				};
+				win.SizeChanged += delegate
+				{
+					browser.Height = win.Height /*- 80*/;
+					browser.Left = (win.Width - browser.Width) / 2;
+				};
+
+				browser.PreviewKeyDown += (sender, e) =>
+				{
+					if (e.KeyCode == Keys.Escape)
+						win.DialogResult = DialogResult.Abort;
 				};
 				win.Controls.Add(browser);
 
-				browser.Navigating += (sender, e) =>
+				browser.Navigated += (sender, e) =>
 				{
+					if (e.Url.GetLeftPart(UriPartial.Path).EndsWith(callbackUri.ToString()))
+					{
+						result = WebAuthenticationResult.FromResponseData(e.Url.ToString());
+						win.DialogResult = DialogResult.OK;
+					}
 				};
 
 				browser.Navigate(requestUri);
 
+				backWin.Show();
 				win.ShowDialog();
+				backWin.Close();
 
-				tcs.TrySetResult(WebAuthenticationResult.UserCancel);
+				tcs.TrySetResult(result);
 			});
 
 			t.SetApartmentState(ApartmentState.STA);
@@ -98,7 +139,10 @@ namespace Windows.Security.Authentication.Web
 		/// <returns>The URI of the current application.</returns>
 		public static Uri GetCurrentApplicationCallbackUri()
 		{
-			throw new NotImplementedException();
+			if (_applicationCallback == null)
+				_applicationCallback = new Uri(new Guid().ToString(), UriKind.Relative);
+
+			return _applicationCallback;
 		}
 	}
 }
