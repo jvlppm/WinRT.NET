@@ -29,6 +29,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Windows.Foundation;
+using WinRT.NET.Forms.Controls;
 
 namespace Windows.Security.Authentication.Web
 {
@@ -72,8 +73,7 @@ namespace Windows.Security.Authentication.Web
 				var backWin = new Form
 				{
 					BackColor = global::System.Drawing.Color.Black,
-					Opacity = 0.5,
-					TopMost = true,
+					Opacity = 0.55,
 					WindowState = FormWindowState.Maximized,
 					FormBorderStyle = FormBorderStyle.None
 				};
@@ -83,23 +83,51 @@ namespace Windows.Security.Authentication.Web
 					FormBorderStyle = FormBorderStyle.None,
 					TopMost = true
 				};
+				win.SizeChanged += delegate
+				{
+					win.Top = (backWin.Height - win.Height) / 2;
+					win.Left = backWin.Left;
+				};
 				backWin.SizeChanged += delegate
 				{
 					win.Width = backWin.Width;
 					win.Height = backWin.Height - 230;
-					win.Top = (backWin.Height - win.Height) / 2;
-					win.Left = backWin.Left;
 				};
 
-				var browser = new WebBrowser
+				var headerPanel = new Panel { Width = 566, Height = 80 };
+				var bodyPanel = new Panel
 				{
-					Width = 566,
-					//Top = 80
+					Top = 80,
+					BackColor = global::System.Drawing.Color.White,
 				};
+
+				var backButton = new BackButton
+				{
+					Location = new global::System.Drawing.Point(0, 35),
+					TabStop = false
+				};
+				headerPanel.Controls.Add(backButton);
+				backButton.Click += (s, e) => win.Close();
+
+				var lbl = new Label
+				{
+					Location = new global::System.Drawing.Point(35, 30),
+					Font = new global::System.Drawing.Font("Segoe UI", 19.5f),
+					Text = WinRT.NET.Forms.Properties.Resources.AuthenticationBrokerTitle,
+					AutoSize = true
+				};
+				headerPanel.Controls.Add(lbl);
+				win.Controls.Add(headerPanel);
+				win.Controls.Add(bodyPanel);
+
+				var browser = new WebBrowser { Width = 566 };
 				win.SizeChanged += delegate
 				{
-					browser.Height = win.Height /*- 80*/;
+					bodyPanel.Width = win.Width;
+					bodyPanel.Height = win.Height - bodyPanel.Top;
+					browser.Height = win.Height - 80;
 					browser.Left = (win.Width - browser.Width) / 2;
+					headerPanel.Left = browser.Left;
 				};
 
 				browser.PreviewKeyDown += (sender, e) =>
@@ -107,7 +135,11 @@ namespace Windows.Security.Authentication.Web
 					if (e.KeyCode == Keys.Escape)
 						win.DialogResult = DialogResult.Abort;
 				};
-				win.Controls.Add(browser);
+				bodyPanel.Controls.Add(browser);
+				win.Deactivate += (sender, e) =>
+				{
+					win.DialogResult = DialogResult.Abort;
+				};
 
 				browser.Navigated += (sender, e) =>
 				{
