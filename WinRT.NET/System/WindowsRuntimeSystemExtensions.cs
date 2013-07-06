@@ -105,16 +105,16 @@ namespace System
 
 			var tcs = new TaskCompletionSource<TResult>();
 			AsyncOperationCompletedHandler<TResult> completed = null;
-			completed = s => {
+			completed = (o, s) => {
 				try
 				{
-					if (s.Status == AsyncStatus.Canceled)
+					if (s == AsyncStatus.Canceled)
 						tcs.TrySetCanceled();
-					else if (s.Status == AsyncStatus.Error)
-						tcs.TrySetException(s.ErrorCode);
+					else if (s == AsyncStatus.Error)
+						tcs.TrySetException(o.ErrorCode);
 					else
 					{
-						var res = s.GetResults();
+						var res = o.GetResults();
 						tcs.TrySetResult(res);
 					}
 				}
@@ -128,7 +128,7 @@ namespace System
 			source.Completed += completed;
 
 			if (source.Status == AsyncStatus.Completed)
-				completed(source);
+				completed(source, source.Status);
 
 			return tcs.Task;
 		}

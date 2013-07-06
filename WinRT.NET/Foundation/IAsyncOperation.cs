@@ -24,15 +24,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System.Runtime.InteropServices;
+
 namespace Windows.Foundation
 {
-	public delegate void AsyncOperationCompletedHandler<TResult> (IAsyncOperation<TResult> asyncInfo);
+	[Guid("fcdcf02c-e5d8-4478-915a-4d90b74b83a5")]
+	//[Version(NTDDI_WIN8)]
+	public delegate void AsyncOperationCompletedHandler<TResult>(IAsyncOperation<TResult> asyncInfo, AsyncStatus asyncStatus);
 
-	public interface IAsyncOperation<TResult>
-		: IAsyncInfo
+	[Guid("9fc2b0bb-e446-44e2-aa61-9cab8f636af2")]
+	//[Version(NTDDI_WIN8)]
+	public interface IAsyncOperation<TResult> : IAsyncInfo
 	{
+		#region Properties
+
+		/// <summary>
+		/// Gets or sets the method that handles operation completed event.
+		/// </summary>
 		AsyncOperationCompletedHandler<TResult> Completed { get; set; }
 
+		#endregion
+
+		#region Methods
+
+		/// <summary>
+		/// Returns the results of the operation.
+		/// </summary>
+		/// <returns>The results of the operation.</returns>
 		TResult GetResults();
+
+		#endregion
 	}
 }
