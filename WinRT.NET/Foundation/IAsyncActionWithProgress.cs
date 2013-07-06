@@ -24,17 +24,43 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System.Runtime.InteropServices;
+
 namespace Windows.Foundation
 {
-	public delegate void AsyncActionWithProgressCompletedHandler<TProgress> (IAsyncActionWithProgress<TProgress> asyncInfo);
-	public delegate void AsyncActionProgressHandler<TProgress> (IAsyncActionWithProgress<TProgress> asyncInfo, TProgress progressInfo);
+	[Guid("9c029f91-cc84-44fd-ac26-0a6c4e555281")]
+	//[Version(NTDDI_WIN8)]
+	public delegate void AsyncActionWithProgressCompletedHandler<TProgress>(IAsyncActionWithProgress<TProgress> asyncInfo, AsyncStatus asyncStatus);
 
-	public interface IAsyncActionWithProgress<TProgress>
-		: IAsyncInfo
+	[Guid("6d844858-0cff-4590-ae89-95a5a5c8b4b8")]
+	//[Version(NTDDI_WIN8)]
+	public delegate void AsyncActionProgressHandler<TProgress>(IAsyncActionWithProgress<TProgress> asyncInfo, TProgress progressInfo);
+
+	[Guid("1f6db258-e803-48a1-9546-eb7353398884")]
+	//[Version(NTDDI_WIN8)]
+	public interface IAsyncActionWithProgress<TProgress> : IAsyncInfo
 	{
+		#region Properties
+
+		/// <summary>
+		/// Gets or sets the method that handles the action completed event.
+		/// </summary>
 		AsyncActionWithProgressCompletedHandler<TProgress> Completed { get; set; }
+
+		/// <summary>
+		/// Gets or sets the method that receives progress events.
+		/// </summary>
 		AsyncActionProgressHandler<TProgress> Progress { get; set; }
 
+		#endregion
+
+		#region Methods
+
+		/// <summary>
+		/// Returns the results of the action.
+		/// </summary>
 		void GetResults();
+
+		#endregion
 	}
 }
