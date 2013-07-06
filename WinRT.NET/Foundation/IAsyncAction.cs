@@ -24,15 +24,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System.Runtime.InteropServices;
+
 namespace Windows.Foundation
 {
-	public delegate void AsyncActionCompletedHandler (IAsyncAction asyncInfo);
+	[Guid("a4ed5c81-76c9-40bd-8be6-b1d90fb20ae7")]
+	//[Version(NTDDI_WIN8)]
+	public delegate void AsyncActionCompletedHandler(IAsyncAction asyncInfo, AsyncStatus asyncStatus);
 
 	public interface IAsyncAction
 		: IAsyncInfo
 	{
+		/// <summary>
+		/// Gets or sets the method that handles the action completed event.
+		/// </summary>
 		AsyncActionCompletedHandler Completed { get; set; }
 
+		/// <summary>
+		/// Returns the results of the action.
+		/// </summary>
 		void GetResults();
 	}
 }

@@ -29,15 +29,42 @@ using System.Threading;
 
 namespace Windows.Foundation
 {
+	[global::System.Runtime.InteropServices.Guid("00000036-0000-0000-c000-000000000046")]
+	//[Version(NTDDI_WIN8)]
 	public interface IAsyncInfo
 	{
-		uint Id { get; }
+		#region Properties
+
+		/// <summary>
+		/// Gets a string that describes an error condition of the asynchronous operation.
+		/// </summary>
 		Exception ErrorCode { get; }
+
+		/// <summary>
+		/// Gets the handle of the asynchronous operation.
+		/// </summary>
+		uint Id { get; }
+
+		/// <summary>
+		/// Gets a value that indicates the status of the asynchronous operation.
+		/// </summary>
 		AsyncStatus Status { get; }
 
-		void Start();
-		void Close();
+		#endregion
+
+		#region Methods
+
+		/// <summary>
+		/// Cancels the asynchronous operation.
+		/// </summary>
 		void Cancel();
+
+		/// <summary>
+		/// Closes the asynchronous operation.
+		/// </summary>
+		void Close();
+
+		#endregion
 	}
 
 	internal static class AsyncInfo

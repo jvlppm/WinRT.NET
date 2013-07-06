@@ -95,10 +95,10 @@ namespace Windows.Foundation
 
 			this.task = Task.Factory.StartNew (this.action, AsyncState, this.cancelSource.Token);
 			this.task.ContinueWith (t =>
-			                        {
+			{
 				AsyncActionCompletedHandler c = Completed;
 				if (c != null)
-					c (this);
+					c (this, Status);
 			});
 		}
 

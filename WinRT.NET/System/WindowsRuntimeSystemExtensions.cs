@@ -70,16 +70,16 @@ namespace System
 				throw new ArgumentNullException("source");
 
 			var tcs = new TaskCompletionSource<bool>();
-			source.Completed += (s) => {
+			source.Completed += (i, s) => {
 				try
 				{
-					if (s.Status == AsyncStatus.Canceled)
+					if (s == AsyncStatus.Canceled)
 						tcs.SetCanceled();
-					else if (s.Status == AsyncStatus.Error)
-						tcs.SetException(s.ErrorCode);
+					else if (s == AsyncStatus.Error)
+						tcs.SetException(i.ErrorCode);
 					else
 					{
-						s.GetResults();
+						i.GetResults();
 						tcs.SetResult(true);
 					}
 				}
