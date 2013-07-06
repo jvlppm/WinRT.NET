@@ -25,11 +25,12 @@
 // THE SOFTWARE.
 
 using System;
+using Windows.Foundation.Metadata;
 
 namespace Windows.Security.Authentication.Web
 {
 	[Flags]
-	//[Version(NTDDI_WIN8)]
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public enum WebAuthenticationOptions
 	{
 		/// <summary>

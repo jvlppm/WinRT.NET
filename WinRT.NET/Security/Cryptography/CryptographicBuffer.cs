@@ -27,6 +27,7 @@
 using System;
 using Windows.Storage.Streams;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Foundation.Metadata;
 
 namespace Windows.Security.Cryptography
 {
@@ -34,7 +35,7 @@ namespace Windows.Security.Cryptography
 	//[MarshalingBehavior(Agile)]
 	//[Static(Windows.Security.Cryptography.ICryptographicBufferStatics, NTDDI_WIN8)]
 	//[Threading(Both)]
-	//[Version(NTDDI_WIN8)]
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public static class CryptographicBuffer
 	{
 		/// <summary>

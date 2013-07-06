@@ -1,8 +1,8 @@
-﻿//
-// IAsyncAction.cs
+//
+// Platform.cs
 //
 // Author:
-//   Eric Maupin <me@ermau.com>
+//   Joao Vitor P. Moraes <jvlppm@gmail.com>
 //
 // Copyright (c) 2011 Eric Maupin
 //
@@ -24,26 +24,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System.Runtime.InteropServices;
-using Windows.Foundation.Metadata;
-
-namespace Windows.Foundation
+namespace Windows.Foundation.Metadata
 {
-	[Guid("a4ed5c81-76c9-40bd-8be6-b1d90fb20ae7")]
-	[Version(WindowsVersion.NTDDI_WIN8)]
-	public delegate void AsyncActionCompletedHandler(IAsyncAction asyncInfo, AsyncStatus asyncStatus);
-
-	public interface IAsyncAction
-		: IAsyncInfo
+#if Windows8_1_Preview
+	[Version(WindowsVersion.Windows8_1_Preview)]
+	public enum Platform
 	{
 		/// <summary>
-		/// Gets or sets the method that handles the action completed event.
+		/// For use by Windows metadata.
 		/// </summary>
-		AsyncActionCompletedHandler Completed { get; set; }
-
+		Windows,
 		/// <summary>
-		/// Returns the results of the action.
+		/// For use by Windows Phone metadata.
 		/// </summary>
-		void GetResults();
+		WindowsPhone
 	}
+#endif
 }

@@ -27,13 +27,14 @@
 using Windows.Storage.Streams;
 using Windows.Foundation;
 using System;
+using Windows.Foundation.Metadata;
 
 namespace Windows.Storage
 {
 	//[MarshalingBehavior(Agile)]
 	//[Muse]
 	//[Static(Windows.Storage.IStorageFileStatics, NTDDI_WIN8)]
-	//[Version(NTDDI_WIN8)]
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class StorageFile
 		: IStorageFile, IStorageItem,
 		  IRandomAccessStreamReference, IInputStreamReference,

@@ -26,11 +26,12 @@
 
 using System.Runtime.InteropServices;
 using Windows.Foundation;
+using Windows.Foundation.Metadata;
 
 namespace Windows.Storage.Streams
 {
 	[Guid("33ee3134-1dd6-4e3a-8067-d1c162e8642b")]
-	//[Version(NTDDI_WIN8)]
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public interface IRandomAccessStreamReference
 	{
 		/// <summary>

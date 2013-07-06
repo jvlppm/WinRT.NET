@@ -24,9 +24,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using Windows.Foundation.Metadata;
+
 namespace Windows.Security.Authentication.Web
 {
-	//[Version(NTDDI_WIN8)]
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public enum WebAuthenticationStatus
 	{
 		/// <summary>

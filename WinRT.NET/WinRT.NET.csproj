@@ -51,6 +51,8 @@
     <Compile Include="Foundation\IAsyncInfo.cs" />
     <Compile Include="Foundation\IAsyncOperation.cs" />
     <Compile Include="Foundation\IAsyncOperationWithProgress.cs" />
+    <Compile Include="Foundation\Metadata\Platform.cs" />
+    <Compile Include="Foundation\Metadata\VersionAttribute.cs" />
     <Compile Include="Foundation\TaskAction.cs" />
     <Compile Include="Networking\Connectivity\ConnectionCost.cs" />
     <Compile Include="Networking\Connectivity\ConnectionProfile.cs" />
@@ -152,11 +154,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <Folder Include="Security\Authentication\" />
-    <Folder Include="Security\Authentication\Web\" />
-    <Folder Include="Devices\" />
-    <Folder Include="Devices\Geolocation\" />
-    <Folder Include="System\Threading\Tasks\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

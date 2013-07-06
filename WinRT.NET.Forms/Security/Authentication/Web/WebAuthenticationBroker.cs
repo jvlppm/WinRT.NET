@@ -29,13 +29,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Windows.Foundation;
+using Windows.Foundation.Metadata;
 using WinRT.NET.Forms.Controls;
 
 namespace Windows.Security.Authentication.Web
 {
 	//[Static(Windows.Security.Authentication.Web.IWebAuthenticationBrokerStatics, NTDDI_WIN8)]
 	//[Threading(Both)]
-	//[Version(NTDDI_WIN8)]
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public static class WebAuthenticationBroker
 	{
 		static Uri _applicationCallback;

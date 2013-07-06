@@ -28,12 +28,13 @@ using Windows.Storage.Streams;
 using System;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Cryptography;
+using Windows.Foundation.Metadata;
 
 namespace Windows.Security.Cryptography.Core
 {
 	//[DualApiPartition]
 	//[MarshalingBehavior(Agile)]
-	//[Version(NTDDI_WIN8)]
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class CryptographicKey
 	{
 		#region Properties

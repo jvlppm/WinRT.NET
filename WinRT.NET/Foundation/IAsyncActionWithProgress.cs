@@ -25,19 +25,20 @@
 // THE SOFTWARE.
 
 using System.Runtime.InteropServices;
+using Windows.Foundation.Metadata;
 
 namespace Windows.Foundation
 {
 	[Guid("9c029f91-cc84-44fd-ac26-0a6c4e555281")]
-	//[Version(NTDDI_WIN8)]
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public delegate void AsyncActionWithProgressCompletedHandler<TProgress>(IAsyncActionWithProgress<TProgress> asyncInfo, AsyncStatus asyncStatus);
 
 	[Guid("6d844858-0cff-4590-ae89-95a5a5c8b4b8")]
-	//[Version(NTDDI_WIN8)]
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public delegate void AsyncActionProgressHandler<TProgress>(IAsyncActionWithProgress<TProgress> asyncInfo, TProgress progressInfo);
 
 	[Guid("1f6db258-e803-48a1-9546-eb7353398884")]
-	//[Version(NTDDI_WIN8)]
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public interface IAsyncActionWithProgress<TProgress> : IAsyncInfo
 	{
 		#region Properties

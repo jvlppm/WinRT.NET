@@ -25,12 +25,13 @@
 // THE SOFTWARE.
 
 using System.Runtime.InteropServices;
+using Windows.Foundation.Metadata;
 using Windows.Storage.Streams;
 
 namespace Windows.Storage
 {
 	[Guid("fa3f6186-4214-428c-a64c-14c9ac7315ea")]
-	//[Version(NTDDI_WIN8)]
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public interface IStorageFile : IStorageItem, IRandomAccessStreamReference, IInputStreamReference
 	{
 		/// <summary>

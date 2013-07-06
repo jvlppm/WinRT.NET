@@ -25,11 +25,12 @@
 // THE SOFTWARE.
 
 using System;
+using Windows.Foundation.Metadata;
 
 namespace Windows.Devices.Geolocation
 {
 	//[MarshalingBehavior(Agile)]
-	//[Version(NTDDI_WIN8)]
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class Geocoordinate
 	{
 		/// <summary>

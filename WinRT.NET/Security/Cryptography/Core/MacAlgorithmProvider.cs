@@ -30,6 +30,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Collections.Generic;
+using Windows.Foundation.Metadata;
 
 namespace Windows.Security.Cryptography.Core
 {
@@ -42,7 +43,7 @@ namespace Windows.Security.Cryptography.Core
 	//[MarshalingBehavior(Agile)]
 	//[Static(Windows.Security.Cryptography.Core.IMacAlgorithmProviderStatics, NTDDI_WIN8)]
 	//[Threading(Both)]
-	//[Version(NTDDI_WIN8)]
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class MacAlgorithmProvider
 	{
 		#region Properties

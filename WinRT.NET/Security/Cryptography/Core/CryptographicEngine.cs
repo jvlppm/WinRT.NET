@@ -27,6 +27,7 @@
 using Windows.Storage.Streams;
 using System;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Foundation.Metadata;
 
 namespace Windows.Security.Cryptography.Core
 {
@@ -34,7 +35,7 @@ namespace Windows.Security.Cryptography.Core
 	//[MarshalingBehavior(Agile)]
 	//[Static(Windows.Security.Cryptography.Core.ICryptographicEngineStatics, NTDDI_WIN8)]
 	//[Threading(Both)]
-	//[Version(NTDDI_WIN8)]
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public static class CryptographicEngine
 	{
 		/// <summary>

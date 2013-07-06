@@ -25,11 +25,12 @@
 // THE SOFTWARE.
 
 using System.Runtime.InteropServices;
+using Windows.Foundation.Metadata;
 
 namespace Windows.Storage.Streams
 {
 	[Guid("43929d18-5ec9-4b5a-919c-4205b0c804b6")]
-	//[Version(NTDDI_WIN8)]
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public interface IInputStreamReference
 	{
 	}

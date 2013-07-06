@@ -25,11 +25,12 @@
 // THE SOFTWARE.
 
 using System.Runtime.InteropServices;
+using Windows.Foundation.Metadata;
 
 namespace Windows.Storage
 {
 	[Guid("4207a996-ca2f-42f7-bde8-8b10457a7f30")]
-	//[Version(NTDDI_WIN8)]
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public interface IStorageItem
 	{
 		/// <summary>

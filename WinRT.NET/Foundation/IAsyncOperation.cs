@@ -25,15 +25,16 @@
 // THE SOFTWARE.
 
 using System.Runtime.InteropServices;
+using Windows.Foundation.Metadata;
 
 namespace Windows.Foundation
 {
 	[Guid("fcdcf02c-e5d8-4478-915a-4d90b74b83a5")]
-	//[Version(NTDDI_WIN8)]
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public delegate void AsyncOperationCompletedHandler<TResult>(IAsyncOperation<TResult> asyncInfo, AsyncStatus asyncStatus);
 
 	[Guid("9fc2b0bb-e446-44e2-aa61-9cab8f636af2")]
-	//[Version(NTDDI_WIN8)]
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public interface IAsyncOperation<TResult> : IAsyncInfo
 	{
 		#region Properties
