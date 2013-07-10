@@ -139,7 +139,8 @@ namespace Windows.Security.Authentication.Web
 				bodyPanel.Controls.Add(browser);
 				win.Deactivate += (sender, e) =>
 				{
-					win.DialogResult = DialogResult.Abort;
+					if (win.CanFocus)
+						win.DialogResult = DialogResult.Abort;
 				};
 
 				browser.Navigated += (sender, e) =>
