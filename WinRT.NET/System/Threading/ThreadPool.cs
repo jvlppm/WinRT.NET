@@ -38,14 +38,7 @@ namespace Windows.System.Threading
 			if (handler == null)
 				throw new ArgumentException ("handler");
 
-			var action = new TaskAction (a =>
-			{
-				try { handler ((IAsyncAction)a); }
-				catch { }
-			});
-
-			action.AsyncState = action;
-			return action;
+			return new TaskAction(s => handler(s));
 		}
 
 		public static IAsyncAction RunAsync (WorkItemHandler handler, WorkItemPriority priority)

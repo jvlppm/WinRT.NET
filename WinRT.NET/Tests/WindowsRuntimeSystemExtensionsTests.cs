@@ -64,7 +64,7 @@ namespace WinRTNET.Tests
 			Task t = action.AsTask();
 
 			action.Status = AsyncStatus.Completed;
-			action.Completed (action);
+			action.Completed (action, action.Status);
 
 			Assert.AreEqual (TaskStatus.RanToCompletion, t.Status);
 		}
@@ -78,7 +78,7 @@ namespace WinRTNET.Tests
 
 			action.ErrorCode = error;
 			action.Status = AsyncStatus.Error;
-			action.Completed (action);
+			action.Completed (action, action.Status);
 
 			Assert.IsTrue (t.IsFaulted);
 			Assert.AreSame (error, t.Exception.InnerExceptions.First());
@@ -121,7 +121,7 @@ namespace WinRTNET.Tests
 
 			operation.Result = true;
 			operation.Status = AsyncStatus.Completed;
-			operation.Completed (operation);
+			operation.Completed (operation, operation.Status);
 
 			Assert.AreEqual (TaskStatus.RanToCompletion, t.Status);
 			Assert.AreEqual (true, t.Result);
@@ -136,7 +136,7 @@ namespace WinRTNET.Tests
 
 			operation.ErrorCode = error;
 			operation.Status = AsyncStatus.Error;
-			operation.Completed (operation);
+			operation.Completed (operation, operation.Status);
 
 			Assert.IsTrue (t.IsFaulted);
 			Assert.AreSame (error, t.Exception.InnerExceptions.First());

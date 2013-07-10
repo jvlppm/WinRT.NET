@@ -54,13 +54,12 @@ namespace WinRTNET.Tests.Windows.System.Threading
 				handlerCompleted = true;
 			});
 
-			action.Completed = a =>
+			action.Completed = (a, s) =>
 			{
-				Assert.AreEqual (AsyncStatus.Completed, a.Status);
+				Assert.AreEqual (AsyncStatus.Completed, s);
 				actionCompleted = true;
 			};
 
-			action.Start();
 			Assert.IsTrue (SpinWait.SpinUntil (() => handlerCompleted && actionCompleted, millisecondsTimeout: 5000));
 			Assert.AreEqual (AsyncStatus.Completed, action.Status);
 			Assert.IsNull (action.ErrorCode);
@@ -79,13 +78,11 @@ namespace WinRTNET.Tests.Windows.System.Threading
 				Thread.Sleep (2000);
 			});
 
-			action.Completed = a =>
+			action.Completed = (a, s) =>
 			{
-				Assert.AreEqual (AsyncStatus.Canceled, a.Status);
+				Assert.AreEqual (AsyncStatus.Canceled, s);
 				actionCompleted = true;
 			};
-
-			action.Start();
 
 			Assert.IsTrue (SpinWait.SpinUntil(() => handlerCompleted, 1000));
 			action.Cancel();
@@ -106,18 +103,17 @@ namespace WinRTNET.Tests.Windows.System.Threading
 				throw new Exception ("error");
 			});
 
-			action.Completed = a =>
+			action.Completed = (a, s) =>
 			{
-				// WinRT ignores errors in thread pool actions
-				Assert.AreEqual (AsyncStatus.Completed, a.Status);
-				Assert.IsNull (a.ErrorCode);
+				// WinRT does not ignores errors in thread pool actions
+				Assert.AreEqual (AsyncStatus.Error, s);
+				Assert.IsNotNull (a.ErrorCode);
 				actionCompleted = true;
 			};
 
-			action.Start();
 			Assert.IsTrue (!SpinWait.SpinUntil(() => handlerCompleted && actionCompleted, millisecondsTimeout: 5000));
-			Assert.AreEqual (AsyncStatus.Completed, action.Status);
-			Assert.IsNull (action.ErrorCode);
+			Assert.AreEqual (AsyncStatus.Error, action.Status);
+			Assert.IsNotNull (action.ErrorCode);
 		}
 	}
 }

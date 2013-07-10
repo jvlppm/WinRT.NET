@@ -58,7 +58,7 @@ namespace WinRTNET.Tests
 
 		protected override void Complete()
 		{
-			Completed (this);
+			Completed (this, Status);
 		}
 	}
 }

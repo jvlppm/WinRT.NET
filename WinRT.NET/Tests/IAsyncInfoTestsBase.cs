@@ -38,36 +38,16 @@ namespace WinRTNET.Tests
 		protected abstract T GetAsync();
 
 		[Test]
-		public void AsyncStatus_AfterCreation()
+		public void Id_AfterCreation()
 		{
 			IAsyncInfo info = GetAsync();
-			AsyncStatus badStatus;
-			Assert.Throws<InvalidOperationException> (() => badStatus = info.Status);
-			Assert.IsNull (info.ErrorCode);
 			Assert.Greater (info.Id, 0);
-		}
-
-		[Test]
-		public void Close_BeforeStart()
-		{
-			IAsyncInfo info = GetAsync();
-			Assert.Throws<InvalidOperationException> (info.Close);
-		}
-
-		[Test]
-		public void Start_Twice()
-		{
-			IAsyncInfo info = GetAsync();
-			info.Start();
-
-			Assert.Throws<InvalidOperationException> (info.Start);
 		}
 
 		[Test]
 		public void Cancel_Started()
 		{
 			IAsyncInfo info = GetAsync();
-			info.Start();
 
 			info.Cancel();
 			Assert.IsTrue (SpinWait.SpinUntil (() => info.Status == AsyncStatus.Canceled, 1000));

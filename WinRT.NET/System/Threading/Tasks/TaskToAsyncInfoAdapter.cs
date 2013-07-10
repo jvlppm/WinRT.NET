@@ -38,12 +38,15 @@ namespace System.Threading.Tasks
 		{
 		}
 
-		public TaskToAsyncInfoAdapter(Task task)
+		public TaskToAsyncInfoAdapter(Task source)
 		{
-			if (task.Status == TaskStatus.Created)
+			if (source == null)
+				throw new ArgumentNullException("source");
+
+			if (source.Status == TaskStatus.Created)
 				throw new InvalidOperationException("The specified underlying Task is not started. Task instances must be run immediately upon creation.");
 
-			Task = task;
+			Task = source;
 			Status = Task.Status.ToAsyncStatus();
 		}
 

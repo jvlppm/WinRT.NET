@@ -41,8 +41,7 @@ namespace WinRTNET.Tests
 			IAsyncAction action = GetAsync();
 
 			bool ran = false;
-			action.Completed = a => ran = true;
-			action.Start();
+			action.Completed = (a, s) => ran = true;
 
 			Assert.IsTrue (SpinWait.SpinUntil(() => ran, 5000));
 			Assert.AreEqual (AsyncStatus.Completed, action.Status);
@@ -55,8 +54,7 @@ namespace WinRTNET.Tests
 			IAsyncAction action = GetAsync();
 
 			AsyncStatus status = AsyncStatus.Started;
-			action.Completed = a => status = a.Status;
-			action.Start();
+			action.Completed = (a, s) => status = s;
 
 			Assert.IsTrue (SpinWait.SpinUntil (() => status == AsyncStatus.Completed, 5000));
 		}

@@ -41,22 +41,34 @@ namespace Windows.Foundation
 
 			this.action = o => action();
 			Id = AsyncInfo.GetNextInfoId();
+			Start();
 		}
 
-		public TaskAction (Action<object> action, object state = null)
+		public TaskAction(Action<IAsyncAction> action)
 		{
 			if (action == null)
 				throw new ArgumentNullException("action");
 
 			this.action = action;
-			AsyncState = state;
 			Id = AsyncInfo.GetNextInfoId();
+			Start();
 		}
 
 		public AsyncActionCompletedHandler Completed
 		{
-			get;
-			set;
+			get { return this.completed; }
+			set
+			{
+				// WinRT throws a NullReferenceException when the Completed handler is set to null.
+				// this happens even if the IAsyncAction is still running.
+				if (value == null)
+					throw new NullReferenceException();
+
+				if (this.completed != null)
+					throw new InvalidOperationException("A delegate was assigned when not allowed.");
+
+				completed = value;
+			}
 		}
 
 		public void GetResults()
@@ -88,24 +100,24 @@ namespace Windows.Foundation
 			}
 		}
 
-		public void Start()
+		void Start()
 		{
-			if (Interlocked.CompareExchange (ref this.state, 1, 0) == 1)
-				throw new InvalidOperationException ("Action already started");
+			if (Interlocked.CompareExchange(ref this.state, 1, 0) == 1)
+				throw new InvalidOperationException("Action already started");
 
-			this.task = Task.Factory.StartNew (this.action, AsyncState, this.cancelSource.Token);
-			this.task.ContinueWith (t =>
+			this.task = Task.Factory.StartNew(s => this.action((IAsyncAction)s), this, this.cancelSource.Token);
+			this.task.ContinueWith(t =>
 			{
 				AsyncActionCompletedHandler c = Completed;
 				if (c != null)
-					c (this, Status);
+					c(this, Status);
 			});
 		}
 
 		public void Close()
 		{
 			if (this.state == 0)
-				throw new InvalidOperationException ("Action has not already run");
+				throw new InvalidOperationException("Action has not already run");
 
 			this.cancelSource.Dispose();
 		}
@@ -115,16 +127,11 @@ namespace Windows.Foundation
 			this.cancelSource.Cancel();
 		}
 
-		internal object AsyncState
-		{
-			get;
-			set;
-		}
-
 		private int state;
 		private Task task;
 		private CancellationTokenSource cancelSource = new CancellationTokenSource();
+		AsyncActionCompletedHandler completed;
 
-		private Action<object> action;
+		private Action<IAsyncAction> action;
 	}
 }

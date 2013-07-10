@@ -42,21 +42,35 @@ namespace WinRTNET.Tests
 		[Test]
 		public void AsyncStatus_Completed_Canceled()
 		{
-			IAsyncAction action = new TaskAction (() => Thread.Sleep (1000));
+			var action = new TaskAction (() => Thread.Sleep (1000));
 
 			bool completed = false;
-			action.Completed = a =>
+			action.Completed = (a, s) =>
 			{
-				Assert.AreEqual (AsyncStatus.Canceled, a.Status);
+				Assert.AreEqual (AsyncStatus.Canceled, s);
 				completed = true;
 			};
-
-			action.Start();
 
 			action.Cancel();
 
 			Assert.IsTrue (SpinWait.SpinUntil(() => completed, 5000));
 			Assert.AreEqual (AsyncStatus.Canceled, action.Status);
+		}
+
+		[Test]
+		public void Completed_Assigned_Twice()
+		{
+			var action = new TaskAction(() => Thread.Sleep(1000));
+			action.Completed = (a, s) => { };
+			var ex = Assert.Throws<System.InvalidOperationException>(() =>
+			{
+				action.Completed = (a, s) => { };
+			});
+
+#if NET_4_5
+			const int expectedHresult = unchecked((int)0x80000018);
+			Assert.AreEqual(ex.HResult, expectedHresult);
+#endif
 		}
 	}
 }
