@@ -24,8 +24,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using Windows.Foundation.Metadata;
 namespace Windows.Foundation
 {
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public enum AsyncStatus
 	{
 		/// <summary>
