@@ -25,75 +25,171 @@
 // THE SOFTWARE.
 
 using System;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.Foundation.Metadata;
 
 namespace Windows.System.Threading
 {
-	public delegate void TimeElapsedHandler (ThreadPoolTimer timer);
+	public delegate void TimerElapsedHandler(ThreadPoolTimer timer);
 
+	/// <summary>
+	/// Represents a method that is called when a timer created with CreateTimer or CreatePeriodicTimer is complete.
+	/// </summary>
+	/// <param name="timer">The timer to associate with this method.</param>
+	[Guid("34ed19fa-8384-4eb9-8209-fb5094eeec35")]
+	[Version(WindowsVersion.NTDDI_WIN8)]
+	//[WebHostHiddenAttribute()]
+	public delegate void TimerDestroyedHandler(ThreadPoolTimer timer);
+
+	/// <summary>
+	/// Represents a timer created with CreateTimer or CreatePeriodicTimer.
+	/// </summary>
+	//[MarshalingBehaviorAttribute(Agile)]
+	//[StaticAttribute(Windows.System.Threading.IThreadPoolTimerStatics, NTDDI_WIN8)]
+	//[ThreadingAttribute(Both)]
+	//[WebHostHiddenAttribute()]
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class ThreadPoolTimer
-		: IThreadPoolTimer
 	{
-		private ThreadPoolTimer (TimeElapsedHandler handler, TimeSpan delay, bool isPeriodic)
+		#region Properties
+		public TimeSpan Delay { get; private set; }
+		public TimeSpan Period { get; private set; }
+		#endregion
+
+		#region Methods
+		/// <summary>
+		/// Cancels a timer.
+		/// </summary>
+		public void Cancel()
+		{
+			lock (this)
+			{
+				this.isCanceled = true;
+				this.realTimer.Dispose();
+
+				if (!isRunning && destroyed != null)
+				{
+					Task.Factory.StartNew(d => ((TimerDestroyedHandler)d)(this), destroyed);
+					destroyed = null;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Creates a periodic timer.
+		/// </summary>
+		/// <param name="handler">The method to call when the timer expires.</param>
+		/// <param name="period">
+		/// The number of milliseconds until the timer expires.
+		/// The timer reactivates each time the period elapses, until the timer is canceled.
+		/// </param>
+		/// <returns>An instance of a periodic timer.</returns>
+		public static ThreadPoolTimer CreatePeriodicTimer(TimerElapsedHandler handler, TimeSpan period)
+		{
+			return CreatePeriodicTimer(handler, period, destroyed: null);
+		}
+
+		/// <summary>
+		/// Creates a periodic timer and specifies a method to call after the periodic timer is complete.
+		/// The periodic timer is complete when the timer has expired without being reactivated, and the final call to handler has finished.
+		/// </summary>
+		/// <param name="handler">The method to call when the timer expires.</param>
+		/// <param name="period">
+		/// The number of milliseconds until the timer expires.
+		/// The timer reactivates each time the period elapses, until the timer is canceled.
+		/// </param>
+		/// <param name="destroyed">The method to call after the periodic timer is complete.</param>
+		/// <returns>An instance of a periodic timer.</returns>
+		public static ThreadPoolTimer CreatePeriodicTimer(TimerElapsedHandler handler, TimeSpan period, TimerDestroyedHandler destroyed)
+		{
+			if (handler == null)
+				throw new ArgumentException("handler");
+
+			return new ThreadPoolTimer(handler, destroyed: destroyed, delay: period, isPeriodic: true);
+		}
+
+		/// <summary>
+		/// Creates a single-use timer.
+		/// </summary>
+		/// <param name="handler">The method to call when the timer expires.</param>
+		/// <param name="delay">The number of milliseconds until the timer expires.</param>
+		/// <returns>An instance of a single-use timer.</returns>
+		public static ThreadPoolTimer CreateTimer(TimerElapsedHandler handler, TimeSpan delay)
+		{
+			return CreateTimer(handler, delay, destroyed: null);
+		}
+
+		/// <summary>
+		/// Creates a single-use timer and specifies a method to call after the timer is complete.
+		/// The timer is complete when the timer has expired and the final call to handler has finished.
+		/// </summary>
+		/// <param name="handler">The method to call when the timer expires.</param>
+		/// <param name="delay">The number of milliseconds until the timer expires.</param>
+		/// <param name="destroyed">The method to call after the timer is complete.</param>
+		/// <returns>An instance of a single-use timer.</returns>
+		public static ThreadPoolTimer CreateTimer(TimerElapsedHandler handler, TimeSpan delay, TimerDestroyedHandler destroyed)
+		{
+			if (handler == null)
+				throw new ArgumentException("handler");
+
+			return new ThreadPoolTimer(handler, destroyed, delay, isPeriodic: false);
+		}
+		#endregion
+
+		#region Private
+		#region Attributes
+		private bool isCanceled;
+		private volatile bool isPeriodic;
+		private bool isRunning;
+		private readonly TimerElapsedHandler handler;
+		private TimerDestroyedHandler destroyed;
+		private readonly Timer realTimer;
+		#endregion
+
+		#region Constructors
+		private ThreadPoolTimer(TimerElapsedHandler handler, TimerDestroyedHandler destroyed, TimeSpan delay, bool isPeriodic)
 		{
 			Delay = delay;
 			if (isPeriodic)
 				Period = delay;
+			this.isPeriodic = isPeriodic;
 
 			this.handler = handler;
+			this.destroyed = destroyed;
 
-			this.realTimer = new Timer (t =>
+			this.realTimer = new Timer(t =>
 			{
 				var ltimer = (ThreadPoolTimer)t;
 
-				if (!ltimer.isCanceled)
+				lock (ltimer)
 				{
-					Task.Factory.StartNew (o =>
-					{
-						ThreadPoolTimer taskedTimer = (ThreadPoolTimer)o;
-						taskedTimer.handler (taskedTimer);
-					}, ltimer);
+					if (ltimer.isCanceled)
+						return;
+					ltimer.isRunning = true;
 				}
+
+				Task.Factory.StartNew(o =>
+				{
+					ThreadPoolTimer taskedTimer = (ThreadPoolTimer)o;
+					try
+					{
+						taskedTimer.handler(taskedTimer);
+					}
+					finally
+					{
+						lock (ltimer)
+						{
+							taskedTimer.isRunning = false;
+							if (!taskedTimer.isPeriodic || taskedTimer.isCanceled)
+								ltimer.Cancel();
+						}
+					}
+				}, ltimer);
 			}, this, (int)delay.TotalMilliseconds, (isPeriodic) ? (int)delay.TotalMilliseconds : Timeout.Infinite);
 		}
-
-		public TimeSpan Delay
-		{
-			get;
-			private set;
-		}
-
-		public TimeSpan Period
-		{
-			get;
-			private set;
-		}
-
-		public void Cancel()
-		{
-			this.isCanceled = true;
-			this.realTimer.Dispose();
-		}
-
-		private volatile bool isCanceled;
-		private readonly TimeElapsedHandler handler;
-		private readonly Timer realTimer;
-
-		public static ThreadPoolTimer CreatePeriodicTimer (TimeElapsedHandler handler, TimeSpan period)
-		{
-			if (handler == null)
-				throw new ArgumentException ("handler");
-
-			return new ThreadPoolTimer (handler, period, isPeriodic: true);
-		}
-
-		public static ThreadPoolTimer CreateTimer (TimeElapsedHandler handler, TimeSpan delay)
-		{
-			if (handler == null)
-				throw new ArgumentException ("handler");
-
-			return new ThreadPoolTimer (handler, delay, isPeriodic: false);
-		}
+		#endregion
+		#endregion
 	}
 }
