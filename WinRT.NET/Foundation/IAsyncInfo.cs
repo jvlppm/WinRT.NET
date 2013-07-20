@@ -25,12 +25,13 @@
 // THE SOFTWARE.
 
 using System;
+using System.Runtime.InteropServices;
 using System.Threading;
 using Windows.Foundation.Metadata;
 
 namespace Windows.Foundation
 {
-	[global::System.Runtime.InteropServices.Guid("00000036-0000-0000-c000-000000000046")]
+	[Guid("00000036-0000-0000-c000-000000000046")]
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public interface IAsyncInfo
 	{
