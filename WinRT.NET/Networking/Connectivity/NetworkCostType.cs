@@ -24,13 +24,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using Windows.Foundation.Metadata;
+
 namespace Windows.Networking.Connectivity
 {
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public enum NetworkCostType
 	{
-		Unknown = 0,
-		Unrestricted = 1,
-		Fixed = 2,
-		Variable = 3
+		/// <summary>
+		/// Cost information is not available.
+		/// </summary>
+		Unknown,
+		/// <summary>
+		/// The connection is unlimited and has unrestricted usage charges and capacity constraints.
+		/// </summary>
+		Unrestricted,
+		/// <summary>
+		/// The use of this connection is unrestricted up to a specific limit.
+		/// </summary>
+		Fixed,
+		/// <summary>
+		/// The connection is costed on a per-byte basis.
+		/// </summary>
+		Variable
 	}
 }

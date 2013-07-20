@@ -25,33 +25,33 @@
 // THE SOFTWARE.
 
 using System;
+using Windows.Foundation.Metadata;
 
 namespace Windows.Networking.Connectivity
 {
+	//[DualApiPartition]
+	//[MarshalingBehavior(Agile)]
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class ConnectionCost
 	{
-		internal ConnectionCost()
-		{
-		}
+		/// <summary>
+		/// Gets a value that indicates if a connection is approaching the data usage allowance specified by the data plan.
+		/// </summary>
+		public bool ApproachingDataLimit { get; private set; }
 
-		public bool ApproachingDataLimit
-		{
-			get { throw new NotImplementedException(); }
-		}
+		/// <summary>
+		/// Gets a value that indicates the current network cost for a connection.
+		/// </summary>
+		public NetworkCostType NetworkCostType { get; private set; }
 
-		public NetworkCostType NetworkCostType
-		{
-			get { throw new NotImplementedException(); }
-		}
+		/// <summary>
+		/// Gets a value that indicates if the connection has exceeded the data usage allowance specified by the data plan.
+		/// </summary>
+		public bool OverDataLimit { get; private set; }
 
-		public bool OverDataLimit
-		{
-			get { throw new NotImplementedException(); }
-		}
-
-		public bool Roaming
-		{
-			get { throw new NotImplementedException(); }
-		}
+		/// <summary>
+		/// Gets a value that indicates whether the connection is connected to a network outside of the home provider.
+		/// </summary>
+		public bool Roaming { get; private set; }
 	}
 }
