@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;Windows8;Windows8_1_Preview</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -56,14 +56,27 @@
     <Compile Include="Foundation\TaskAction.cs" />
     <Compile Include="Networking\Connectivity\ConnectionCost.cs" />
     <Compile Include="Networking\Connectivity\ConnectionProfile.cs" />
+    <Compile Include="Networking\Connectivity\ConnectivityInterval.cs" />
     <Compile Include="Networking\Connectivity\DataPlanStatus.cs" />
     <Compile Include="Networking\Connectivity\DataPlanUsage.cs" />
     <Compile Include="Networking\Connectivity\DataUsage.cs" />
+    <Compile Include="Networking\Connectivity\DataUsageGranularity.cs" />
     <Compile Include="Networking\Connectivity\NetworkAdapter.cs" />
+    <Compile Include="Networking\Connectivity\NetworkAuthenticationType.cs" />
+    <Compile Include="Networking\Connectivity\NetworkConnectivityLevel.cs" />
     <Compile Include="Networking\Connectivity\NetworkCostType.cs" />
+    <Compile Include="Networking\Connectivity\NetworkEncryptionType.cs" />
     <Compile Include="Networking\Connectivity\NetworkItem.cs" />
+    <Compile Include="Networking\Connectivity\NetworkSecuritySettings.cs" />
     <Compile Include="Networking\Connectivity\NetworkTypes.cs" />
+    <Compile Include="Networking\Connectivity\NetworkUsage.cs" />
+    <Compile Include="Networking\Connectivity\NetworkUsageStates.cs" />
     <Compile Include="Networking\Connectivity\RoamingStates.cs" />
+    <Compile Include="Networking\Connectivity\TriStates.cs" />
+    <Compile Include="Networking\Connectivity\WlanConnectionProfileDetails.cs" />
+    <Compile Include="Networking\Connectivity\WwanConnectionProfileDetails.cs" />
+    <Compile Include="Networking\Connectivity\WwanDataClass.cs" />
+    <Compile Include="Networking\Connectivity\WwanNetworkRegistrationState.cs" />
     <Compile Include="Networking\HostName.cs" />
     <Compile Include="Networking\IHostNameFactory.cs" />
     <Compile Include="Networking\Sockets\AcceptOperation.cs" />
