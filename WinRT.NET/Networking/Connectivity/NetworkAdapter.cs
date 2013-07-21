@@ -25,43 +25,63 @@
 // THE SOFTWARE.
 
 using System;
+using Windows.Foundation;
+using Windows.Foundation.Metadata;
 
 namespace Windows.Networking.Connectivity
 {
+	//[DualApiPartition]
+	//[MarshalingBehavior(Agile)]
+	/// <summary>
+	/// Represents a network adapter.
+	/// </summary>
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class NetworkAdapter
 	{
-		internal NetworkAdapter()
+		#region Properties
+
+		/// <summary>
+		/// Gets a value indicating the network interface type as defined by the
+		/// Internet Assigned Names Authority (IANA) for the NetworkAdapter.
+		/// </summary>
+		public uint IanaInterfaceType { get; private set; }
+
+		/// <summary>
+		/// Gets a value indicating the maximum inbound data transfer rate in
+		/// bits per second.
+		/// </summary>
+		public ulong InboundMaxBitsPerSecond { get; private set; }
+
+		/// <summary>
+		/// Gets the network adapter ID.
+		/// </summary>
+		public Guid NetworkAdapterId { get; private set; }
+
+		/// <summary>
+		/// Gets the NetworkItem object that represents the connected network.
+		/// </summary>
+		public NetworkItem NetworkItem { get; private set; }
+
+		/// <summary>
+		/// Gets a value indicating the maximum outbound speed in bits per
+		/// second.
+		/// </summary>
+		public ulong OutboundMaxBitsPerSecond { get; private set; }
+
+		#endregion
+
+		#region Methods
+
+		/// <summary>
+		/// Gets  the connection profile currently associated with the network
+		/// adapter.
+		/// </summary>
+		/// <returns>The connection profile associated with this network adapter.</returns>
+		public IAsyncOperation<ConnectionProfile> GetConnectedProfileAsync()
 		{
+			throw new NotImplementedException();
 		}
 
-		public ConnectionProfile ConnectedProfile
-		{
-			get { throw new NotImplementedException(); }
-		}
-
-		public uint IanaInterfaceType
-		{
-			get { throw new NotImplementedException(); }
-		}
-
-		public ulong InboundMaxBitsPerSecond
-		{
-			get { throw new NotImplementedException(); }
-		}
-
-		public ulong OutboundMaxBitsPerSecond
-		{
-			get { throw new NotImplementedException(); }
-		}
-
-		public Guid NetworkAdapterId
-		{
-			get { throw new NotImplementedException(); }
-		}
-
-		public NetworkItem NetworkItem
-		{
-			get { throw new NotImplementedException(); }
-		}
+		#endregion
 	}
 }
