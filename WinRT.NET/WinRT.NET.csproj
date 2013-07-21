@@ -58,7 +58,10 @@
     <Compile Include="Networking\Connectivity\CellularApnContext.cs" />
     <Compile Include="Networking\Connectivity\ConnectionCost.cs" />
     <Compile Include="Networking\Connectivity\ConnectionProfile.cs" />
+    <Compile Include="Networking\Connectivity\ConnectionProfileFilter.cs" />
+    <Compile Include="Networking\Connectivity\ConnectionSession.cs" />
     <Compile Include="Networking\Connectivity\ConnectivityInterval.cs" />
+    <Compile Include="Networking\Connectivity\ConnectivityManager.cs" />
     <Compile Include="Networking\Connectivity\DataPlanStatus.cs" />
     <Compile Include="Networking\Connectivity\DataPlanUsage.cs" />
     <Compile Include="Networking\Connectivity\DataUsage.cs" />
@@ -74,6 +77,7 @@
     <Compile Include="Networking\Connectivity\NetworkUsage.cs" />
     <Compile Include="Networking\Connectivity\NetworkUsageStates.cs" />
     <Compile Include="Networking\Connectivity\RoamingStates.cs" />
+    <Compile Include="Networking\Connectivity\RoutePolicy.cs" />
     <Compile Include="Networking\Connectivity\TriStates.cs" />
     <Compile Include="Networking\Connectivity\WlanConnectionProfileDetails.cs" />
     <Compile Include="Networking\Connectivity\WwanConnectionProfileDetails.cs" />
