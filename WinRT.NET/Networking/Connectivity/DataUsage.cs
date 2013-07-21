@@ -25,23 +25,37 @@
 // THE SOFTWARE.
 
 using System;
+using Windows.Foundation.Metadata;
 
 namespace Windows.Networking.Connectivity
 {
+#if Windows8
+	//[DualApiPartition]
+	//[MarshalingBehavior(Agile)]
+	/// <summary>
+	/// [DataUsage may be altered or unavailable for releases after
+	/// Windows&#194;&#160;8.1 Preview. Instead, use NetworkUsage]
+	/// Represents data usage information returned by the
+	/// ConnectionProfile.GetLocalUsage method.
+	/// </summary>
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class DataUsage
 	{
-		internal DataUsage()
-		{
-		}
+		/// <summary>
+		/// [DataUsage may be altered or unavailable for releases after
+		/// Windows&#194;&#160;8.1 Preview. Instead, use NetworkUsage]
+		/// Gets a value indicating the number of bytes received by a connection
+		/// over a specific period of time.
+		/// </summary>
+		public ulong BytesReceived { get; private set; }
 
-		public uint BytesReceived
-		{
-			get { throw new NotImplementedException(); }
-		}
-
-		public uint BytesSent
-		{
-			get { throw new NotImplementedException(); }
-		}
+		/// <summary>
+		/// [DataUsage may be altered or unavailable for releases after
+		/// Windows&#194;&#160;8.1 Preview. Instead, use NetworkUsage]
+		/// Gets a value indicating the number of bytes sent by the connection
+		/// over a specific period of time.
+		/// </summary>
+		public ulong BytesSent { get; private set; }
 	}
+#endif
 }
