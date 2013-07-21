@@ -66,6 +66,9 @@
     <Compile Include="Networking\Connectivity\DataPlanUsage.cs" />
     <Compile Include="Networking\Connectivity\DataUsage.cs" />
     <Compile Include="Networking\Connectivity\DataUsageGranularity.cs" />
+    <Compile Include="Networking\Connectivity\IPInformation.cs" />
+    <Compile Include="Networking\Connectivity\LanIdentifier.cs" />
+    <Compile Include="Networking\Connectivity\LanIdentifierData.cs" />
     <Compile Include="Networking\Connectivity\NetworkAdapter.cs" />
     <Compile Include="Networking\Connectivity\NetworkAuthenticationType.cs" />
     <Compile Include="Networking\Connectivity\NetworkConnectivityLevel.cs" />
