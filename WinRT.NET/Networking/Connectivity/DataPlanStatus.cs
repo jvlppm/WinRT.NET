@@ -25,43 +25,49 @@
 // THE SOFTWARE.
 
 using System;
+using Windows.Foundation.Metadata;
 
 namespace Windows.Networking.Connectivity
 {
+	//[DualApiPartition]
+	//[MarshalingBehavior(Agile)]
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class DataPlanStatus
 	{
-		internal DataPlanStatus()
-		{
-		}
+		/// <summary>
+		/// Gets a value indicating the maximum data transfer allowance for a
+		/// connection within each billing cycle, as defined by the data plan.
+		/// </summary>
+		public uint? DataLimitInMegabytes { get; private set; }
 
-		public uint? DataLimitInMegabytes
-		{
-			get { throw new NotImplementedException(); }
-		}
+		/// <summary>
+		/// Gets  a DataPlanUsage object that indicates the amount of data
+		/// transferred over the connection, in megabytes, and the last time this
+		/// value was refreshed.
+		/// </summary>
+		public DataPlanUsage DataPlanUsage { get; private set; }
 
-		public DataPlanUsage DataPlanUsage
-		{
-			get { throw new NotImplementedException(); }
-		}
+		/// <summary>
+		/// Gets a value indicating the nominal rate of the  inbound data
+		/// transfer occurring on the connection.
+		/// </summary>
+		public ulong? InboundBitsPerSecond { get; private set; }
 
-		public ulong? InboundBitsPerSecond
-		{
-			get { throw new NotImplementedException(); }
-		}
+		/// <summary>
+		/// Gets a value indicates the maximum size of a transfer that is allowed
+		/// without user consent on a metered network.
+		/// </summary>
+		public uint? MaxTransferSizeInMegabytes { get; private set; }
 
-		public ulong? OutboundBitsPerSecond
-		{
-			get { throw new NotImplementedException(); }
-		}
+		/// <summary>
+		/// Gets a value indicating the date and time of the next billing cycle.
+		/// </summary>
+		public DateTimeOffset? NextBillingCycle { get; private set; }
 
-		public uint? maxDownloadFileSizeInMegabytes
-		{
-			get { throw new NotImplementedException(); }
-		}
-
-		public DateTimeOffset? NextBillingCycle
-		{
-			get { throw new NotImplementedException(); }
-		}
+		/// <summary>
+		/// Gets a value indicating the nominal rate of the outbound data
+		/// transfer.
+		/// </summary>
+		public ulong? OutboundBitsPerSecond { get; private set; }
 	}
 }
