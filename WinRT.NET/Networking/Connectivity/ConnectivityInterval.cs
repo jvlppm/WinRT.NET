@@ -32,6 +32,10 @@ namespace Windows.Networking.Connectivity
 #if Windows8_1_Preview
 	//[DualApiPartition]
 	//[MarshalingBehavior(Agile)]
+	/// <summary>
+	/// Provides the start time and duration for an established or prior
+	/// connection.
+	/// </summary>
 	[Version(WindowsVersion.Windows8_1_Preview)]
 	public sealed class ConnectivityInterval
 	{

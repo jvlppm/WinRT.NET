@@ -25,23 +25,28 @@
 // THE SOFTWARE.
 
 using System;
+using Windows.Foundation.Metadata;
 
 namespace Windows.Networking.Connectivity
 {
+	//[DualApiPartition]
+	//[MarshalingBehavior(Agile)]
+	/// <summary>
+	/// Represents data plan  specific data usage information for a connection.
+	/// </summary>
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class DataPlanUsage
 	{
-		internal DataPlanUsage()
-		{
-		}
+		/// <summary>
+		/// Gets a DateTime object  indicating when the network operator last
+		/// updated the MegabytesUsed property.
+		/// </summary>
+		public DateTimeOffset LastSyncTime { get; private set; }
 
-		public DateTimeOffset LastSyncTime
-		{
-			get { throw new NotImplementedException(); }
-		}
-
-		public uint MegabytesUsed
-		{
-			get { throw new NotImplementedException(); }
-		}
+		/// <summary>
+		/// Gets a value indicating the total amount of data transferred, in
+		/// megabytes, over the connection.
+		/// </summary>
+		public uint MegabytesUsed { get; private set; }
 	}
 }

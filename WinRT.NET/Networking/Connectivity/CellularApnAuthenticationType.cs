@@ -29,6 +29,11 @@ using Windows.Foundation.Metadata;
 namespace Windows.Networking.Connectivity
 {
 #if Windows8_1_Preview
+	/// <summary>
+	/// Defines values that indicate the authentication type used for a APN.
+	/// These values are referenced when providing APN details using a
+	/// CellularApnContext object.
+	/// </summary>
 	[Version(WindowsVersion.Windows8_1_Preview)]
 	public enum CellularApnAuthenticationType
 	{

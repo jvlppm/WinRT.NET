@@ -34,6 +34,12 @@ namespace Windows.Networking.Connectivity
 	//[DualApiPartition]
 	//[MarshalingBehavior(Agile)]
 	//[Static(Windows.Networking.Connectivity.IConnectivityManagerStatics, WindowsVersion.Windows8_1_Preview)]
+	/// <summary>
+	/// Methods defined by the ConnectivityManager class enable enforcement of
+	/// traffic routing on a specific network adapter for the specified
+	/// destination suffix. Once a policy is set using AddHttpRoutePolicy,
+	/// traffic that matches the policy will either be routed or dropped.
+	/// </summary>
 	[Version(WindowsVersion.Windows8_1_Preview)]
 	public static class ConnectivityManager
 	{

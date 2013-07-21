@@ -31,6 +31,9 @@ namespace Windows.Networking.Connectivity
 {
 	//[DualApiPartition]
 	//[MarshalingBehavior(Agile)]
+	/// <summary>
+	/// Represents the current status information for the data plan associated with a connection.
+	/// </summary>
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class DataPlanStatus
 	{

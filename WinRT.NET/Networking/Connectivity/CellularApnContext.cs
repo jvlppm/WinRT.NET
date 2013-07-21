@@ -29,67 +29,71 @@ using Windows.Foundation.Metadata;
 
 namespace Windows.Networking.Connectivity
 {
-    //[Activatable(WindowsVersion.Windows8_1_Preview)]
-    //[DualApiPartition]
-    //[MarshalingBehavior(Agile)]
-    [Version(WindowsVersion.Windows8_1_Preview)]
-    public sealed class CellularApnContext
-    {
-        #region Properties
+	//[Activatable(WindowsVersion.Windows8_1_Preview)]
+	//[DualApiPartition]
+	//[MarshalingBehavior(Agile)]
+	/// <summary>
+	/// This class contains properties used to specify an Access Point Name
+	/// (APN) for a 3GPP based cellular Data Connection (PDP context).
+	/// </summary>
+	[Version(WindowsVersion.Windows8_1_Preview)]
+	public sealed class CellularApnContext
+	{
+		#region Properties
 
-        /// <summary>
-        /// [This documentation is preliminary and is subject to change.]
-        /// Indicates the name of the access point to establish a connection
-        /// with.
-        /// </summary>
-        public string AccessPointName { get; set; }
+		/// <summary>
+		/// [This documentation is preliminary and is subject to change.]
+		/// Indicates the name of the access point to establish a connection
+		/// with.
+		/// </summary>
+		public string AccessPointName { get; set; }
 
-        /// <summary>
-        /// [This documentation is preliminary and is subject to change.]
-        /// Indicates the authentication method, as defined by
-        /// CellularApnAuthenticationType, that is used by the access point.
-        /// </summary>
-        public CellularApnAuthenticationType AuthenticationType { get; set; }
+		/// <summary>
+		/// [This documentation is preliminary and is subject to change.]
+		/// Indicates the authentication method, as defined by
+		/// CellularApnAuthenticationType, that is used by the access point.
+		/// </summary>
+		public CellularApnAuthenticationType AuthenticationType { get; set; }
 
-        /// <summary>
-        /// [This documentation is preliminary and is subject to change.]
-        /// Indicates if data compression will be used at the data link for
-        /// header and data transfer.
-        /// </summary>
-        public bool IsCompressionEnabled { get; set; }
+		/// <summary>
+		/// [This documentation is preliminary and is subject to change.]
+		/// Indicates if data compression will be used at the data link for
+		/// header and data transfer.
+		/// </summary>
+		public bool IsCompressionEnabled { get; set; }
 
-        /// <summary>
-        /// [This documentation is preliminary and is subject to change.]
-        /// Indicates the password used to authenticate when connecting to the
-        /// access point.
-        /// </summary>
-        public string Password { get; set; }
+		/// <summary>
+		/// [This documentation is preliminary and is subject to change.]
+		/// Indicates the password used to authenticate when connecting to the
+		/// access point.
+		/// </summary>
+		public string Password { get; set; }
 
-        /// <summary>
-        /// [This documentation is preliminary and is subject to change.]
-        /// Indicates the provider ID associated with the access point.
-        /// </summary>
-        public string ProviderId { get; set; }
+		/// <summary>
+		/// [This documentation is preliminary and is subject to change.]
+		/// Indicates the provider ID associated with the access point.
+		/// </summary>
+		public string ProviderId { get; set; }
 
-        /// <summary>
-        /// [This documentation is preliminary and is subject to change.]
-        /// Indicates the user name used to authenticate when connecting to the
-        /// access point.
-        /// </summary>
-        public string UserName { get; set; }
+		/// <summary>
+		/// [This documentation is preliminary and is subject to change.]
+		/// Indicates the user name used to authenticate when connecting to the
+		/// access point.
+		/// </summary>
+		public string UserName { get; set; }
 
-        #endregion
+		#endregion
 
-        #region Constructors
+		#region Constructors
 
-        /// <summary>
-        /// [This documentation is preliminary and is subject to change.]
-        /// Creates an instance of CellularApnContext.
-        /// </summary>
-        public CellularApnContext()
-        {
-        }
+		/// <summary>
+		/// [This documentation is preliminary and is subject to change.]
+		/// Creates an instance of CellularApnContext.
+		/// </summary>
+		public CellularApnContext()
+		{
+		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

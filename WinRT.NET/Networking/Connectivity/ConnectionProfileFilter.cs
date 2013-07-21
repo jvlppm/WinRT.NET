@@ -34,6 +34,10 @@ namespace Windows.Networking.Connectivity
 	//[DualApiPartition]
 	//[MarshalingBehavior(Agile)]
 	//[Threading(Both)]
+	/// <summary>
+	/// The ConnectionProfileFilter class defines a set of properties that are
+	/// used to improve the relevance of FindConnectionProfilesAsync results.
+	/// </summary>
 	[Version(WindowsVersion.Windows8_1_Preview)]
 	public sealed class ConnectionProfileFilter
 	{

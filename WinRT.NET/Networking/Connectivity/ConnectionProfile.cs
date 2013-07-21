@@ -33,6 +33,11 @@ namespace Windows.Networking.Connectivity
 {
 	//[DualApiPartition]
 	//[MarshalingBehavior(Agile)]
+	/// <summary>
+	/// Represents a network connection, which includes either the currently
+	/// connected network or prior network connections. Provides information
+	/// about the connection status and connectivity statistics.
+	/// </summary>
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class ConnectionProfile
 	{

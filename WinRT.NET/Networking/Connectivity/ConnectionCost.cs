@@ -31,6 +31,10 @@ namespace Windows.Networking.Connectivity
 {
 	//[DualApiPartition]
 	//[MarshalingBehavior(Agile)]
+	/// <summary>
+	/// Provides access to property values that indicate the current cost of a
+	/// network connection.
+	/// </summary>
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class ConnectionCost
 	{
