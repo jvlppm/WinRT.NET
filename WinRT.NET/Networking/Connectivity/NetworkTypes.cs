@@ -19,12 +19,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System;
+using Windows.Foundation.Metadata;
+
 namespace Windows.Networking.Connectivity
 {
+	/// <summary>
+	/// Defines the network connection types.
+	/// </summary>
+	[Flags]
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public enum NetworkTypes
 	{
-		None = 0,
-		Internet = 1,
-		PrivateNetwork = 2
+		/// <summary>
+		/// No network.
+		/// </summary>
+		None,
+		/// <summary>
+		/// Internet.
+		/// </summary>
+		Internet,
+		/// <summary>
+		/// Private network.
+		/// </summary>
+		PrivateNetwork
 	}
 }

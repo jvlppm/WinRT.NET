@@ -20,23 +20,39 @@
 // THE SOFTWARE.
 
 using System;
+using Windows.Foundation.Metadata;
 
 namespace Windows.Networking.Connectivity
 {
+	//[DualApiPartition]
+	//[MarshalingBehavior(Agile)]
+	/// <summary>
+	/// Represents a connected network.
+	/// </summary>
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class NetworkItem
 	{
-		internal NetworkItem()
-		{
-		}
+		#region Properties
 
-		public Guid NetworkId
-		{
-			get { throw new NotImplementedException(); }
-		}
+		/// <summary>
+		/// Gets the network ID.
+		/// </summary>
+		public Guid NetworkId { get; private set; }
 
+		#endregion
+
+		#region Methods
+
+		/// <summary>
+		/// Gets a NetworkTypes value indicating the network type for a
+		/// NetworkItem.
+		/// </summary>
+		/// <returns>The type of a network.</returns>
 		public NetworkTypes GetNetworkTypes()
 		{
 			throw new NotImplementedException();
 		}
+
+		#endregion
 	}
 }

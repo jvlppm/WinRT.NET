@@ -1,8 +1,8 @@
-﻿//
-// RoamingStates.cs
+//
+// DomainConnectivityLevel.cs
 //
 // Author:
-//   Eric Maupin <me@ermau.com>
+//   Joao Vitor P. Moraes <jvlppm@gmail.com>
 //
 // Copyright (c) 2011 Eric Maupin
 //
@@ -24,29 +24,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
 using Windows.Foundation.Metadata;
 
 namespace Windows.Networking.Connectivity
 {
+#if Windows8_1_Preview
 	/// <summary>
-	/// Defines the roaming states.
+	/// Defines the domain authentication status for a network connection.
 	/// </summary>
-	[Flags]
-	[Version(WindowsVersion.NTDDI_WIN8)]
-	public enum RoamingStates
+	[Version(WindowsVersion.Windows8_1_Preview)]
+	public enum DomainConnectivityLevel
 	{
 		/// <summary>
-		/// No roaming information.
+		/// No domain controller detected on this network.
 		/// </summary>
 		None,
 		/// <summary>
-		/// The connection is not currently roaming.
+		/// A domain controller has been detected, but the current user or local machine have not been authenticated on the domain.
 		/// </summary>
-		NotRoaming,
+		Unauthenticated,
 		/// <summary>
-		/// The connection is currently roaming.
+		/// The machine or user is authenticated on the domain connection.
 		/// </summary>
-		Roaming
+		Authenticated
 	}
+#endif
 }

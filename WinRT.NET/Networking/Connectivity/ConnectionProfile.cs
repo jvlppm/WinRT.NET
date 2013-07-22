@@ -125,34 +125,34 @@ namespace Windows.Networking.Connectivity
 			throw new NotImplementedException();
 		}
 
-#if Windows8
-
 		/// <summary>
-		/// [GetLocalUsage may be altered or unavailable for releases after Windows&#194; 8.1 Preview. Instead, use GetNetworkUsageAsync]
 		/// Gets the estimated data usage for a connection during over a specific period of time.
 		/// </summary>
 		/// <param name="StartTime">The start date/time for the usage data request.</param>
 		/// <param name="EndTime">The end date/time for the usage data request.</param>
 		/// <returns>The requested local data usage information.</returns>
+#if Windows8_1_Preview
+		[Obsolete("GetLocalUsage may be altered or unavailable for releases after Windows&#194; 8.1 Preview. Instead, use GetNetworkUsageAsync")]
+#endif
 		public DataUsage GetLocalUsage(DateTimeOffset StartTime, DateTimeOffset EndTime)
 		{
 			throw new NotImplementedException();
 		}
 
 		/// <summary>
-		/// [GetLocalUsage may be altered or unavailable for releases after Windows&#194; 8.1 Preview. Instead, use GetNetworkUsageAsync]
 		/// Gets the estimated data usage for a connection over a specific period of time and roaming state.
 		/// </summary>
 		/// <param name="StartTime">The start date/time for the usage data request.</param>
 		/// <param name="EndTime">The end date/time for the usage data request.</param>
 		/// <param name="States">The roaming state to scope the request to.</param>
 		/// <returns>The requested local data usage information.</returns>
+#if Windows8_1_Preview
+		[Obsolete("GetLocalUsage may be altered or unavailable for releases after Windows&#194; 8.1 Preview. Instead, use GetNetworkUsageAsync")]
+#endif
 		public DataUsage GetLocalUsage(DateTimeOffset StartTime, DateTimeOffset EndTime, RoamingStates States)
 		{
 			throw new NotImplementedException();
 		}
-
-#endif
 
 #if Windows8_1_Preview
 		/// <summary>
@@ -185,6 +185,15 @@ namespace Windows.Networking.Connectivity
 		/// </summary>
 		/// <returns>An integer value within a range of 0-5 that corresponds to the number of signal bars displayed by the UI.</returns>
 		public byte? GetSignalBars()
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public DomainConnectivityLevel GetDomainConnectivityLevel()
 		{
 			throw new NotImplementedException();
 		}

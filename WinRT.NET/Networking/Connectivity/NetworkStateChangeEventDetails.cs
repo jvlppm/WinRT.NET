@@ -1,8 +1,8 @@
-﻿//
-// RoamingStates.cs
+//
+// NetworkStateChangeEventDetails.cs
 //
 // Author:
-//   Eric Maupin <me@ermau.com>
+//   Joao Vitor P. Moraes <jvlppm@gmail.com>
 //
 // Copyright (c) 2011 Eric Maupin
 //
@@ -24,29 +24,47 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
 using Windows.Foundation.Metadata;
 
 namespace Windows.Networking.Connectivity
 {
+#if Windows8_1_Preview
+	//[DualApiPartition]
+	//[MarshalingBehavior(Agile)]
 	/// <summary>
-	/// Defines the roaming states.
+	/// Indicates which properties of a network have changed after a network
+	/// state change background trigger.
 	/// </summary>
-	[Flags]
-	[Version(WindowsVersion.NTDDI_WIN8)]
-	public enum RoamingStates
+	[Version(WindowsVersion.Windows8_1_Preview)]
+	public sealed class NetworkStateChangeEventDetails
 	{
 		/// <summary>
-		/// No roaming information.
+		/// Indicates if a connected network has a new connection cost.
 		/// </summary>
-		None,
+		public bool HasNewConnectionCost { get; private set; }
+
 		/// <summary>
-		/// The connection is not currently roaming.
+		/// Indicates a connected network has a new domain connectivity level.
 		/// </summary>
-		NotRoaming,
+		public bool HasNewDomainConnectivityLevel { get; private set; }
+
 		/// <summary>
-		/// The connection is currently roaming.
+		/// Indicates if the list of host names returned by GetHostNames has
+		/// changed.
 		/// </summary>
-		Roaming
+		public bool HasNewHostNameList { get; private set; }
+
+		/// <summary>
+		/// Indicates if the local machine has a new connection profile
+		/// associated with the current internet connection.
+		/// </summary>
+		public bool HasNewInternetConnectionProfile { get; private set; }
+
+		/// <summary>
+		/// Indicates if the network connectivity level for any connection
+		/// profiles has changed.
+		/// </summary>
+		public bool HasNewNetworkConnectivityLevel { get; private set; }
 	}
+#endif
 }

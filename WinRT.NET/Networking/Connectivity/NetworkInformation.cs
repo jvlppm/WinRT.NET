@@ -26,11 +26,21 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Windows.Foundation;
 using Windows.Foundation.Metadata;
 
 namespace Windows.Networking.Connectivity
 {
+	/// <summary>
+	/// Represents the method that handles network status change notifications.
+	/// This method is called when any properties exposed by the
+	/// NetworkInformation object changes while the app is active.
+	/// </summary>
+	[Guid("71ba143f-598e-49d0-84eb-8febaedcc195")]
+	[Version(WindowsVersion.NTDDI_WIN8)]
+	public delegate void NetworkStatusChangedEventHandler(object sender);
+
 	//[DualApiPartition]
 	//[MarshalingBehavior(Agile)]
 	//[Static(Windows.Networking.Connectivity.INetworkInformationStatics2, WindowsVersion.Windows8_1_Preview)]
@@ -41,6 +51,11 @@ namespace Windows.Networking.Connectivity
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public static class NetworkInformation
 	{
+		/// <summary>
+		/// Occurs when the network status changes for a connection.
+		/// </summary>
+		public static event NetworkStatusChangedEventHandler NetworkStatusChanged;
+
 		/// <summary>
 		/// Returns an array of ConnectionProfile objects that match the
 		/// filtering criteria defined by ConnectionProfileFilter.
