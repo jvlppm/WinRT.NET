@@ -1,5 +1,5 @@
-﻿//
-// NetworkSecuritySettings.cs
+//
+// DualApiPartitionAttribute.cs
 //
 // Author:
 //   Joao Vitor P. Moraes <jvlppm@gmail.com>
@@ -25,23 +25,22 @@
 // THE SOFTWARE.
 
 using System;
-using Windows.Foundation.Metadata;
 
-namespace Windows.Networking.Connectivity
+namespace Windows.Foundation.Metadata
 {
-	//[MarshalingBehavior(Agile)]
-	[DualApiPartition]
+	/// <summary>
+	/// Indicates that the type is supported in  desktop apps and in Windows
+	/// Store apps.
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
 	[Version(WindowsVersion.NTDDI_WIN8)]
-	public sealed class NetworkSecuritySettings
+	public sealed class DualApiPartitionAttribute : Attribute
 	{
 		/// <summary>
-		/// Retrieves the type of authentication used by the network.
+		/// Creates and initializes a new instance of the attribute.
 		/// </summary>
-		public NetworkAuthenticationType NetworkAuthenticationType { get; private set; }
-
-		/// <summary>
-		/// Retrieves the type of encryption used by the network.
-		/// </summary>
-		public NetworkEncryptionType NetworkEncryptionType { get; private set; }
+		public DualApiPartitionAttribute()
+		{
+		}
 	}
 }

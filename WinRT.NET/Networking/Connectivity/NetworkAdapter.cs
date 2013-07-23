@@ -30,11 +30,11 @@ using Windows.Foundation.Metadata;
 
 namespace Windows.Networking.Connectivity
 {
-	//[DualApiPartition]
 	//[MarshalingBehavior(Agile)]
 	/// <summary>
 	/// Represents a network adapter.
 	/// </summary>
+	[DualApiPartition]
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class NetworkAdapter
 	{

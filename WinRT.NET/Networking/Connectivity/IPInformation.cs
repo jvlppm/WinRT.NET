@@ -28,12 +28,12 @@ using Windows.Foundation.Metadata;
 
 namespace Windows.Networking.Connectivity
 {
-	//[DualApiPartition]
 	//[MarshalingBehavior(Agile)]
 	/// <summary>
 	/// Represents the association between an IP address and an adapter on the
 	/// network.
 	/// </summary>
+	[DualApiPartition]
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class IPInformation
 	{

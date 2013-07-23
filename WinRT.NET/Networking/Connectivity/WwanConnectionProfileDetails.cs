@@ -30,8 +30,8 @@ using Windows.Foundation.Metadata;
 namespace Windows.Networking.Connectivity
 {
 #if Windows8_1_Preview
-	//[DualApiPartition]
 	//[MarshalingBehavior(Agile)]
+	[DualApiPartition]
 	[Version(WindowsVersion.Windows8_1_Preview)]
 	public sealed class WwanConnectionProfileDetails
 	{

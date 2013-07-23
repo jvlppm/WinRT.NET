@@ -31,10 +31,10 @@ using Windows.Foundation.Metadata;
 
 namespace Windows.Security.Cryptography.Core
 {
-	//[DualApiPartition]
 	//[MarshalingBehavior(Agile)]
 	//[Static(Windows.Security.Cryptography.Core.ICryptographicEngineStatics, NTDDI_WIN8)]
 	//[Threading(Both)]
+	[DualApiPartition]
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public static class CryptographicEngine
 	{

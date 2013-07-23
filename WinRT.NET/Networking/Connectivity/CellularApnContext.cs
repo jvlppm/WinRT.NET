@@ -29,12 +29,12 @@ using Windows.Foundation.Metadata;
 
 namespace Windows.Networking.Connectivity
 {
-	//[DualApiPartition]
 	//[MarshalingBehavior(Agile)]
 	/// <summary>
 	/// This class contains properties used to specify an Access Point Name
 	/// (APN) for a 3GPP based cellular Data Connection (PDP context).
 	/// </summary>
+	[DualApiPartition]
 	[Activatable(WindowsVersion.Windows8_1_Preview)]
 	[Version(WindowsVersion.Windows8_1_Preview)]
 	public sealed class CellularApnContext

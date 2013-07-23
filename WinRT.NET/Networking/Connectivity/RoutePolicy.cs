@@ -30,9 +30,9 @@ using Windows.Foundation.Metadata;
 namespace Windows.Networking.Connectivity
 {
 #if Windows8_1_Preview
-	//[DualApiPartition]
 	//[MarshalingBehavior(Agile)]
 	//[Activatable(typeof(Windows.Networking.Connectivity.IRoutePolicyFactory), WindowsVersion.Windows8_1_Preview)]
+	[DualApiPartition]
 	[Version(WindowsVersion.Windows8_1_Preview)]
 	public sealed class RoutePolicy
 	{

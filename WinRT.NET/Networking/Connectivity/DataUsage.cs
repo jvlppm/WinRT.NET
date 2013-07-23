@@ -30,7 +30,6 @@ using Windows.Foundation.Metadata;
 namespace Windows.Networking.Connectivity
 {
 #if Windows8
-	//[DualApiPartition]
 	//[MarshalingBehavior(Agile)]
 	/// <summary>
 	/// [DataUsage may be altered or unavailable for releases after
@@ -38,6 +37,7 @@ namespace Windows.Networking.Connectivity
 	/// Represents data usage information returned by the
 	/// ConnectionProfile.GetLocalUsage method.
 	/// </summary>
+	[DualApiPartition]
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class DataUsage
 	{

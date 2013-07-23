@@ -29,12 +29,12 @@ using Windows.Foundation.Metadata;
 namespace Windows.Networking.Connectivity
 {
 #if Windows8_1_Preview
-	//[DualApiPartition]
 	//[MarshalingBehavior(Agile)]
 	/// <summary>
 	/// Indicates which properties of a network have changed after a network
 	/// state change background trigger.
 	/// </summary>
+	[DualApiPartition]
 	[Version(WindowsVersion.Windows8_1_Preview)]
 	public sealed class NetworkStateChangeEventDetails
 	{

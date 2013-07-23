@@ -32,8 +32,8 @@ using Windows.Foundation.Metadata;
 
 namespace Windows.Security.Cryptography.Core
 {
-	//[DualApiPartition]
 	//[MarshalingBehavior(Agile)]
+	[DualApiPartition]
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class CryptographicKey
 	{

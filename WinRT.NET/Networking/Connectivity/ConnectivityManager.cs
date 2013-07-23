@@ -31,7 +31,6 @@ using Windows.Foundation.Metadata;
 namespace Windows.Networking.Connectivity
 {
 #if Windows8_1_Preview
-	//[DualApiPartition]
 	//[MarshalingBehavior(Agile)]
 	//[Static(Windows.Networking.Connectivity.IConnectivityManagerStatics, WindowsVersion.Windows8_1_Preview)]
 	/// <summary>
@@ -40,6 +39,7 @@ namespace Windows.Networking.Connectivity
 	/// destination suffix. Once a policy is set using AddHttpRoutePolicy,
 	/// traffic that matches the policy will either be routed or dropped.
 	/// </summary>
+	[DualApiPartition]
 	[Version(WindowsVersion.Windows8_1_Preview)]
 	public static class ConnectivityManager
 	{

@@ -33,9 +33,9 @@ namespace Windows.Networking
 	/// connection used by network apps.
 	/// </summary>
 	//[Activatable(typeof(Windows.Networking.IEndpointPairFactory), NTDDI_WIN8)]
-	//[DualApiPartition]
 	//[MarshalingBehavior(Agile)]
 	//[Threading(Both)]
+	[DualApiPartition]
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class EndpointPair
 	{
