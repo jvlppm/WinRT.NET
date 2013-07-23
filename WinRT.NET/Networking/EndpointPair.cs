@@ -31,7 +31,8 @@ namespace Windows.Networking
 	/// <summary>
 	/// Provides data for the local endpoint and remote endpoint for a network
 	/// connection used by network apps.
-	/// </summary>	[Activatable(Windows.Networking.IEndpointPairFactory, NTDDI_WIN8)]
+	/// </summary>
+	//[Activatable(typeof(Windows.Networking.IEndpointPairFactory), NTDDI_WIN8)]
 	//[DualApiPartition]
 	//[MarshalingBehavior(Agile)]
 	//[Threading(Both)]

@@ -1,5 +1,5 @@
 //
-// VersionAttribute.cs
+// ActivatableAttribute.cs
 //
 // Author:
 //   Joao Vitor P. Moraes <jvlppm@gmail.com>
@@ -28,64 +28,31 @@ using System;
 
 namespace Windows.Foundation.Metadata
 {
-	#region Custom API
-	public enum WindowsVersion : uint
-	{
-#if Windows8_1_Preview
-		Windows8_1_Preview = 0x6030000,
-#endif
-
-		Windows8 = 0x06020000,
-		NTDDI_WIN8 = 0x06020000,
-
-		Windows7 = 0x06010000,
-		NTDDI_WIN7 = 0x06010000,
-
-		WindowsServer2008 = 0x06000100,
-		NTDDI_WS08 = 0x06000100,
-
-		WindowsVista_SP1 = 0x06000100,
-		NTDDI_VISTASP1 = 0x06000100,
-
-		WindowsVista = 0x06000000,
-		NTDDI_VISTA = 0x06000000,
-
-		WindowsServer2003_SP2 = 0x05020200,
-		NTDDI_WS03SP2 = 0x05020200,
-
-		WindowsServer2003_SP1 = 0x05020100,
-		NTDDI_WS03SP1 = 0x05020100,
-
-		WindowsServer2003 = 0x05020000,
-		NTDDI_WS03 = 0x05020000,
-
-		WindowsXP_SP3 = 0x05010300,
-		NTDDI_WINXPSP3 = 0x05010300,
-
-		WindowsXP_SP2 = 0x05010200,
-		NTDDI_WINXPSP2 = 0x05010200,
-
-		WindowsXP_SP1 = 0x05010100,
-		NTDDI_WINXPSP1 = 0x05010100,
-
-		WindowsXP = 0x05010000,
-		NTDDI_WINXP = 0x05010000
-	}
-	#endregion
-
 	/// <summary>
-	/// Indicates the version of the type.
+	/// Indicates that the class is an activatable runtime class.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum | AttributeTargets.Constructor | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Event | AttributeTargets.Interface | AttributeTargets.Delegate, AllowMultiple = false)]
+	//[AllowMultiple]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	[Version(WindowsVersion.NTDDI_WIN8)]
-	public sealed class VersionAttribute : Attribute
+	public sealed class ActivatableAttribute : Attribute
 	{
 		/// <summary>
 		/// Creates and initializes a new instance of the attribute.
 		/// </summary>
-		/// <param name="version">The version to associate with the marked object.</param>
-		public VersionAttribute(uint version)
+		/// <param name="version">The version of the class.</param>
+		public ActivatableAttribute(uint version)
+			: this(null, version)
 		{
+		}
+
+		/// <summary>
+		/// Creates and initializes a new instance of the attribute.
+		/// </summary>
+		/// <param name="type">The type of the class.</param>
+		/// <param name="version">The version of the class.</param>
+		public ActivatableAttribute(Type type, uint version)
+		{
+			Type = type;
 			Version = version;
 #if Windows8_1_Preview
 			Platform = Platform.Windows;
@@ -94,19 +61,34 @@ namespace Windows.Foundation.Metadata
 
 #if Windows8_1_Preview
 		/// <summary>
+		/// [This documentation is preliminary and is subject to change.]
 		/// Creates and initializes a new instance of the attribute.
 		/// </summary>
-		/// <param name="version">The version to associate with the marked object.</param>
+		/// <param name="type">The type of the class.</param>
+		/// <param name="version">The version of the class.</param>
 		/// <param name="platform">A value of the enumeration. The default is Windows.</param>
-		public VersionAttribute(uint version, Platform platform)
+		public ActivatableAttribute(Type type, uint version, Platform platform)
+			: this(type, version)
 		{
-			Version = version;
 			Platform = platform;
+		}
+
+		/// <summary>
+		/// [This documentation is preliminary and is subject to change.]
+		/// Creates and initializes a new instance of the attribute.
+		/// </summary>
+		/// <param name="version">The version of the class.</param>
+		/// <param name="platform">A value of the enumeration. The default is Windows.</param>
+		public ActivatableAttribute(uint version, Platform platform)
+			: this(null, version, platform)
+		{
 		}
 #endif
 
+		internal Type Type { get; private set; }
+
 		/// <summary>
-		/// Gets the version of the marked object.
+		/// Gets the version of the type.
 		/// </summary>
 		internal uint Version { get; private set; }
 
@@ -121,9 +103,19 @@ namespace Windows.Foundation.Metadata
 		/// <summary>
 		/// Creates and initializes a new instance of the attribute.
 		/// </summary>
-		/// <param name="version">The version to associate with the marked object.</param>
-		public VersionAttribute(WindowsVersion version)
+		/// <param name="version">The version of the class.</param>
+		public ActivatableAttribute(WindowsVersion version)
 			: this((uint)version)
+		{
+		}
+
+		/// <summary>
+		/// Creates and initializes a new instance of the attribute.
+		/// </summary>
+		/// <param name="type">The type of the class.</param>
+		/// <param name="version">The version of the class.</param>
+		public ActivatableAttribute(Type type, WindowsVersion version)
+			: this(type, (uint)version)
 		{
 		}
 		#endregion

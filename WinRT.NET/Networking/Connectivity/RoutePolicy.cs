@@ -30,9 +30,9 @@ using Windows.Foundation.Metadata;
 namespace Windows.Networking.Connectivity
 {
 #if Windows8_1_Preview
-	//[Activatable(Windows.Networking.Connectivity.IRoutePolicyFactory, WindowsVersion.Windows8_1_Preview)]
 	//[DualApiPartition]
 	//[MarshalingBehavior(Agile)]
+	//[Activatable(typeof(Windows.Networking.Connectivity.IRoutePolicyFactory), WindowsVersion.Windows8_1_Preview)]
 	[Version(WindowsVersion.Windows8_1_Preview)]
 	public sealed class RoutePolicy
 	{
@@ -61,7 +61,7 @@ namespace Windows.Networking.Connectivity
 		/// <param name="pHostName">
 		/// The host name for the route policy to the special PDP context.
 		/// </param>
-		public RoutePolicy( ConnectionProfile pConnectionProfile, HostName pHostName )
+		public RoutePolicy(ConnectionProfile pConnectionProfile, HostName pHostName)
 		{
 			ConnectionProfile = pConnectionProfile;
 			HostName = pHostName;
