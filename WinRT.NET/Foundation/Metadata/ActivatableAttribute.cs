@@ -31,7 +31,7 @@ namespace Windows.Foundation.Metadata
 	/// <summary>
 	/// Indicates that the class is an activatable runtime class.
 	/// </summary>
-	//[AllowMultiple]
+	[AllowMultiple]
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class ActivatableAttribute : Attribute

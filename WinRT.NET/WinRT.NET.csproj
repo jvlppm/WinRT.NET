@@ -52,6 +52,7 @@
     <Compile Include="Foundation\IAsyncOperation.cs" />
     <Compile Include="Foundation\IAsyncOperationWithProgress.cs" />
     <Compile Include="Foundation\Metadata\ActivatableAttribute.cs" />
+    <Compile Include="Foundation\Metadata\AllowMultipleAttribute.cs" />
     <Compile Include="Foundation\Metadata\DualApiPartitionAttribute.cs" />
     <Compile Include="Foundation\Metadata\Platform.cs" />
     <Compile Include="Foundation\Metadata\VersionAttribute.cs" />
