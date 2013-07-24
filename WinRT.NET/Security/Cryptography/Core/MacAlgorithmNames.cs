@@ -34,7 +34,7 @@ namespace Windows.Security.Cryptography.Core
 	/// retrieve algorithm names that can be used in the
 	/// OpenAlgorithm method of the MacAlgorithmProvider class.
 	/// </summary>
-	//[Static(Windows.Security.Cryptography.Core.IMacAlgorithmNamesStatics, NTDDI_WIN8)]
+	//[Static(typeof(Windows.Security.Cryptography.Core.IMacAlgorithmNamesStatics), WindowsVersion.NTDDI_WIN8)]
 	[DualApiPartition]
 	[MarshalingBehavior(MarshalingType.Agile)]
 	[Version(WindowsVersion.NTDDI_WIN8)]

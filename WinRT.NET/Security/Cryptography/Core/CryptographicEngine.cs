@@ -31,7 +31,7 @@ using Windows.Foundation.Metadata;
 
 namespace Windows.Security.Cryptography.Core
 {
-	//[Static(Windows.Security.Cryptography.Core.ICryptographicEngineStatics, NTDDI_WIN8)]
+	//[Static(typeof(Windows.Security.Cryptography.Core.ICryptographicEngineStatics), WindowsVersion.NTDDI_WIN8)]
 	[DualApiPartition]
 	[Threading(ThreadingModel.Both)]
 	[MarshalingBehavior(MarshalingType.Agile)]

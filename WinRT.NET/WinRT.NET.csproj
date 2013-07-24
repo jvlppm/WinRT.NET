@@ -57,6 +57,7 @@
     <Compile Include="Foundation\Metadata\MarshalingBehaviorAttribute.cs" />
     <Compile Include="Foundation\Metadata\MarshalingType.cs" />
     <Compile Include="Foundation\Metadata\Platform.cs" />
+    <Compile Include="Foundation\Metadata\StaticAttribute.cs" />
     <Compile Include="Foundation\Metadata\ThreadingAttribute.cs" />
     <Compile Include="Foundation\Metadata\ThreadingModel.cs" />
     <Compile Include="Foundation\Metadata\VersionAttribute.cs" />

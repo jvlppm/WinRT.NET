@@ -32,7 +32,7 @@ using Windows.Foundation.Metadata;
 namespace Windows.Storage
 {
 	//[Muse]
-	//[Static(Windows.Storage.IStorageFileStatics, NTDDI_WIN8)]
+	//[Static(typeof(Windows.Storage.IStorageFileStatics), WindowsVersion.NTDDI_WIN8)]
 	[MarshalingBehavior(MarshalingType.Agile)]
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class StorageFile

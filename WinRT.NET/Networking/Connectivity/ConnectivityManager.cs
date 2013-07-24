@@ -31,7 +31,7 @@ using Windows.Foundation.Metadata;
 namespace Windows.Networking.Connectivity
 {
 #if Windows8_1_Preview
-	//[Static(Windows.Networking.Connectivity.IConnectivityManagerStatics, WindowsVersion.Windows8_1_Preview)]
+	//[Static(typeof(Windows.Networking.Connectivity.IConnectivityManagerStatics), WindowsVersion.Windows8_1_Preview)]
 	/// <summary>
 	/// Methods defined by the ConnectivityManager class enable enforcement of
 	/// traffic routing on a specific network adapter for the specified

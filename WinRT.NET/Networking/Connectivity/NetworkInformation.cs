@@ -41,8 +41,8 @@ namespace Windows.Networking.Connectivity
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public delegate void NetworkStatusChangedEventHandler(object sender);
 
-	//[Static(Windows.Networking.Connectivity.INetworkInformationStatics2, WindowsVersion.Windows8_1_Preview)]
-	//[Static(Windows.Networking.Connectivity.INetworkInformationStatics, NTDDI_WIN8)]
+	//[Static(typeof(Windows.Networking.Connectivity.INetworkInformationStatics2), WindowsVersion.Windows8_1_Preview)]
+	//[Static(typeof(Windows.Networking.Connectivity.INetworkInformationStatics), WindowsVersion.NTDDI_WIN8)]
 	/// <summary>
 	/// Provides access to  network connection information for the local machine.
 	/// </summary>
