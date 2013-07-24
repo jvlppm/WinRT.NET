@@ -29,12 +29,12 @@ using Windows.Foundation.Metadata;
 
 namespace Windows.Networking.Connectivity
 {
-	//[MarshalingBehavior(Agile)]
 	/// <summary>
 	/// Represents physical identification data for a specific NetworkAdapter
 	/// object.
 	/// </summary>
 	[DualApiPartition]
+	[MarshalingBehavior(MarshalingType.Agile)]
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class LanIdentifier
 	{

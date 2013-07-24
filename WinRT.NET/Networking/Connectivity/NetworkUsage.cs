@@ -30,8 +30,8 @@ using Windows.Foundation.Metadata;
 namespace Windows.Networking.Connectivity
 {
 #if Windows8_1_Preview
-	//[MarshalingBehavior(Agile)]
 	[DualApiPartition]
+	[MarshalingBehavior(MarshalingType.Agile)]
 	[Version(WindowsVersion.Windows8_1_Preview)]
 	public sealed class NetworkUsage
 	{

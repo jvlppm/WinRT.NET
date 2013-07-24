@@ -29,7 +29,7 @@ using Windows.Foundation.Metadata;
 
 namespace Windows.Devices.Geolocation
 {
-	//[MarshalingBehavior(Agile)]
+	[MarshalingBehavior(MarshalingType.Agile)]
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class Geocoordinate
 	{

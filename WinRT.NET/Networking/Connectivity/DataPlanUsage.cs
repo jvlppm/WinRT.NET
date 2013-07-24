@@ -29,11 +29,11 @@ using Windows.Foundation.Metadata;
 
 namespace Windows.Networking.Connectivity
 {
-	//[MarshalingBehavior(Agile)]
 	/// <summary>
 	/// Represents data plan  specific data usage information for a connection.
 	/// </summary>
 	[DualApiPartition]
+	[MarshalingBehavior(MarshalingType.Agile)]
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class DataPlanUsage
 	{

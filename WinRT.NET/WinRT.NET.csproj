@@ -54,6 +54,8 @@
     <Compile Include="Foundation\Metadata\ActivatableAttribute.cs" />
     <Compile Include="Foundation\Metadata\AllowMultipleAttribute.cs" />
     <Compile Include="Foundation\Metadata\DualApiPartitionAttribute.cs" />
+    <Compile Include="Foundation\Metadata\MarshalingBehaviorAttribute.cs" />
+    <Compile Include="Foundation\Metadata\MarshalingType.cs" />
     <Compile Include="Foundation\Metadata\Platform.cs" />
     <Compile Include="Foundation\Metadata\VersionAttribute.cs" />
     <Compile Include="Foundation\TaskAction.cs" />

@@ -1,5 +1,5 @@
 //
-// EndpointPair.cs
+// MarshalingBehaviorAttribute.cs
 //
 // Author:
 //   Joao Vitor P. Moraes <jvlppm@gmail.com>
@@ -24,39 +24,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using Windows.Foundation.Metadata;
+using System;
 
-namespace Windows.Networking
+namespace Windows.Foundation.Metadata
 {
 	/// <summary>
-	/// Provides data for the local endpoint and remote endpoint for a network
-	/// connection used by network apps.
+	/// Indicates the marshaling behavior of a Windows Runtime component.
 	/// </summary>
-	//[Activatable(typeof(Windows.Networking.IEndpointPairFactory), NTDDI_WIN8)]
-	//[Threading(Both)]
-	[DualApiPartition]
-	[MarshalingBehavior(MarshalingType.Agile)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
 	[Version(WindowsVersion.NTDDI_WIN8)]
-	public sealed class EndpointPair
+	public sealed class MarshalingBehaviorAttribute : Attribute
 	{
 		/// <summary>
-		/// Get or set the local hostname for the EndpointPair object.
+		/// Creates and initializes a new instance of the attribute.
 		/// </summary>
-		public HostName LocalHostName { get; set; }
+		/// <param name="behavior">One of the enumeration values.</param>
+		public MarshalingBehaviorAttribute( MarshalingType behavior )
+		{
+			Behavior = behavior;
+		}
 
-		/// <summary>
-		/// Get or set the local service name for the EndpointPair object.
-		/// </summary>
-		public string LocalServiceName { get; set; }
-
-		/// <summary>
-		/// Get or set the remote hostname for the EndpointPair object.
-		/// </summary>
-		public HostName RemoteHostName { get; set; }
-
-		/// <summary>
-		/// Get or set the remote service name for the EndpointPair object.
-		/// </summary>
-		public string RemoteServiceName { get; set; }
+		internal MarshalingType Behavior { get; private set; }
 	}
 }

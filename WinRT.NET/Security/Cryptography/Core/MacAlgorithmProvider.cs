@@ -39,10 +39,10 @@ namespace Windows.Security.Cryptography.Core
 	/// A MAC uses symmetric key cryptography to prevent message tampering.
 	/// For more information, see MACs, Hashes, and Signatures.
 	/// </summary>
-	//[MarshalingBehavior(Agile)]
 	//[Static(Windows.Security.Cryptography.Core.IMacAlgorithmProviderStatics, NTDDI_WIN8)]
 	//[Threading(Both)]
 	[DualApiPartition]
+	[MarshalingBehavior(MarshalingType.Agile)]
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class MacAlgorithmProvider
 	{

@@ -30,12 +30,12 @@ using Windows.Foundation.Metadata;
 namespace Windows.Networking.Connectivity
 {
 #if Windows8_1_Preview
-	//[MarshalingBehavior(Agile)]
 	/// <summary>
 	/// The ConnectionSession class is used to represent a connection to an
 	/// access point established with AcquireConnectionAsync.
 	/// </summary>
 	[DualApiPartition]
+	[MarshalingBehavior(MarshalingType.Agile)]
 	[Version(WindowsVersion.Windows8_1_Preview)]
 	public sealed class ConnectionSession : IDisposable
 	{

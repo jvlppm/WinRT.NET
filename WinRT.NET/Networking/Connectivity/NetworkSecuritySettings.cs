@@ -29,8 +29,8 @@ using Windows.Foundation.Metadata;
 
 namespace Windows.Networking.Connectivity
 {
-	//[MarshalingBehavior(Agile)]
 	[DualApiPartition]
+	[MarshalingBehavior(MarshalingType.Agile)]
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class NetworkSecuritySettings
 	{

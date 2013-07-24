@@ -41,13 +41,13 @@ namespace Windows.Networking.Connectivity
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public delegate void NetworkStatusChangedEventHandler(object sender);
 
-	//[MarshalingBehavior(Agile)]
 	//[Static(Windows.Networking.Connectivity.INetworkInformationStatics2, WindowsVersion.Windows8_1_Preview)]
 	//[Static(Windows.Networking.Connectivity.INetworkInformationStatics, NTDDI_WIN8)]
 	/// <summary>
 	/// Provides access to  network connection information for the local machine.
 	/// </summary>
 	[DualApiPartition]
+	[MarshalingBehavior(MarshalingType.Agile)]
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public static class NetworkInformation
 	{

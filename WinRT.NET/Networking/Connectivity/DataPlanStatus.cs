@@ -29,11 +29,11 @@ using Windows.Foundation.Metadata;
 
 namespace Windows.Networking.Connectivity
 {
-	//[MarshalingBehavior(Agile)]
 	/// <summary>
 	/// Represents the current status information for the data plan associated with a connection.
 	/// </summary>
 	[DualApiPartition]
+	[MarshalingBehavior(MarshalingType.Agile)]
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class DataPlanStatus
 	{

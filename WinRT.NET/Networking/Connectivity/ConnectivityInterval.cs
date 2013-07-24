@@ -30,12 +30,12 @@ using Windows.Foundation.Metadata;
 namespace Windows.Networking.Connectivity
 {
 #if Windows8_1_Preview
-	//[MarshalingBehavior(Agile)]
 	/// <summary>
 	/// Provides the start time and duration for an established or prior
 	/// connection.
 	/// </summary>
 	[DualApiPartition]
+	[MarshalingBehavior(MarshalingType.Agile)]
 	[Version(WindowsVersion.Windows8_1_Preview)]
 	public sealed class ConnectivityInterval
 	{

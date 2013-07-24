@@ -31,10 +31,10 @@ using Windows.Foundation.Metadata;
 
 namespace Windows.Security.Cryptography
 {
-	//[MarshalingBehavior(Agile)]
 	//[Static(Windows.Security.Cryptography.ICryptographicBufferStatics, NTDDI_WIN8)]
 	//[Threading(Both)]
 	[DualApiPartition]
+	[MarshalingBehavior(MarshalingType.Agile)]
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public static class CryptographicBuffer
 	{

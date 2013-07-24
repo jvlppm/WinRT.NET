@@ -46,10 +46,10 @@ namespace Windows.System.Threading
 	/// <summary>
 	/// Represents a timer created with CreateTimer or CreatePeriodicTimer.
 	/// </summary>
-	//[MarshalingBehaviorAttribute(Agile)]
 	//[StaticAttribute(Windows.System.Threading.IThreadPoolTimerStatics, NTDDI_WIN8)]
 	//[ThreadingAttribute(Both)]
 	//[WebHostHiddenAttribute()]
+	[MarshalingBehavior(MarshalingType.Agile)]
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class ThreadPoolTimer
 	{

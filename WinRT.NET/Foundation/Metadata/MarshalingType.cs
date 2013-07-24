@@ -1,5 +1,5 @@
 //
-// EndpointPair.cs
+// MarshalingType.cs
 //
 // Author:
 //   Joao Vitor P. Moraes <jvlppm@gmail.com>
@@ -24,39 +24,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using Windows.Foundation.Metadata;
-
-namespace Windows.Networking
+namespace Windows.Foundation.Metadata
 {
 	/// <summary>
-	/// Provides data for the local endpoint and remote endpoint for a network
-	/// connection used by network apps.
+	/// Specifies the marshaling type for the class.
 	/// </summary>
-	//[Activatable(typeof(Windows.Networking.IEndpointPairFactory), NTDDI_WIN8)]
-	//[Threading(Both)]
-	[DualApiPartition]
-	[MarshalingBehavior(MarshalingType.Agile)]
 	[Version(WindowsVersion.NTDDI_WIN8)]
-	public sealed class EndpointPair
+	public enum MarshalingType
 	{
 		/// <summary>
-		/// Get or set the local hostname for the EndpointPair object.
+		/// The class prevents marshaling on all interfaces.
 		/// </summary>
-		public HostName LocalHostName { get; set; }
-
+		None = 1,
 		/// <summary>
-		/// Get or set the local service name for the EndpointPair object.
+		/// The class marshals and unmarshals to the same pointer value on all interfaces.
 		/// </summary>
-		public string LocalServiceName { get; set; }
-
+		Agile = 2,
 		/// <summary>
-		/// Get or set the remote hostname for the EndpointPair object.
+		/// The class does not implement IMarshal or forwards to CoGetStandardMarshal on all interfaces.
 		/// </summary>
-		public HostName RemoteHostName { get; set; }
-
+		Standard = 3,
 		/// <summary>
-		/// Get or set the remote service name for the EndpointPair object.
+		/// The class can&#39;t be marshaled.
 		/// </summary>
-		public string RemoteServiceName { get; set; }
+		InvalidMarshaling = 0
 	}
 }
