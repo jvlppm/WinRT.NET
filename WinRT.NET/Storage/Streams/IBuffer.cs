@@ -24,11 +24,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System.Runtime.InteropServices;
+using Windows.Foundation.Metadata;
+
 namespace Windows.Storage.Streams
 {
+	/// <summary>
+	/// Represents a referenced array of bytes used by byte stream read and write
+	/// interfaces. Buffer is the class implementation of this interface.
+	/// </summary>
+	[Guid("905a0fe0-bc53-11df-8c49-001e4fc686da")]
+	[Version(WindowsVersion.NTDDI_WIN8)]
 	public interface IBuffer
 	{
+		/// <summary>
+		/// Gets the maximum number of bytes that the buffer can hold.
+		/// </summary>
 		uint Capacity { get; }
+
+		/// <summary>
+		/// Gets the number of bytes currently in use in the buffer.
+		/// </summary>
 		uint Length { get; set; }
 	}
 }

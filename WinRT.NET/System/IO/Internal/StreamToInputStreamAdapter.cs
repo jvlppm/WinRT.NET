@@ -34,16 +34,45 @@ namespace Windows.System.IO.Internal
 	internal class StreamToInputStreamAdapter
 		: IInputStream
 	{
+		private Stream stream;
+		private bool disposed;
+
 		internal StreamToInputStreamAdapter (Stream stream)
 		{
 			this.stream = stream;
 		}
 
+		~StreamToInputStreamAdapter()
+		{
+			Dispose(false);
+		}
+
 		public IAsyncOperationWithProgress<IBuffer, uint> ReadAsync (IBuffer buffer, uint count, InputStreamOptions options)
 		{
+			if (disposed)
+				throw new ObjectDisposedException(GetType().FullName);
+
 			throw new NotImplementedException();
 		}
 
-		private Stream stream;
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!disposed)
+			{
+				if (disposing)
+				{
+					this.stream.Dispose();
+					this.stream = null;
+				}
+				disposed = true;
+			}
+			stream.Dispose();
+		}
 	}
 }

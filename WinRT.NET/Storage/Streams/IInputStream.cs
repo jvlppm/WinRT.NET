@@ -24,19 +24,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System;
+using System.Runtime.InteropServices;
 using Windows.Foundation;
+using Windows.Foundation.Metadata;
 
 namespace Windows.Storage.Streams
 {
-	public enum InputStreamOptions
+	/// <summary>
+	/// Represents a sequential stream of bytes to be read.
+	/// </summary>
+	[Guid("905a0fe2-bc53-11df-8c49-001e4fc686da")]
+	[Version(WindowsVersion.NTDDI_WIN8)]
+	public interface IInputStream : IDisposable
 	{
-		None = 0,
-		Partial = 1,
-		ReadAhead = 2
-	}
-
-	public interface IInputStream
-	{
-		IAsyncOperationWithProgress<IBuffer, uint> ReadAsync (IBuffer buffer, uint count, InputStreamOptions options);
+		/// <summary>
+		/// Returns an asynchronous byte reader object.
+		/// </summary>
+		/// <param name="buffer">The buffer into which the asynchronous read operation places the bytes that are read.</param>
+		/// <param name="count">The number of bytes to read that is less than or equal to the Capacity value.</param>
+		/// <param name="options">Specifies the type of the asynchronous read operation.</param>
+		/// <returns>The asynchronous operation.</returns>
+		IAsyncOperationWithProgress<IBuffer, uint> ReadAsync(IBuffer buffer, uint count, InputStreamOptions options);
 	}
 }

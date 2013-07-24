@@ -137,6 +137,8 @@
     <Compile Include="Storage\Streams\DataReaderLoadOperation.cs" />
     <Compile Include="Storage\Streams\DataWriter.cs" />
     <Compile Include="Storage\Streams\DataWriterStoreOperation.cs" />
+    <Compile Include="Storage\Streams\InputStreamOptions.cs" />
+    <Compile Include="Storage\Streams\Internal\FileAccessStream.cs" />
     <Compile Include="Storage\Streams\IBuffer.cs" />
     <Compile Include="Storage\Streams\IContentTypeProvider.cs" />
     <Compile Include="Storage\Streams\IDataReader.cs" />
