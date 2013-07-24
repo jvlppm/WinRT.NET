@@ -56,6 +56,7 @@
     <Compile Include="Foundation\Metadata\DualApiPartitionAttribute.cs" />
     <Compile Include="Foundation\Metadata\MarshalingBehaviorAttribute.cs" />
     <Compile Include="Foundation\Metadata\MarshalingType.cs" />
+    <Compile Include="Foundation\Metadata\MuseAttribute.cs" />
     <Compile Include="Foundation\Metadata\Platform.cs" />
     <Compile Include="Foundation\Metadata\StaticAttribute.cs" />
     <Compile Include="Foundation\Metadata\ThreadingAttribute.cs" />

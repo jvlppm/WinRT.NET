@@ -1,5 +1,5 @@
 //
-// StorageFile.cs
+// MuseAttribute.cs
 //
 // Author:
 //   Joao Vitor P. Moraes <jvlppm@gmail.com>
@@ -24,43 +24,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using Windows.Storage.Streams;
-using Windows.Foundation;
 using System;
-using Windows.Foundation.Metadata;
 
-namespace Windows.Storage
+namespace Windows.Foundation.Metadata
 {
-	//[Static(typeof(Windows.Storage.IStorageFileStatics), WindowsVersion.NTDDI_WIN8)]
-	[Muse]
-	[MarshalingBehavior(MarshalingType.Agile)]
+	/// <summary>
+	/// Indicates that a runtime class is compatible with  Windows Store apps
+	/// that are web browsers.
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
 	[Version(WindowsVersion.NTDDI_WIN8)]
-	public sealed class StorageFile
-		: IStorageFile, IStorageItem,
-		  IRandomAccessStreamReference, IInputStreamReference,
-		  IStorageItemProperties
+	public sealed class MuseAttribute : Attribute
 	{
-		#region Properties
-		/// <summary>
-		/// Gets the MIME type of the contents of the file.
-		/// </summary>
-		public string ContentType { get; private set; }
+		public uint Version;
 
 		/// <summary>
-		/// Gets the name of the file including the file name extension.
+		/// Creates and initializes a new instance of the attribute.
 		/// </summary>
-		public string Name { get; private set; }
-		#endregion
-
-		#region Methods
-		/// <summary>
-		/// Opens a random-access stream over the current file for reading file contents.
-		/// </summary>
-		/// <returns>When this method completes, it returns the random-access stream (type IRandomAccessStreamWithContentType).</returns>
-		public IAsyncOperation<IRandomAccessStreamWithContentType> OpenReadAsync()
+		public MuseAttribute()
 		{
-			throw new NotImplementedException();
 		}
-		#endregion
 	}
 }
