@@ -1,8 +1,8 @@
-﻿//
-// ReadOnlyList.cs
+//
+// TaskToAsyncActionAdapter.cs
 //
 // Author:
-//   Eric Maupin <me@ermau.com>
+//   Joao Vitor P. Moraes <jvlppm@gmail.com>
 //
 // Copyright (c) 2011 Eric Maupin
 //
@@ -24,36 +24,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-namespace System.Collections.Generic
+using System;
+using Windows.Foundation;
+using System.Threading.Tasks;
+
+namespace System.Threading.Tasks.Internal
 {
-	internal class ReadOnlyList<T>
-		: IReadOnlyList<T>
+	internal class TaskToAsyncActionAdapter : TaskToAsyncInfoAdapter<AsyncActionCompletedHandler>, IAsyncAction
 	{
-		public ReadOnlyList (IList<T> list)
+		public TaskToAsyncActionAdapter(Task task)
+			: base(task)
 		{
-			this.context = list;
+			CheckCompletion();
 		}
 
-		public int Count
+		protected override void Complete()
 		{
-			get { return this.context.Count; }
+			Completed(this, Status);
 		}
-
-		public T this[int index]
-		{
-			get { return this.context[index]; }
-		}
-
-		public IEnumerator<T> GetEnumerator()
-		{
-			return this.context.GetEnumerator();
-		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return ((IEnumerable)this.context).GetEnumerator();
-		}
-
-		private IList<T> context;
 	}
 }

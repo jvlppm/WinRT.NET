@@ -31,6 +31,7 @@ using System.Security.Cryptography;
 using Windows.Storage.Streams;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Collections.Generic.Internal;
 
 namespace Windows.Security.Cryptography.Core
 {

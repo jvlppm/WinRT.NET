@@ -27,6 +27,7 @@
 using Windows.Storage.Streams;
 using Windows.System.IO;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.System.IO.Internal;
 
 namespace System.IO
 {

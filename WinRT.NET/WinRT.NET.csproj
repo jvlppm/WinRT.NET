@@ -63,7 +63,7 @@
     <Compile Include="Foundation\Metadata\ThreadingModel.cs" />
     <Compile Include="Foundation\Metadata\VersionAttribute.cs" />
     <Compile Include="Foundation\Metadata\WebHostHiddenAttribute.cs" />
-    <Compile Include="Foundation\TaskAction.cs" />
+    <Compile Include="Foundation\Internal\TaskAction.cs" />
     <Compile Include="Networking\Connectivity\CellularApnAuthenticationType.cs" />
     <Compile Include="Networking\Connectivity\CellularApnContext.cs" />
     <Compile Include="Networking\Connectivity\ConnectionCost.cs" />
@@ -150,11 +150,11 @@
     <Compile Include="Storage\Streams\IRandomAccessStreamWithContentType.cs" />
     <Compile Include="Storage\Streams\UnicodeEncoding.cs" />
     <Compile Include="System\Collections\Generic\IReadOnlyList.cs" />
-    <Compile Include="System\Collections\Generic\ReadOnlyList.cs" />
-    <Compile Include="System\IO\InputStreamToStreamAdapter.cs" />
-    <Compile Include="System\IO\OutputStreamToStreamAdapter.cs" />
-    <Compile Include="System\IO\StreamToInputStreamAdapter.cs" />
-    <Compile Include="System\IO\StreamToOutputStreamAdapter.cs" />
+    <Compile Include="System\Collections\Generic\Internal\ReadOnlyList.cs" />
+    <Compile Include="System\IO\Internal\InputStreamToStreamAdapter.cs" />
+    <Compile Include="System\IO\Internal\OutputStreamToStreamAdapter.cs" />
+    <Compile Include="System\IO\Internal\StreamToInputStreamAdapter.cs" />
+    <Compile Include="System\IO\Internal\StreamToOutputStreamAdapter.cs" />
     <Compile Include="System\IO\WindowsRuntimeStreamExtensions.cs" />
     <Compile Include="System\Runtime\InteropServices\WindowsRuntime\WindowsRuntimeBuffer.cs" />
     <Compile Include="System\Runtime\InteropServices\WindowsRuntime\WindowsRuntimeBufferExtensions.cs" />
@@ -178,9 +178,9 @@
     <Compile Include="Security\Cryptography\Core\MacAlgorithmNames.cs" />
     <Compile Include="Security\Cryptography\Core\CryptographicPrivateKeyBlobType.cs" />
     <Compile Include="Security\Cryptography\Core\CryptographicPublicKeyBlobType.cs" />
-    <Compile Include="System\Threading\Tasks\TaskToAsyncOperationAdapter.cs" />
-    <Compile Include="System\Threading\Tasks\TaskToAsyncActionAdapter.cs" />
-    <Compile Include="System\Threading\Tasks\TaskToAsyncInfoAdapter.cs" />
+    <Compile Include="System\Threading\Tasks\Internal\TaskToAsyncOperationAdapter.cs" />
+    <Compile Include="System\Threading\Tasks\Internal\TaskToAsyncActionAdapter.cs" />
+    <Compile Include="System\Threading\Tasks\Internal\TaskToAsyncInfoAdapter.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

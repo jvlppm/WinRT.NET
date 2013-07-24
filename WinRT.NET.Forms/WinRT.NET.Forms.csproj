@@ -41,10 +41,10 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\BackButton.cs">
+    <Compile Include="Internal\Controls\BackButton.cs" />
+    <Compile Include="Internal\Controls\PictureButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\PictureButton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

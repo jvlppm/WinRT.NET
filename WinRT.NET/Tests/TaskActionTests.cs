@@ -27,6 +27,7 @@
 using System.Threading;
 using NUnit.Framework;
 using Windows.Foundation;
+using Windows.Foundation.Internal;
 
 namespace WinRTNET.Tests
 {

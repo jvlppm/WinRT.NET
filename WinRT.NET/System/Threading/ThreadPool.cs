@@ -26,6 +26,7 @@
 
 using System;
 using Windows.Foundation;
+using Windows.Foundation.Internal;
 
 namespace Windows.System.Threading
 {

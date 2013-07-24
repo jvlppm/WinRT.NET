@@ -29,7 +29,7 @@ using System.IO;
 using System.Linq;
 using Windows.Storage.Streams;
 
-namespace Windows.System.IO
+namespace Windows.System.IO.Internal
 {
 	internal class OutputStreamToStreamAdapter
 		: Stream

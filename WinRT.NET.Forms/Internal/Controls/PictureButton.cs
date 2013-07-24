@@ -2,9 +2,9 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace WinRT.NET.Forms.Controls
+namespace WinRT.NET.Forms.Internal.Controls
 {
-	class PictureButton : Control, IButtonControl
+	internal class PictureButton : Control, IButtonControl
 	{
 		bool pressed = false;
 		bool over = false;

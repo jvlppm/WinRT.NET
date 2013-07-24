@@ -1,8 +1,8 @@
-﻿//
-// StreamToInputStreamAdapter.cs
+//
+// TaskToAsyncOperationAdapter.cs
 //
 // Author:
-//   Eric Maupin <me@ermau.com>
+//   Joao Vitor P. Moraes <jvlppm@gmail.com>
 //
 // Copyright (c) 2011 Eric Maupin
 //
@@ -25,25 +25,39 @@
 // THE SOFTWARE.
 
 using System;
-using System.IO;
 using Windows.Foundation;
-using Windows.Storage.Streams;
+using System.Threading.Tasks;
 
-namespace Windows.System.IO
+namespace System.Threading.Tasks.Internal
 {
-	internal class StreamToInputStreamAdapter
-		: IInputStream
+	internal class TaskToAsyncOperationAdapter<T> : TaskToAsyncInfoAdapter<AsyncOperationCompletedHandler<T>>, IAsyncOperation<T>
 	{
-		internal StreamToInputStreamAdapter (Stream stream)
+		new Task<T> Task
 		{
-			this.stream = stream;
+			get { return (Task<T>)base.Task; }
+			set { base.Task = value; }
 		}
 
-		public IAsyncOperationWithProgress<IBuffer, uint> ReadAsync (IBuffer buffer, uint count, InputStreamOptions options)
+		public TaskToAsyncOperationAdapter(Task<T> task)
+			: base(task)
 		{
-			throw new NotImplementedException();
+			CheckCompletion();
 		}
 
-		private Stream stream;
+		protected override void Complete()
+		{
+			Completed(this, Status);
+		}
+
+		#region IAsyncOperation implementation
+
+		new public T GetResults()
+		{
+			base.GetResults();
+			return Task.Result;
+		}
+
+		#endregion
 	}
 }
+

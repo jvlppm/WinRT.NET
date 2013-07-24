@@ -29,7 +29,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Windows.Foundation
+namespace Windows.Foundation.Internal
 {
 	internal class TaskAction
 		: IAsyncAction

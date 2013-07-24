@@ -30,7 +30,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Windows.Foundation;
 using Windows.Foundation.Metadata;
-using WinRT.NET.Forms.Controls;
+using WinRT.NET.Forms.Internal.Controls;
 
 namespace Windows.Security.Authentication.Web
 {

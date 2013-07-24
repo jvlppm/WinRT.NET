@@ -3,9 +3,9 @@ using System.Drawing;
 using System.Windows.Forms;
 using WinRT.NET.Forms.Properties;
 
-namespace WinRT.NET.Forms.Controls
+namespace WinRT.NET.Forms.Internal.Controls
 {
-	class BackButton : PictureButton
+	internal class BackButton : PictureButton
 	{
 		public BackButton()
 		{

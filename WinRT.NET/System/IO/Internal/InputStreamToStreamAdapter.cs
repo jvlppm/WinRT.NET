@@ -28,7 +28,7 @@ using System;
 using System.IO;
 using Windows.Storage.Streams;
 
-namespace Windows.System.IO
+namespace Windows.System.IO.Internal
 {
 	internal class InputStreamToStreamAdapter
 		: Stream

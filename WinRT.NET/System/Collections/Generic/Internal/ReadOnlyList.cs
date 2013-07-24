@@ -1,8 +1,8 @@
-//
-// TaskToAsyncOperationAdapter.cs
+﻿//
+// ReadOnlyList.cs
 //
 // Author:
-//   Joao Vitor P. Moraes <jvlppm@gmail.com>
+//   Eric Maupin <me@ermau.com>
 //
 // Copyright (c) 2011 Eric Maupin
 //
@@ -24,40 +24,36 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
-using Windows.Foundation;
-using System.Threading.Tasks;
-
-namespace System.Threading.Tasks
+namespace System.Collections.Generic.Internal
 {
-	class TaskToAsyncOperationAdapter<T> : TaskToAsyncInfoAdapter<AsyncOperationCompletedHandler<T>>, IAsyncOperation<T>
+	internal class ReadOnlyList<T>
+		: IReadOnlyList<T>
 	{
-		new Task<T> Task
+		public ReadOnlyList (IList<T> list)
 		{
-			get { return (Task<T>)base.Task; }
-			set { base.Task = value; }
+			this.context = list;
 		}
 
-		public TaskToAsyncOperationAdapter(Task<T> task)
-			: base(task)
+		public int Count
 		{
-			CheckCompletion();
+			get { return this.context.Count; }
 		}
 
-		protected override void Complete()
+		public T this[int index]
 		{
-			Completed(this, Status);
+			get { return this.context[index]; }
 		}
 
-		#region IAsyncOperation implementation
-
-		new public T GetResults()
+		public IEnumerator<T> GetEnumerator()
 		{
-			base.GetResults();
-			return Task.Result;
+			return this.context.GetEnumerator();
 		}
 
-		#endregion
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return ((IEnumerable)this.context).GetEnumerator();
+		}
+
+		private IList<T> context;
 	}
 }
-

@@ -28,9 +28,9 @@ using System;
 using Windows.Foundation;
 using System.Threading.Tasks;
 
-namespace System.Threading.Tasks
+namespace System.Threading.Tasks.Internal
 {
-	class TaskToAsyncInfoAdapter<TCompletedHandler> : IAsyncInfo
+	internal class TaskToAsyncInfoAdapter<TCompletedHandler> : IAsyncInfo
 	{
 		protected Task Task { get; set; }
 
