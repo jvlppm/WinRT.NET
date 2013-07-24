@@ -40,14 +40,14 @@ namespace Windows.System.Threading
 	/// <param name="timer">The timer to associate with this method.</param>
 	[Guid("34ed19fa-8384-4eb9-8209-fb5094eeec35")]
 	[Version(WindowsVersion.NTDDI_WIN8)]
-	//[WebHostHiddenAttribute()]
+	[WebHostHidden]
 	public delegate void TimerDestroyedHandler(ThreadPoolTimer timer);
 
 	/// <summary>
 	/// Represents a timer created with CreateTimer or CreatePeriodicTimer.
 	/// </summary>
 	//[Static(typeof(Windows.System.Threading.IThreadPoolTimerStatics), WindowsVersion.NTDDI_WIN8)]
-	//[WebHostHiddenAttribute()]
+	[WebHostHidden]
 	[Threading(ThreadingModel.Both)]
 	[MarshalingBehavior(MarshalingType.Agile)]
 	[Version(WindowsVersion.NTDDI_WIN8)]

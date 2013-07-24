@@ -62,6 +62,7 @@
     <Compile Include="Foundation\Metadata\ThreadingAttribute.cs" />
     <Compile Include="Foundation\Metadata\ThreadingModel.cs" />
     <Compile Include="Foundation\Metadata\VersionAttribute.cs" />
+    <Compile Include="Foundation\Metadata\WebHostHiddenAttribute.cs" />
     <Compile Include="Foundation\TaskAction.cs" />
     <Compile Include="Networking\Connectivity\CellularApnAuthenticationType.cs" />
     <Compile Include="Networking\Connectivity\CellularApnContext.cs" />
