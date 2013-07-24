@@ -32,8 +32,8 @@ using Windows.Foundation.Metadata;
 namespace Windows.Security.Cryptography.Core
 {
 	//[Static(Windows.Security.Cryptography.Core.ICryptographicEngineStatics, NTDDI_WIN8)]
-	//[Threading(Both)]
 	[DualApiPartition]
+	[Threading(ThreadingModel.Both)]
 	[MarshalingBehavior(MarshalingType.Agile)]
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public static class CryptographicEngine

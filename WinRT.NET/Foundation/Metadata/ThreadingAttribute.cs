@@ -1,5 +1,5 @@
 //
-// CryptographicBuffer.cs
+// ThreadingAttribute.cs
 //
 // Author:
 //   Joao Vitor P. Moraes <jvlppm@gmail.com>
@@ -25,30 +25,24 @@
 // THE SOFTWARE.
 
 using System;
-using Windows.Storage.Streams;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation.Metadata;
 
-namespace Windows.Security.Cryptography
+namespace Windows.Foundation.Metadata
 {
-	//[Static(Windows.Security.Cryptography.ICryptographicBufferStatics, NTDDI_WIN8)]
-	[DualApiPartition]
-	[Threading(ThreadingModel.Both)]
-	[MarshalingBehavior(MarshalingType.Agile)]
+	/// <summary>
+	/// Indicates the threading model of a Windows Runtime component.
+	/// </summary>	[AttributeUsage(512)]
 	[Version(WindowsVersion.NTDDI_WIN8)]
-	public static class CryptographicBuffer
+	public sealed class ThreadingAttribute : Attribute
 	{
 		/// <summary>
-		/// Encodes a buffer to a base64 string.
+		/// Creates and initializes a new instance of the attribute.
 		/// </summary>
-		/// <param name="buffer">Input buffer.</param>
-		/// <returns>Base64-encoded output string.</returns>
-		public static string EncodeToBase64String( IBuffer buffer )
+		/// <param name="model">One of the enumeration values.</param>
+		public ThreadingAttribute( ThreadingModel model )
 		{
-			if (buffer == null)
-				throw new ArgumentNullException("buffer");
-
-			return Convert.ToBase64String(buffer.ToArray());
+			Model = model;
 		}
+
+		internal ThreadingModel Model { get; private set; }
 	}
 }

@@ -35,7 +35,7 @@ using WinRT.NET.Forms.Controls;
 namespace Windows.Security.Authentication.Web
 {
 	//[Static(Windows.Security.Authentication.Web.IWebAuthenticationBrokerStatics, NTDDI_WIN8)]
-	//[Threading(Both)]
+	[Threading(ThreadingModel.Both)]
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public static class WebAuthenticationBroker
 	{

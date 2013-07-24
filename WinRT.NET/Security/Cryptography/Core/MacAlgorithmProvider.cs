@@ -40,8 +40,8 @@ namespace Windows.Security.Cryptography.Core
 	/// For more information, see MACs, Hashes, and Signatures.
 	/// </summary>
 	//[Static(Windows.Security.Cryptography.Core.IMacAlgorithmProviderStatics, NTDDI_WIN8)]
-	//[Threading(Both)]
 	[DualApiPartition]
+	[Threading(ThreadingModel.Both)]
 	[MarshalingBehavior(MarshalingType.Agile)]
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class MacAlgorithmProvider

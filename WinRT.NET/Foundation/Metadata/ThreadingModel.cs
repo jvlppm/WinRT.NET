@@ -1,5 +1,5 @@
 //
-// CryptographicBuffer.cs
+// ThreadingModel.cs
 //
 // Author:
 //   Joao Vitor P. Moraes <jvlppm@gmail.com>
@@ -24,31 +24,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
-using Windows.Storage.Streams;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation.Metadata;
-
-namespace Windows.Security.Cryptography
+namespace Windows.Foundation.Metadata
 {
-	//[Static(Windows.Security.Cryptography.ICryptographicBufferStatics, NTDDI_WIN8)]
-	[DualApiPartition]
-	[Threading(ThreadingModel.Both)]
-	[MarshalingBehavior(MarshalingType.Agile)]
+	/// <summary>
+	/// Specifies the threading model.
+	/// </summary>
 	[Version(WindowsVersion.NTDDI_WIN8)]
-	public static class CryptographicBuffer
+	public enum ThreadingModel
 	{
 		/// <summary>
-		/// Encodes a buffer to a base64 string.
+		/// Single-threaded apartment.
 		/// </summary>
-		/// <param name="buffer">Input buffer.</param>
-		/// <returns>Base64-encoded output string.</returns>
-		public static string EncodeToBase64String( IBuffer buffer )
-		{
-			if (buffer == null)
-				throw new ArgumentNullException("buffer");
-
-			return Convert.ToBase64String(buffer.ToArray());
-		}
+		STA = 1,
+		/// <summary>
+		/// Multithreaded apartment.
+		/// </summary>
+		MTA = 2,
+		/// <summary>
+		/// Both single-threaded and multithreaded apartments.
+		/// </summary>
+		Both = 3,
+		/// <summary>
+		/// No valid threading model applies.
+		/// </summary>
+		InvalidThreading = 0
 	}
 }

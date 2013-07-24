@@ -30,12 +30,12 @@ using Windows.Foundation.Metadata;
 namespace Windows.Networking.Connectivity
 {
 #if Windows8_1_Preview
-	//[Threading(Both)]
 	/// <summary>
 	/// The ConnectionProfileFilter class defines a set of properties that are
 	/// used to improve the relevance of FindConnectionProfilesAsync results.
 	/// </summary>
 	[DualApiPartition]
+	[Threading(ThreadingModel.Both)]
 	[MarshalingBehavior(MarshalingType.Agile)]
 	[Activatable(WindowsVersion.Windows8_1_Preview)]
 	[Version(WindowsVersion.Windows8_1_Preview)]

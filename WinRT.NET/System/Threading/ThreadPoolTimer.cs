@@ -47,8 +47,8 @@ namespace Windows.System.Threading
 	/// Represents a timer created with CreateTimer or CreatePeriodicTimer.
 	/// </summary>
 	//[StaticAttribute(Windows.System.Threading.IThreadPoolTimerStatics, NTDDI_WIN8)]
-	//[ThreadingAttribute(Both)]
 	//[WebHostHiddenAttribute()]
+	[Threading(ThreadingModel.Both)]
 	[MarshalingBehavior(MarshalingType.Agile)]
 	[Version(WindowsVersion.NTDDI_WIN8)]
 	public sealed class ThreadPoolTimer
