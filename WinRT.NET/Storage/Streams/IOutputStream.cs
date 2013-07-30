@@ -25,12 +25,30 @@
 // THE SOFTWARE.
 
 using Windows.Foundation;
+using Windows.Foundation.Metadata;
+using System.Runtime.InteropServices;
+using System;
 
 namespace Windows.Storage.Streams
 {
-	public interface IOutputStream
+	/// <summary>
+	/// Represents a sequential stream of bytes to be written.
+	/// </summary>
+	[Guid("905a0fe6-bc53-11df-8c49-001e4fc686da")]
+	[Version(WindowsVersion.NTDDI_WIN8)]
+	public interface IOutputStream : IDisposable
 	{
+		/// <summary>
+		/// Flushes data asynchronously in a sequential stream.
+		/// </summary>
+		/// <returns>The stream flush operation.</returns>
 		IAsyncOperation<bool> FlushAsync();
-		IAsyncOperationWithProgress<uint, uint> WriteAsync (IBuffer buffer);
+
+		/// <summary>
+		/// Writes data asynchronously in a sequential stream.
+		/// </summary>
+		/// <param name="buffer">The buffer into which the asynchronous writer operation writes.</param>
+		/// <returns>The byte writer operation.</returns>
+		IAsyncOperationWithProgress<uint, uint> WriteAsync( IBuffer buffer );
 	}
 }

@@ -183,6 +183,10 @@
     <Compile Include="System\Threading\Tasks\Internal\TaskToAsyncOperationAdapter.cs" />
     <Compile Include="System\Threading\Tasks\Internal\TaskToAsyncActionAdapter.cs" />
     <Compile Include="System\Threading\Tasks\Internal\TaskToAsyncInfoAdapter.cs" />
+    <Compile Include="System\IProgress.cs" />
+    <Compile Include="System\Progress.cs" />
+    <Compile Include="System\Threading\WorkItemOptions.cs" />
+    <Compile Include="System\Threading\Tasks\Internal\TaskToAsyncOperationWithProgressAdapter.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

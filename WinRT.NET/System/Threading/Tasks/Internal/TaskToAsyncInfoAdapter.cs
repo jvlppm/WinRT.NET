@@ -30,33 +30,72 @@ using System.Threading.Tasks;
 
 namespace System.Threading.Tasks.Internal
 {
-	internal class TaskToAsyncInfoAdapter<TCompletedHandler> : IAsyncInfo
+	internal abstract class TaskToAsyncInfoAdapter<TCompletedHandler> : IAsyncInfo
 	{
-		protected Task Task { get; set; }
+		object locker = new object();
+		bool completedInvoked = false;
+		TCompletedHandler completed;
+
+		Task task;
+		protected Task Task
+		{
+			get { return task; }
+			set
+			{
+				if (value != null)
+				{
+					if (value.Status == TaskStatus.Created)
+						throw new InvalidOperationException("The specified underlying Task is not started. Task instances must be run immediately upon creation.");
+
+					task = value;
+					Status = task.Status.ToAsyncStatus();
+					CheckCompletion();
+				}
+			}
+		}
+		protected TaskScheduler Scheduler { get; set; }
+
+		protected abstract void Invoke(TCompletedHandler completed);
 
 		protected virtual void Complete()
 		{
+			bool alreadyInvoked;
+			TCompletedHandler handler;
+            lock (this.locker)
+			{
+				handler = completed;
+				if (handler == null)
+					return;
+
+				completed = default(TCompletedHandler);
+				alreadyInvoked = completedInvoked;
+				completedInvoked = true;
+			}
+			if (!alreadyInvoked)
+				Task.Factory.StartNew(s => Invoke((TCompletedHandler)s), handler, default(CancellationToken), TaskCreationOptions.None, Scheduler);
 		}
 
-		public TaskToAsyncInfoAdapter(Task source)
+		protected TaskToAsyncInfoAdapter()
+		{
+			Scheduler = TaskScheduler.Current;
+		}
+
+		protected TaskToAsyncInfoAdapter(Task source)
+			: this()
 		{
 			if (source == null)
 				throw new ArgumentNullException("source");
 
-			if (source.Status == TaskStatus.Created)
-				throw new InvalidOperationException("The specified underlying Task is not started. Task instances must be run immediately upon creation.");
-
 			Task = source;
-			Status = Task.Status.ToAsyncStatus();
 		}
 
 		protected void CheckCompletion()
 		{
 			if (Status == AsyncStatus.Started)
 			{
-				var updateStatus = Task.ContinueWith(t =>
+				Task.ContinueWith(t =>
 				{
-					lock (this)
+					lock (this.locker)
 					{
 						if (Status == AsyncStatus.Started)
 							Status = t.Status.ToAsyncStatus();
@@ -80,7 +119,18 @@ namespace System.Threading.Tasks.Internal
 				throw new InvalidOperationException("Cannot call GetResults on this asynchronous info because the underlying operation has not completed.");
 		}
 
-		public TCompletedHandler Completed { get; set; }
+		public TCompletedHandler Completed
+		{
+			get { return this.completed; }
+			set
+			{
+				if (this.completed != null)
+					throw new InvalidOperationException("The 'Completed' handler delegate cannot be set more than once, but this handler has already been set.");
+
+				this.completed = value;
+				CheckCompletion();
+			}
+		}
 
 		#endregion
 
@@ -98,11 +148,13 @@ namespace System.Threading.Tasks.Internal
 
 		public void Cancel()
 		{
-			lock (this)
+			lock (this.locker)
 			{
 				if (Status == AsyncStatus.Started)
 					Status = AsyncStatus.Canceled;
 			}
+
+			CheckCompletion();
 		}
 
 		public uint Id { get { return (uint)Task.Id; } }
@@ -114,4 +166,3 @@ namespace System.Threading.Tasks.Internal
 		#endregion
 	}
 }
-

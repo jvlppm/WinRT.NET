@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Windows.System.IO.Internal;
+using Windows.System.Threading;
 
 namespace Windows.Storage.Streams.Internal
 {
@@ -11,14 +12,14 @@ namespace Windows.Storage.Streams.Internal
 	{
 		#region Attributes
 		FileInfo fileInfo;
-		ulong position;
 		Stream stream;
 		bool disposed;
 		#endregion
 
-		public FileAccessStream(FileInfo fileInfo)
+		public FileAccessStream(FileInfo fileInfo, Stream stream)
 		{
 			this.fileInfo = fileInfo;
+			this.stream = stream;
 		}
 
 		~FileAccessStream()
@@ -31,7 +32,7 @@ namespace Windows.Storage.Streams.Internal
 		/// </summary>
 		public bool CanRead
 		{
-			get { throw new NotImplementedException(); }
+			get { return this.stream.CanRead; }
 		}
 
 		/// <summary>
@@ -39,7 +40,7 @@ namespace Windows.Storage.Streams.Internal
 		/// </summary>
 		public bool CanWrite
 		{
-			get { throw new NotImplementedException(); }
+			get { return this.stream.CanWrite; }
 		}
 
 		/// <summary>
@@ -47,7 +48,8 @@ namespace Windows.Storage.Streams.Internal
 		/// </summary>
 		public ulong Position
 		{
-			get { return this.position; }
+			get { return (ulong)this.stream.Position; }
+			private set { this.stream.Position = (long)value; }
 		}
 
 		/// <summary>
@@ -56,7 +58,7 @@ namespace Windows.Storage.Streams.Internal
 		public ulong Size
 		{
 			get { return (ulong)this.fileInfo.Length; }
-			set { /* /:? */ }
+			set { this.stream.SetLength((long)value); }
 		}
 
 		/// <summary>
@@ -99,7 +101,7 @@ namespace Windows.Storage.Streams.Internal
 		/// <param name="position">The new position of the stream.</param>
 		public void Seek(ulong position)
 		{
-			this.position = position;
+			Position = position;
 		}
 
 		public void Dispose()
@@ -128,11 +130,19 @@ namespace Windows.Storage.Streams.Internal
 		public Foundation.IAsyncOperationWithProgress<IBuffer, uint> ReadAsync(IBuffer buffer, uint count, InputStreamOptions options)
 		{
 			throw new NotImplementedException();
+			/*return ThreadPool.RunAsyncWithProgress<IBuffer, uint>(p =>
+			{
+				return (IBuffer)null;
+			});*/
 		}
 
 		public Foundation.IAsyncOperation<bool> FlushAsync()
 		{
-			throw new NotImplementedException();
+			Func<bool> flushSync = () => {
+				this.stream.Flush();
+				return true;
+			};
+			return ThreadPool.RunAsyncOperation(flushSync);
 		}
 
 		public Foundation.IAsyncOperationWithProgress<uint, uint> WriteAsync(IBuffer buffer)

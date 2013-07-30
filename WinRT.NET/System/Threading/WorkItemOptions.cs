@@ -1,8 +1,8 @@
-﻿//
-// StreamToOutputStreamAdapter.cs
+//
+// WorkItemOptions.cs
 //
 // Author:
-//   Eric Maupin <me@ermau.com>
+//   Joao Vitor P. Moraes <jvlppm@gmail.com>
 //
 // Copyright (c) 2011 Eric Maupin
 //
@@ -25,35 +25,26 @@
 // THE SOFTWARE.
 
 using System;
-using System.IO;
-using Windows.Foundation;
-using Windows.Storage.Streams;
+using Windows.Foundation.Metadata;
 
-namespace Windows.System.IO.Internal
+namespace Windows.System.Threading
 {
-	internal class StreamToOutputStreamAdapter
-		: IOutputStream, IDisposable
+	/// <summary>
+	/// Specifies how work items should be run.
+	/// </summary>
+	[Flags]
+	[Version(WindowsVersion.NTDDI_WIN8)]
+	[WebHostHidden]
+	public enum WorkItemOptions
 	{
-		internal StreamToOutputStreamAdapter (Stream stream)
-		{
-			this.stream = stream;
-		}
-
-		public IAsyncOperation<bool> FlushAsync()
-		{
-			throw new NotImplementedException();
-		}
-
-		public IAsyncOperationWithProgress<uint, uint> WriteAsync (IBuffer buffer)
-		{
-			throw new NotImplementedException();
-		}
-
-		private Stream stream;
-
-		public void Dispose()
-		{
-			throw new NotImplementedException();
-		}
+		/// <summary>
+		/// The work item should be run when the thread pool has an available worker thread.
+		/// </summary>
+		None,
+		/// <summary>
+		/// The work items should be run simultaneously with other work items sharing a processor.
+		/// </summary>
+		TimeSliced
 	}
 }
+
