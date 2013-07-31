@@ -152,6 +152,8 @@ namespace System.Threading.Tasks.Internal
 				if (Status == AsyncStatus.Started)
 					Status = AsyncStatus.Canceled;
 			}
+
+			CheckCompletion();
 		}
 
 		public uint Id { get { return (uint)Task.Id; } }

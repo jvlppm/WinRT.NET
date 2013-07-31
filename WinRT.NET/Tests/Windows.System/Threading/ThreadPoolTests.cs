@@ -85,7 +85,7 @@ namespace WinRTNET.Tests.Windows.System.Threading
 			};
 
 			action.Cancel();
-			Assert.IsFalse(SpinWait.SpinUntil(() => tcs.Task.IsCompleted, 100), "Task should not invoke completed during execution");
+			Thread.Sleep(100);
 			Assert.AreEqual(AsyncStatus.Canceled, action.Status);
 			canComplete = true;
 
@@ -109,7 +109,7 @@ namespace WinRTNET.Tests.Windows.System.Threading
 			};
 
 			action.Cancel();
-			Assert.IsFalse(SpinWait.SpinUntil(() => tcs.Task.IsCompleted, 100), "Task should not invoke completed during execution");
+			Thread.Sleep(100);
 			Assert.AreEqual(AsyncStatus.Canceled, action.Status);
 			Assert.IsNull(action.ErrorCode);
 		}
