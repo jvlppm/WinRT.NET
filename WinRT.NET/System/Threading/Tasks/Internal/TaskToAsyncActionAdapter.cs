@@ -23,6 +23,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
 using System;
 using Windows.Foundation;
 using System.Threading.Tasks;
@@ -32,35 +33,12 @@ namespace System.Threading.Tasks.Internal
 {
 	internal class TaskToAsyncActionAdapter : TaskToAsyncInfoAdapter<AsyncActionCompletedHandler>, IAsyncAction
 	{
-		public static IAsyncAction StartNew(WorkItemHandler handler, CancellationToken cancellation = default(CancellationToken), TaskCreationOptions taskCreationOptions = TaskCreationOptions.DenyChildAttach, TaskScheduler scheduler = null)
-		{
-			if (handler == null)
-				throw new ArgumentException("handler");
-
-			var adapter = new TaskToAsyncActionAdapter();
-
-			adapter.Task = System.Threading.Tasks.Task.Factory.StartNew(a => handler((IAsyncAction)a), adapter,
-			                                                            cancellation,
-			                                                            taskCreationOptions,
-			                                                            scheduler ?? TaskScheduler.Default);
-
-			if (cancellation != default(CancellationToken))
-				cancellation.Register(adapter.Cancel);
-
-			return adapter;
-		}
-
-		public static IAsyncAction StartNew(Action action, CancellationToken cancellation = default(CancellationToken), TaskCreationOptions taskCreationOptions = TaskCreationOptions.DenyChildAttach, TaskScheduler scheduler = null)
-		{
-			return StartNew(s => action(), cancellation, taskCreationOptions, scheduler);
-		}
-
 		public TaskToAsyncActionAdapter()
 		{
 		}
 
-		public TaskToAsyncActionAdapter(Task task)
-			: base(task)
+		public TaskToAsyncActionAdapter(Task source)
+			: base(source)
 		{
 		}
 

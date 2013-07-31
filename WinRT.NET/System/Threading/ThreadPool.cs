@@ -25,7 +25,6 @@
 // THE SOFTWARE.
 using System;
 using Windows.Foundation;
-using Windows.Foundation.Internal;
 using Windows.Foundation.Metadata;
 using System.Threading.Tasks.Internal;
 using System.Threading.Tasks;
@@ -62,7 +61,14 @@ namespace Windows.System.Threading
 			if (handler == null)
 				throw new ArgumentException("handler");
 
-			return TaskToAsyncActionAdapter.StartNew(handler);
+			var adapter = new TaskToAsyncActionAdapter();
+
+			adapter.Task = Task.Factory.StartNew(a => handler((IAsyncAction)a), adapter,
+																CancellationToken.None,
+																TaskCreationOptions.None,
+																TaskScheduler.Default);
+
+			return adapter;
 		}
 
 		/// <summary>
@@ -98,7 +104,10 @@ namespace Windows.System.Threading
 			if (handler == null)
 				throw new ArgumentException("handler");
 
-			return TaskToAsyncOperationAdapter<T>.StartNew(handler);
+			var adapter = new TaskToAsyncOperationAdapter<T>(
+				Task.Factory.StartNew(handler, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default));
+
+			return adapter;
 		}
 
 		internal static IAsyncOperationWithProgress<T, TProgress> RunAsyncWithProgress<T, TProgress>(Func<IProgress<TProgress>, T> handler)

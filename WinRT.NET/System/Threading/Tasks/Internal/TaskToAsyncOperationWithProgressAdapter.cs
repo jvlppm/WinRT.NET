@@ -14,21 +14,20 @@ namespace System.Threading.Tasks.Internal
 		/// <param name="cancellation">Cancellation token.</param>
 		/// <param name="taskCreationOptions">Task creation options.</param>
 		/// <param name="scheduler">The Scheduler that the function will be executed on.</param>
-		public static TaskToAsyncOperationWithProgressAdapter<TResult, TProgress> StartNew(Func<IProgress<TProgress>, TResult> function, CancellationToken cancellation = default(CancellationToken), TaskCreationOptions taskCreationOptions = TaskCreationOptions.DenyChildAttach, TaskScheduler scheduler = null)
+		public static TaskToAsyncOperationWithProgressAdapter<TResult, TProgress> StartNew(Func<IProgress<TProgress>, TResult> function, CancellationToken cancellation = default(CancellationToken), TaskCreationOptions taskCreationOptions = TaskCreationOptions.None, TaskScheduler scheduler = null)
 		{
 			if (function == null)
 				throw new ArgumentException("function");
 
 			var progress = new Progress<TProgress>();
-			var adapter = new TaskToAsyncOperationWithProgressAdapter<TResult, TProgress>(
-				task: System.Threading.Tasks.Task.Factory.StartNew(p => function((IProgress<TProgress>)p), progress,
-			                                                    cancellation,
-			                                                    taskCreationOptions,
-			                                                    scheduler ?? TaskScheduler.Default),
-				progress: progress
-			);
+			var adapter = new TaskToAsyncOperationWithProgressAdapter<TResult, TProgress>();
+			adapter.Task = Tasks.Task.Factory.StartNew(p => function((IProgress<TProgress>)p), progress,
+																cancellation,
+																taskCreationOptions,
+																scheduler ?? TaskScheduler.Default);
+			progress.ProgressChanged += adapter.ReportProgress;
 
-			if(cancellation != default(CancellationToken))
+			if (cancellation != default(CancellationToken))
 				cancellation.Register(adapter.Cancel);
 
 			return adapter;
@@ -38,12 +37,6 @@ namespace System.Threading.Tasks.Internal
 		{
 			get { return (Task<TResult>)base.Task; }
 			set { base.Task = value; }
-		}
-
-		private TaskToAsyncOperationWithProgressAdapter(Task<TResult> task, Progress<TProgress> progress)
-			: base(task)
-		{
-			progress.ProgressChanged += ReportProgress;
 		}
 
 		#region IAsyncOperationWithProgress implementation

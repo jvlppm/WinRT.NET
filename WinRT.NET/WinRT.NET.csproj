@@ -63,7 +63,6 @@
     <Compile Include="Foundation\Metadata\ThreadingModel.cs" />
     <Compile Include="Foundation\Metadata\VersionAttribute.cs" />
     <Compile Include="Foundation\Metadata\WebHostHiddenAttribute.cs" />
-    <Compile Include="Foundation\Internal\TaskAction.cs" />
     <Compile Include="Networking\Connectivity\CellularApnAuthenticationType.cs" />
     <Compile Include="Networking\Connectivity\CellularApnContext.cs" />
     <Compile Include="Networking\Connectivity\ConnectionCost.cs" />
@@ -153,6 +152,7 @@
     <Compile Include="Storage\Streams\UnicodeEncoding.cs" />
     <Compile Include="System\Collections\Generic\IReadOnlyList.cs" />
     <Compile Include="System\Collections\Generic\Internal\ReadOnlyList.cs" />
+    <Compile Include="System\EventHandler.cs" />
     <Compile Include="System\IO\Internal\InputStreamToStreamAdapter.cs" />
     <Compile Include="System\IO\Internal\OutputStreamToStreamAdapter.cs" />
     <Compile Include="System\IO\Internal\StreamToInputStreamAdapter.cs" />

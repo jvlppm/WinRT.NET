@@ -30,6 +30,7 @@ using NUnit.Framework;
 using Windows.Foundation;
 using Windows.System.Threading;
 using ThreadPool = Windows.System.Threading.ThreadPool;
+using System.Threading.Tasks;
 
 namespace WinRTNET.Tests.Windows.System.Threading
 {
@@ -39,7 +40,7 @@ namespace WinRTNET.Tests.Windows.System.Threading
 		[Test]
 		public void RunAsync_InvalidArgs()
 		{
-			Assert.Throws<ArgumentException> (() => ThreadPool.RunAsync (null));
+			Assert.Throws<ArgumentException>(() => ThreadPool.RunAsync(null));
 		}
 
 		[Test]
@@ -50,70 +51,149 @@ namespace WinRTNET.Tests.Windows.System.Threading
 			IAsyncAction action = null;
 			action = ThreadPool.RunAsync(a =>
 			{
-				Assert.AreEqual (AsyncStatus.Started, a.Status);
+				Assert.AreEqual(AsyncStatus.Started, a.Status);
 				handlerCompleted = true;
 			});
 
 			action.Completed = (a, s) =>
 			{
-				Assert.AreEqual (AsyncStatus.Completed, s);
+				Assert.AreEqual(AsyncStatus.Completed, s);
 				actionCompleted = true;
 			};
 
-			Assert.IsTrue (SpinWait.SpinUntil (() => handlerCompleted && actionCompleted, millisecondsTimeout: 5000));
-			Assert.AreEqual (AsyncStatus.Completed, action.Status);
-			Assert.IsNull (action.ErrorCode);
+			Assert.IsTrue(SpinWait.SpinUntil(() => handlerCompleted && actionCompleted, millisecondsTimeout: 5000));
+			Assert.AreEqual(AsyncStatus.Completed, action.Status);
+			Assert.IsNull(action.ErrorCode);
 		}
 
 		[Test]
 		public void RunAsync_Cancel()
 		{
-			bool handlerCompleted = false, actionCompleted = false;
+			bool canComplete = false;
 
 			IAsyncAction action = null;
-			action = ThreadPool.RunAsync (a =>
+			action = ThreadPool.RunAsync(a =>
 			{
-				Assert.AreEqual (AsyncStatus.Started, a.Status);
-				handlerCompleted = true;
-				Thread.Sleep (2000);
+				while (!canComplete)
+					Thread.Sleep(10);
 			});
 
+			var tcs = new TaskCompletionSource<AsyncStatus>();
 			action.Completed = (a, s) =>
 			{
-				Assert.AreEqual (AsyncStatus.Canceled, s);
-				actionCompleted = true;
+				tcs.SetResult(s);
 			};
 
-			Assert.IsTrue (SpinWait.SpinUntil(() => handlerCompleted, 1000));
+			action.Cancel();
+			Assert.IsFalse(SpinWait.SpinUntil(() => tcs.Task.IsCompleted, 100), "Task should not invoke completed during execution");
+			Assert.AreEqual(AsyncStatus.Canceled, action.Status);
+			canComplete = true;
+
+			Assert.IsTrue(SpinWait.SpinUntil(() => tcs.Task.IsCompleted, millisecondsTimeout: 400), "Task did not complete under 400ms.");
+			Assert.AreEqual(AsyncStatus.Canceled, action.Status, "Task should not change status after cancel");
+		}
+
+		[Test]
+		public void RunAsync_CancelDuringExecution()
+		{
+			IAsyncAction action = null;
+			action = ThreadPool.RunAsync(a =>
+			{
+				Thread.Sleep(2000);
+			});
+
+			var tcs = new TaskCompletionSource<AsyncStatus>();
+			action.Completed = (a, s) =>
+			{
+				tcs.SetResult(s);
+			};
+
+			action.Cancel();
+			Assert.IsFalse(SpinWait.SpinUntil(() => tcs.Task.IsCompleted, 100), "Task should not invoke completed during execution");
+			Assert.AreEqual(AsyncStatus.Canceled, action.Status);
+			Assert.IsNull(action.ErrorCode);
+		}
+
+		[Test]
+		public void RunAsync_CancelAfterCompletion()
+		{
+			long completedCount = 0;
+			IAsyncAction action = null;
+			action = ThreadPool.RunAsync(a =>
+			{
+				Thread.Sleep(50);
+			});
+
+			var tcs = new TaskCompletionSource<AsyncStatus>();
+			action.Completed = (a, s) =>
+			{
+				Interlocked.Increment(ref completedCount);
+				tcs.SetResult(s);
+			};
+
+			Assert.IsTrue(SpinWait.SpinUntil(() => tcs.Task.IsCompleted, 200));
 			action.Cancel();
 
-			Assert.IsTrue (SpinWait.SpinUntil(() => handlerCompleted && actionCompleted, millisecondsTimeout: 4000));
-			Assert.AreEqual (AsyncStatus.Canceled, action.Status);
-			Assert.IsNull (action.ErrorCode);
+			Thread.Sleep(100);
+			Assert.AreEqual(1, Interlocked.Read(ref completedCount));
+
+			Assert.AreEqual(AsyncStatus.Completed, action.Status);
 		}
 
 		[Test]
 		public void RunAsync_Error()
 		{
-			bool handlerCompleted = false, actionCompleted = false;
-
 			IAsyncAction action = null;
 			action = ThreadPool.RunAsync(a =>
 			{
-				throw new Exception ("error");
+				throw new Exception("error");
 			});
 
+			var tcs = new TaskCompletionSource<AsyncStatus>();
 			action.Completed = (a, s) =>
 			{
-				// WinRT does not ignores errors in thread pool actions
-				Assert.AreEqual (AsyncStatus.Error, s);
-				Assert.IsNotNull (a.ErrorCode);
-				actionCompleted = true;
+				tcs.SetResult(s);
 			};
 
-			Assert.IsTrue (!SpinWait.SpinUntil(() => handlerCompleted && actionCompleted, millisecondsTimeout: 5000));
-			Assert.AreEqual (AsyncStatus.Error, action.Status);
-			Assert.IsNotNull (action.ErrorCode);
+			Assert.IsTrue(SpinWait.SpinUntil(() => tcs.Task.IsCompleted, 100));
+
+			// WinRT does not ignores errors in thread pool actions
+			Assert.AreEqual(AsyncStatus.Error, action.Status);
+			Assert.IsNotNull(action.ErrorCode);
+		}
+
+		[Test]
+		public void Completed_Assigned_Twice()
+		{
+			var action = ThreadPool.RunAsync(s => Thread.Sleep(1000));
+			action.Completed = (a, s) => { };
+			var ex = Assert.Throws<InvalidOperationException>(() =>
+			{
+				action.Completed = (a, s) => { };
+			});
+
+#if NET_4_5
+			const int expectedHresult = unchecked((int)0x80000018);
+			Assert.AreEqual(expectedHresult, ex.HResult);
+#endif
+		}
+
+		[Test]
+		public void Completed_Assigned_Null()
+		{
+			var action = ThreadPool.RunAsync(s => Thread.Sleep(1000));
+
+			// WinRT throws a NullReferenceException when the Completed handler is set to null.
+			// this happens even if the IAsyncAction is still running.
+			var ex = Assert.Throws<NullReferenceException>(() =>
+			{
+				action.Completed = null;
+			});
+
+#if NET_4_5
+			const int expectedHresult = unchecked((int)0x80004003);
+			Assert.AreEqual(expectedHresult, ex.HResult);
+#endif
 		}
 	}
 }

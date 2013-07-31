@@ -32,16 +32,22 @@ namespace System.Threading.Tasks.Internal
 {
 	internal abstract class TaskToAsyncInfoAdapter<TCompletedHandler> : IAsyncInfo
 	{
+		#region Attributes
 		object locker = new object();
 		bool completedInvoked = false;
 		TCompletedHandler completed;
-
 		Task task;
-		protected Task Task
+		#endregion
+
+		#region Properties
+		public Task Task
 		{
 			get { return task; }
 			set
 			{
+				if (this.task != null)
+					throw new InvalidOperationException("The task cannot be changed after its set.");
+
 				if (value != null)
 				{
 					if (value.Status == TaskStatus.Created)
@@ -54,14 +60,28 @@ namespace System.Threading.Tasks.Internal
 			}
 		}
 		protected TaskScheduler Scheduler { get; set; }
+		#endregion
+
+		#region Constructors
+		protected TaskToAsyncInfoAdapter()
+		{
+			Scheduler = TaskScheduler.Current;
+		}
+
+		protected TaskToAsyncInfoAdapter(Task source)
+			: this()
+		{
+			Task = source;
+		}
+		#endregion
 
 		protected abstract void Invoke(TCompletedHandler completed);
 
-		protected virtual void Complete()
+		void Complete()
 		{
 			bool alreadyInvoked;
 			TCompletedHandler handler;
-            lock (this.locker)
+			lock (this.locker)
 			{
 				handler = completed;
 				if (handler == null)
@@ -75,40 +95,19 @@ namespace System.Threading.Tasks.Internal
 				Task.Factory.StartNew(s => Invoke((TCompletedHandler)s), handler, default(CancellationToken), TaskCreationOptions.None, Scheduler);
 		}
 
-		protected TaskToAsyncInfoAdapter()
+		void CheckCompletion()
 		{
-			Scheduler = TaskScheduler.Current;
-		}
-
-		protected TaskToAsyncInfoAdapter(Task source)
-			: this()
-		{
-			if (source == null)
-				throw new ArgumentNullException("source");
-
-			Task = source;
-		}
-
-		protected void CheckCompletion()
-		{
-			if (Status == AsyncStatus.Started)
+			lock (this.locker)
 			{
-				Task.ContinueWith(t =>
-				{
-					lock (this.locker)
-					{
-						if (Status == AsyncStatus.Started)
-							Status = t.Status.ToAsyncStatus();
-					}
-
-					Complete();
-				});
+				if (Status == AsyncStatus.Started)
+					Status = Task.Status.ToAsyncStatus();
 			}
+
+			if (Status == AsyncStatus.Started)
+				Task.ContinueWith(t => { CheckCompletion(); });
 			else
 				Complete();
 		}
-
-		#region IAsyncOperation implementation
 
 		public void GetResults()
 		{
@@ -124,22 +123,19 @@ namespace System.Threading.Tasks.Internal
 			get { return this.completed; }
 			set
 			{
+				if (value == null)
+					throw new NullReferenceException();
+
 				if (this.completed != null)
 					throw new InvalidOperationException("The 'Completed' handler delegate cannot be set more than once, but this handler has already been set.");
 
 				this.completed = value;
-				CheckCompletion();
+				if (this.task != null)
+					CheckCompletion();
 			}
 		}
 
-		#endregion
-
 		#region IAsyncInfo implementation
-
-		public void Start()
-		{
-			Task.Start();
-		}
 
 		public void Close()
 		{
@@ -148,13 +144,14 @@ namespace System.Threading.Tasks.Internal
 
 		public void Cancel()
 		{
+			if (Task == null)
+				throw new InvalidOperationException("The underlying task was not set.");
+
 			lock (this.locker)
 			{
 				if (Status == AsyncStatus.Started)
 					Status = AsyncStatus.Canceled;
 			}
-
-			CheckCompletion();
 		}
 
 		public uint Id { get { return (uint)Task.Id; } }
