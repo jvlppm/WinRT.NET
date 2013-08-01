@@ -99,23 +99,31 @@ namespace Windows.System.Threading
 			return RunAsync(handler, priority);
 		}
 
-		internal static IAsyncOperation<T> RunAsyncOperation<T>(Func<T> handler)
+		internal static IAsyncOperation<bool> RunAsyncOperation(Action action)
 		{
-			if (handler == null)
-				throw new ArgumentException("handler");
+			return RunAsyncOperation(() => { action(); return true; });
+		}
+
+		internal static IAsyncOperation<T> RunAsyncOperation<T>(Func<T> function)
+		{
+			if (function == null)
+				throw new ArgumentException("function");
 
 			var adapter = new TaskToAsyncOperationAdapter<T>(
-				Task.Factory.StartNew(handler, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default));
+				Task.Factory.StartNew(function, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default));
 
 			return adapter;
 		}
 
-		internal static IAsyncOperationWithProgress<T, TProgress> RunAsyncWithProgress<T, TProgress>(Func<IProgress<TProgress>, T> handler)
+		internal static IAsyncOperationWithProgress<TResult, TProgress> RunAsyncWithProgress<TResult, TProgress>(Func<IProgress<TProgress>, TResult> function)
 		{
-			if (handler == null)
-				throw new ArgumentException("handler");
+			if (function == null)
+				throw new ArgumentException("function");
 
-			return TaskToAsyncOperationWithProgressAdapter<T, TProgress>.StartNew(handler);
+			var progress = new Progress<TProgress>();
+			return new TaskToAsyncOperationWithProgressAdapter<TResult, TProgress>(
+				Task.Factory.StartNew(p => function((IProgress<TProgress>)p), progress, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default),
+				progress);
 		}
 	}
 }

@@ -6,31 +6,10 @@ namespace System.Threading.Tasks.Internal
 {
 	internal class TaskToAsyncOperationWithProgressAdapter<TResult, TProgress> : TaskToAsyncInfoAdapter<AsyncOperationWithProgressCompletedHandler<TResult, TProgress>>, IAsyncOperationWithProgress<TResult, TProgress>
 	{
-		/// <summary>
-		/// Starts a new async operation with progress report.
-		/// </summary>
-		/// <returns>The new operation.</returns>
-		/// <param name="function">The function to run asynchronously.</param>
-		/// <param name="cancellation">Cancellation token.</param>
-		/// <param name="taskCreationOptions">Task creation options.</param>
-		/// <param name="scheduler">The Scheduler that the function will be executed on.</param>
-		public static TaskToAsyncOperationWithProgressAdapter<TResult, TProgress> StartNew(Func<IProgress<TProgress>, TResult> function, CancellationToken cancellation = default(CancellationToken), TaskCreationOptions taskCreationOptions = TaskCreationOptions.None, TaskScheduler scheduler = null)
+		public TaskToAsyncOperationWithProgressAdapter(Task<TResult> task, Progress<TProgress> progress)
+			: base(task)
 		{
-			if (function == null)
-				throw new ArgumentException("function");
-
-			var progress = new Progress<TProgress>();
-			var adapter = new TaskToAsyncOperationWithProgressAdapter<TResult, TProgress>();
-			adapter.Task = Tasks.Task.Factory.StartNew(p => function((IProgress<TProgress>)p), progress,
-																cancellation,
-																taskCreationOptions,
-																scheduler ?? TaskScheduler.Default);
-			progress.ProgressChanged += adapter.ReportProgress;
-
-			if (cancellation != default(CancellationToken))
-				cancellation.Register(adapter.Cancel);
-
-			return adapter;
+			progress.ProgressChanged += ReportProgress;
 		}
 
 		new Task<TResult> Task
