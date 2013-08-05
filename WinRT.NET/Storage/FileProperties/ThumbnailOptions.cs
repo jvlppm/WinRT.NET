@@ -1,5 +1,5 @@
 //
-// IInputStreamReference.cs
+// ThumbnailOptions.cs
 //
 // Author:
 //   Joao Vitor P. Moraes <jvlppm@gmail.com>
@@ -24,20 +24,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System.Runtime.InteropServices;
-using Windows.Foundation;
+using System;
 using Windows.Foundation.Metadata;
 
-namespace Windows.Storage.Streams
+namespace Windows.Storage.FileProperties
 {
-	[Guid("43929d18-5ec9-4b5a-919c-4205b0c804b6")]
+	[Flags]
 	[Version(WindowsVersion.NTDDI_WIN8)]
-	public interface IInputStreamReference
+	public enum ThumbnailOptions
 	{
 		/// <summary>
-		/// Opens a stream for sequential read access.
+		/// No options.
 		/// </summary>
-		/// <returns>The asynchronous operation.</returns>
-		IAsyncOperation<IInputStream> OpenSequentialReadAsync();
+		None = 0,
+		/// <summary>
+		/// Retrieve a thumbnail only if it is cached or embedded in the file.
+		/// </summary>
+		ReturnOnlyIfCached = 1,
+		/// <summary>
+		/// Scale the thumbnail to the requested size.
+		/// </summary>
+		ResizeThumbnail = 2,
+		/// <summary>
+		/// Default. Increase requested size based on the Pixels Per Inch (PPI) of the display.
+		/// </summary>
+		UseCurrentScale = 4
 	}
 }

@@ -1,5 +1,5 @@
 //
-// IInputStreamReference.cs
+// PhotoOrientation.cs
 //
 // Author:
 //   Joao Vitor P. Moraes <jvlppm@gmail.com>
@@ -24,20 +24,50 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System.Runtime.InteropServices;
-using Windows.Foundation;
-using Windows.Foundation.Metadata;
-
-namespace Windows.Storage.Streams
+namespace Windows.Storage.FileProperties
 {
-	[Guid("43929d18-5ec9-4b5a-919c-4205b0c804b6")]
-	[Version(WindowsVersion.NTDDI_WIN8)]
-	public interface IInputStreamReference
+	/// <summary>
+	/// Indicates the Exchangeable Image File (EXIF) orientation flag of the
+	/// photo. This flag describes how to rotate the photo to display it
+	/// correctly.
+	/// </summary>	[Version(WindowsVersion.NTDDI_WIN8)]
+	public enum PhotoOrientation
 	{
 		/// <summary>
-		/// Opens a stream for sequential read access.
+		/// An orientation flag is not set.
 		/// </summary>
-		/// <returns>The asynchronous operation.</returns>
-		IAsyncOperation<IInputStream> OpenSequentialReadAsync();
+		Unspecified,
+		/// <summary>
+		/// No rotation needed. The photo can be displayed using its current orientation.
+		/// </summary>
+		Normal,
+		/// <summary>
+		/// Flip the photo horizontally.
+		/// </summary>
+		FlipHorizontal,
+		/// <summary>
+		/// Rotate the photo counter-clockwise 180 degrees.
+		/// </summary>
+		Rotate180,
+		/// <summary>
+		/// Flip the photo vertically.
+		/// </summary>
+		FlipVertical,
+		/// <summary>
+		/// Rotate the photo counter-clockwise 90 degrees and then flip it horizontally.
+		/// </summary>
+		Transpose,
+		/// <summary>
+		/// Rotate the photo counter-clockwise 270 degrees.
+		/// </summary>
+		Rotate270,
+		/// <summary>
+		/// Rotate the photo counter-clockwise 270 degrees and then flip it horizontally.
+		/// </summary>
+		Transverse,
+		/// <summary>
+		/// Rotate the photo 90 degrees.
+		/// </summary>
+		Rotate90
 	}
 }

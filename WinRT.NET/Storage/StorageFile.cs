@@ -28,6 +28,7 @@ using Windows.Storage.Streams;
 using Windows.Foundation;
 using System;
 using Windows.Foundation.Metadata;
+using Windows.Storage.FileProperties;
 
 namespace Windows.Storage
 {
@@ -50,6 +51,29 @@ namespace Windows.Storage
 		/// Gets the name of the file including the file name extension.
 		/// </summary>
 		public string Name { get; private set; }
+
+		/// <summary>
+		/// Gets a user-friendly name for the file.
+		/// </summary>
+		public string DisplayName { get; private set; }
+
+		/// <summary>
+		/// Gets a user-friendly description of the type of the file.
+		/// </summary>
+		public string DisplayType { get; private set; }
+
+		/// <summary>
+		/// Gets an identifier for the file. This ID is unique for the query
+		/// result or StorageFolder that contains the file and can be used to
+		/// distinguish between items that have the same name.
+		/// </summary>
+		public string FolderRelativeId { get; private set; }
+
+		/// <summary>
+		/// Gets an object that provides access to the content-related properties
+		/// of the file.
+		/// </summary>
+		public StorageItemContentProperties Properties { get; private set; }
 		#endregion
 
 		#region Methods
@@ -61,6 +85,54 @@ namespace Windows.Storage
 		{
 			throw new NotImplementedException();
 		}
+
+		/// <summary>
+		/// Opens a sequential-access stream over the current file for reading
+		/// file contents.
+		/// </summary>
+		/// <returns>When this method completes, it returns the sequential-access stream (type IInputStream).</returns>
+		public IAsyncOperation<IInputStream> OpenSequentialReadAsync()
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// Retrieves an adjusted thumbnail image for the file, determined by the
+		/// purpose of the thumbnail.
+		/// </summary>
+		/// <param name="mode">The enum value that describes the purpose of the thumbnail and determines how the thumbnail image is adjusted.</param>
+		/// <returns>When this method completes successfully, it returns a StorageItemThumbnail that represents the thumbnail image or null if there is no thumbnail image associated with the file.</returns>
+		public IAsyncOperation<StorageItemThumbnail> GetThumbnailAsync(ThumbnailMode mode)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// Retrieves an adjusted thumbnail image for the file, determined by the
+		/// purpose of the thumbnail and the requested size.
+		/// </summary>
+		/// <param name="mode">The enum value that describes the purpose of the thumbnail and determines how the thumbnail image is adjusted.</param>
+		/// <param name="requestedSize">The requested size, in pixels, of the longest edge of the thumbnail. Windows uses the requestedSize as a guide and tries to scale the thumbnail image without reducing the quality of the image.</param>
+		/// <returns>When this method completes successfully, it returns a StorageItemThumbnail that represents the thumbnail image or null if there is no thumbnail image associated with the file.</returns>
+		public IAsyncOperation<StorageItemThumbnail> GetThumbnailAsync(ThumbnailMode mode, uint requestedSize)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// Retrieves an adjusted thumbnail image for the file, determined by the
+		/// purpose of the thumbnail, the requested size, and the specified
+		/// options.
+		/// </summary>
+		/// <param name="mode">The enum value that describes the purpose of the thumbnail and determines how the thumbnail image is adjusted.</param>
+		/// <param name="requestedSize">The requested size, in pixels, of the longest edge of the thumbnail. Windows uses the requestedSize as a guide and tries to scale the thumbnail image without reducing the quality of the image.</param>
+		/// <param name="options">The enum value that describes the desired behavior to use to retrieve the thumbnail image. The specified behavior might affect the size and/or quality of the image and how quickly the thumbnail image is retrieved.</param>
+		/// <returns>When this method completes successfully, it returns a StorageItemThumbnail that represents the thumbnail image or null if there is no thumbnail image associated with the file.</returns>
+		public IAsyncOperation<StorageItemThumbnail> GetThumbnailAsync(ThumbnailMode mode, uint requestedSize, ThumbnailOptions options)
+		{
+			throw new NotImplementedException();
+		}
+
 		#endregion
 	}
 }

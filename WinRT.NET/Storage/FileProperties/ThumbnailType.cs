@@ -1,5 +1,5 @@
 //
-// IInputStreamReference.cs
+// ThumbnailType.cs
 //
 // Author:
 //   Joao Vitor P. Moraes <jvlppm@gmail.com>
@@ -24,20 +24,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System.Runtime.InteropServices;
-using Windows.Foundation;
 using Windows.Foundation.Metadata;
 
-namespace Windows.Storage.Streams
+namespace Windows.Storage.FileProperties
 {
-	[Guid("43929d18-5ec9-4b5a-919c-4205b0c804b6")]
+	/// <summary>
+	/// Indicates whether the thumbnail is an icon or an image.
+	/// </summary>
 	[Version(WindowsVersion.NTDDI_WIN8)]
-	public interface IInputStreamReference
+	public enum ThumbnailType
 	{
 		/// <summary>
-		/// Opens a stream for sequential read access.
+		/// The thumbnail is an image.
 		/// </summary>
-		/// <returns>The asynchronous operation.</returns>
-		IAsyncOperation<IInputStream> OpenSequentialReadAsync();
+		Image,
+		/// <summary>
+		/// The thumbnail is an icon.
+		/// </summary>
+		Icon
 	}
 }

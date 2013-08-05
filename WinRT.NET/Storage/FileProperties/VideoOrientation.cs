@@ -1,5 +1,5 @@
 //
-// IInputStreamReference.cs
+// VideoOrientation.cs
 //
 // Author:
 //   Joao Vitor P. Moraes <jvlppm@gmail.com>
@@ -24,20 +24,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System.Runtime.InteropServices;
-using Windows.Foundation;
-using Windows.Foundation.Metadata;
-
-namespace Windows.Storage.Streams
+namespace Windows.Storage.FileProperties
 {
-	[Guid("43929d18-5ec9-4b5a-919c-4205b0c804b6")]
-	[Version(WindowsVersion.NTDDI_WIN8)]
-	public interface IInputStreamReference
+	/// <summary>
+	/// Indicates how to rotate the video to display it correctly.
+	/// </summary>	[Version(WindowsVersion.NTDDI_WIN8)]
+	public enum VideoOrientation
 	{
 		/// <summary>
-		/// Opens a stream for sequential read access.
+		/// No rotation needed. The video can be displayed using its current orientation.
 		/// </summary>
-		/// <returns>The asynchronous operation.</returns>
-		IAsyncOperation<IInputStream> OpenSequentialReadAsync();
+		Normal = 0,
+		/// <summary>
+		/// Rotate the video 90 degrees.
+		/// </summary>
+		Rotate90 = 90,
+		/// <summary>
+		/// Rotate the video counter-clockwise 180 degrees.
+		/// </summary>
+		Rotate180 = 180,
+		/// <summary>
+		/// Rotate the video counter-clockwise 270 degrees.
+		/// </summary>
+		Rotate270 = 270
 	}
 }
