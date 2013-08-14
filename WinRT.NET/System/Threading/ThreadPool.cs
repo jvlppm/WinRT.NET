@@ -23,6 +23,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
 using System;
 using Windows.Foundation;
 using Windows.Foundation.Metadata;
@@ -94,20 +95,23 @@ namespace Windows.System.Threading
 		/// <returns>An IAsyncAction interface that provides access to the work item.</returns>
 		public static IAsyncAction RunAsync(WorkItemHandler handler, WorkItemPriority priority, WorkItemOptions options)
 		{
-			if (options == WorkItemOptions.TimeSliced)
+			if (options != WorkItemOptions.None)
 				throw new NotImplementedException();
 			return RunAsync(handler, priority);
 		}
 
 		internal static IAsyncOperation<bool> RunAsyncOperation(Action action)
 		{
+			if (action == null)
+				throw new ArgumentNullException("action");
+
 			return RunAsyncOperation(() => { action(); return true; });
 		}
 
 		internal static IAsyncOperation<T> RunAsyncOperation<T>(Func<T> function)
 		{
 			if (function == null)
-				throw new ArgumentException("function");
+				throw new ArgumentNullException("function");
 
 			var adapter = new TaskToAsyncOperationAdapter<T>(
 				Task.Factory.StartNew(function, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default));
@@ -118,7 +122,7 @@ namespace Windows.System.Threading
 		internal static IAsyncOperationWithProgress<TResult, TProgress> RunAsyncWithProgress<TResult, TProgress>(Func<IProgress<TProgress>, TResult> function)
 		{
 			if (function == null)
-				throw new ArgumentException("function");
+				throw new ArgumentNullException("function");
 
 			var progress = new Progress<TProgress>();
 			return new TaskToAsyncOperationWithProgressAdapter<TResult, TProgress>(
