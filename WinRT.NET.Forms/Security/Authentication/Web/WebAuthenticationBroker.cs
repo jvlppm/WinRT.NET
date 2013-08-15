@@ -76,7 +76,8 @@ namespace Windows.Security.Authentication.Web
 					BackColor = global::System.Drawing.Color.Black,
 					Opacity = 0.55,
 					WindowState = FormWindowState.Maximized,
-					FormBorderStyle = FormBorderStyle.None
+					FormBorderStyle = FormBorderStyle.None,
+					TopMost = true
 				};
 
 				var win = new Form
