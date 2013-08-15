@@ -200,6 +200,7 @@
     <Compile Include="System\Progress.cs" />
     <Compile Include="System\Threading\WorkItemOptions.cs" />
     <Compile Include="System\Threading\Tasks\Internal\TaskToAsyncOperationWithProgressAdapter.cs" />
+    <Compile Include="Storage\Streams\Internal\RandomAccessStreamWithContentTypeAdapter.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -211,4 +212,7 @@
   </Target>
   -->
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Storage\Streams\Internal\" />
+  </ItemGroup>
 </Project>

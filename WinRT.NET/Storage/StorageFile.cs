@@ -27,8 +27,12 @@
 using Windows.Storage.Streams;
 using Windows.Foundation;
 using System;
+using System.Linq;
 using Windows.Foundation.Metadata;
 using Windows.Storage.FileProperties;
+using System.IO;
+using System.Text.RegularExpressions;
+using Windows.System.Threading;
 
 namespace Windows.Storage
 {
@@ -41,49 +45,54 @@ namespace Windows.Storage
 		  IRandomAccessStreamReference, IInputStreamReference,
 		  IStorageItemProperties
 	{
+
 		#region Properties
+
 		/// <summary>
 		/// Gets the MIME type of the contents of the file.
 		/// </summary>
-		public string ContentType { get; private set; }
+		public string ContentType { get { throw new NotImplementedException(); } }
 
 		/// <summary>
 		/// Gets the name of the file including the file name extension.
 		/// </summary>
-		public string Name { get; private set; }
+		public string Name { get { return Path.GetFileName(info.FullName); } }
 
 		/// <summary>
 		/// Gets a user-friendly name for the file.
 		/// </summary>
-		public string DisplayName { get; private set; }
+		public string DisplayName { get { return Path.GetFileNameWithoutExtension(info.FullName); } }
 
 		/// <summary>
 		/// Gets a user-friendly description of the type of the file.
 		/// </summary>
-		public string DisplayType { get; private set; }
+		public string DisplayType { get { throw new NotImplementedException(); } }
 
 		/// <summary>
 		/// Gets an identifier for the file. This ID is unique for the query
 		/// result or StorageFolder that contains the file and can be used to
 		/// distinguish between items that have the same name.
 		/// </summary>
-		public string FolderRelativeId { get; private set; }
+		public string FolderRelativeId { get { throw new NotImplementedException(); } }
 
 		/// <summary>
 		/// Gets an object that provides access to the content-related properties
 		/// of the file.
 		/// </summary>
-		public StorageItemContentProperties Properties { get; private set; }
+		public StorageItemContentProperties Properties { get { throw new NotImplementedException(); } }
+
 		#endregion
 
 		#region Methods
+
 		/// <summary>
 		/// Opens a random-access stream over the current file for reading file contents.
 		/// </summary>
 		/// <returns>When this method completes, it returns the random-access stream (type IRandomAccessStreamWithContentType).</returns>
 		public IAsyncOperation<IRandomAccessStreamWithContentType> OpenReadAsync()
 		{
-			throw new NotImplementedException();
+			return ThreadPool.RunAsyncOperation(() => (IRandomAccessStreamWithContentType)
+				new RandomAccessStreamWithContentTypeAdapter(new FileRandomAccessStream(info.OpenRead()), ContentType));
 		}
 
 		/// <summary>
@@ -93,7 +102,8 @@ namespace Windows.Storage
 		/// <returns>When this method completes, it returns the sequential-access stream (type IInputStream).</returns>
 		public IAsyncOperation<IInputStream> OpenSequentialReadAsync()
 		{
-			throw new NotImplementedException();
+			return ThreadPool.RunAsyncOperation(() => (IInputStream)
+				new FileRandomAccessStream(info.OpenRead()));
 		}
 
 		/// <summary>
@@ -132,7 +142,15 @@ namespace Windows.Storage
 		{
 			throw new NotImplementedException();
 		}
+		#endregion
 
+		#region Internal
+		FileInfo info;
+
+		internal StorageFile(FileInfo info)
+		{
+			this.info = info;
+		}
 		#endregion
 	}
 }
