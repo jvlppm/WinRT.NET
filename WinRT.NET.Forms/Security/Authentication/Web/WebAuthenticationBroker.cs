@@ -85,15 +85,24 @@ namespace Windows.Security.Authentication.Web
 					FormBorderStyle = FormBorderStyle.None,
 					TopMost = true
 				};
-				win.SizeChanged += delegate
+
+				bool ignoreWindowSizeChange = false;
+				EventHandler winSizeChanged = delegate
 				{
+					if (ignoreWindowSizeChange)
+						return;
 					win.Top = (backWin.Height - win.Height) / 2;
 					win.Left = backWin.Left;
 				};
+
+				win.SizeChanged += winSizeChanged;
 				backWin.SizeChanged += delegate
 				{
+					ignoreWindowSizeChange = true;
 					win.Width = backWin.Width;
 					win.Height = backWin.Height - 230;
+					ignoreWindowSizeChange = false;
+					winSizeChanged(backWin, EventArgs.Empty);
 				};
 
 				var headerPanel = new Panel { Width = 566, Height = 80 };
